@@ -1,0 +1,44 @@
+@import '../LESSHat/lesshat.less';
+@import '../var/var.less';
+
+
+header {
+  width: 100%;
+  background-color: @red;
+}
+
+.header-container {
+  max-width: @containerWidth;
+  margin: 0 auto;
+  padding: 4px @containerSidePadding;
+  color: white;
+}
+
+.header-logo {
+  font-weight: 700;
+  letter-spacing: 1px;
+  font-size: 28px;
+  a {
+    color: white;
+    text-decoration: none;
+  }
+}
+
+.header-nav {
+  text-align: right;
+  float: right;
+  display: inline;
+  padding: 0;
+  margin: 8px;
+  li {
+    display: inline;
+    margin-left: 20px;
+  }
+  a {
+    text-decoration: none;
+    color: white;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

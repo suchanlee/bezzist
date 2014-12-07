@@ -1,0 +1,29 @@
+/**
+ *
+ * Base LESS file for Bezzist
+ *
+ */
+
+@import '../LESSHat/lesshat.less';
+@import '../var/var.less';
+
+body {
+  margin: 0 0 0 0;
+  font-family: @sans-serif;
+  position: relative;
+  z-index: @zBase;
+  background-color: @light-grey;
+}
+
+.container {
+  max-width: @containerWidth;
+  margin: 0 auto;
+  padding: 0px @containerSidePadding;
+  padding-bottom: 100px;
+}
+
+.hidden {
+  display: none;
+}
+
+@import 'header.less';
