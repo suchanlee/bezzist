@@ -46,6 +46,7 @@ function (React, AnswerList, AnswerForm) {
           <AnswerForm
             q={this.props.q}
             addAnswer={this.props.addAnswer}
+            seeMore={this.state.seeMore}
             toggleAnswers={this.toggleHiddenAnswers} />
         </div>
       );

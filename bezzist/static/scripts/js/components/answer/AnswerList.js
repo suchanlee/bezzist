@@ -30,6 +30,14 @@ function (React, _, AnswerRow) {
       }.bind(this));
     },
 
+    getShowMoreClassName: function() {
+      var cn = 'question-see-more-container';
+      if (this.props.answers.length < 6) {
+        cn += ' hidden';
+      }
+      return cn;
+    },
+
     render: function() {
       var answers = this._getAnswers();
       return (
@@ -37,7 +45,7 @@ function (React, _, AnswerRow) {
           React.createElement("ul", {className: "question-answer-list"}, 
             answers.slice(0, 5), 
             answers.slice(5), 
-            React.createElement("li", {className: "question-see-more-container"}, 
+            React.createElement("li", {className: this.getShowMoreClassName()}, 
               React.createElement("p", {className: "question-see-more-button", onClick: this.seeMoreclickHandler}, 
                 this.props.seeMore.text
               )

@@ -51,7 +51,9 @@ function (React, $) {
         this.setState({
           value: ''
         });
-        this.props.toggleAnswers();
+        if (this.props.seeMore.hidden) {
+          this.props.toggleAnswers();
+        }
         $('html, body').animate({
           scrollTop: $('.question-see-more-button').offset().top - 200
         }, 1000);
