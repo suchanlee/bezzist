@@ -53,7 +53,7 @@ function (React, store, Utils) {
           ), 
           React.createElement("div", {
             onClick: this.handleVoteClick, 
-            className: "answer-vote-box"}, 
+            className: this._hasVoted() ? 'answer-vote-box voted' : 'answer-vote-box'}, 
             React.createElement("img", {
               className: "answer-vote-icon", 
               src: '/static/imgs/bezz_thumbsup.png'}), 
