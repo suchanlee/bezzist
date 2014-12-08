@@ -5,13 +5,12 @@ define(
 ['react', 'lib/Utils'],
 function (React, Utils) {
   return React.createClass({
-    getInitialState: function() {
-      return {
-        'score': this.props.answer.score
-      };
+    handleVoteClick: function() {
+      this._updateAnswerVote();
+      return false;
     },
 
-    incrementVote: function() {
+    _updateAnswerVote: function() {
       $.ajax({
         url: '/api/v1/answers/' + this.props.answer.id + '/',
         type: 'PUT',
@@ -21,11 +20,8 @@ function (React, Utils) {
         }),
         dataType: 'json'
       }).done(function(answer) {
-        this.setState({
-          'score': answer.score
-        });
+        this.props.updateAnswer(answer);
       }.bind(this));
-      return false;
     },
 
     render: function() {
@@ -42,12 +38,12 @@ function (React, Utils) {
             </span>
           </div>
           <div
-            onClick={this.incrementVote}
+            onClick={this.handleVoteClick}
             className='answer-vote-box'>
             <img
               className='answer-vote-icon'
               src={'/static/imgs/bezz_thumbsup.png'} />
-            <p className='answer-score'>{this.state.score}</p>
+            <p className='answer-score'>{this.props.answer.score}</p>
           </div>
         </li>
       );

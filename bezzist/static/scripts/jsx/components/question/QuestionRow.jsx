@@ -9,7 +9,6 @@ define(
 function (React, $, Utils) {
   return React.createClass({
     getClassName: function() {
-      console.log(Utils);
       var c = 'question-row';
       if (this.props.last) {
         c += ' question-row-last';

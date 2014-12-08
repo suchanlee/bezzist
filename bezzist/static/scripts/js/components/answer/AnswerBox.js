@@ -41,6 +41,7 @@ function (React, AnswerList, AnswerForm) {
           React.createElement(AnswerList, {
             answers: this.props.answers, 
             toggleAnswers: this.toggleHiddenAnswers, 
+            updateAnswer: this.props.updateAnswer, 
             seeMore: this.state.seeMore}), 
           React.createElement(AnswerForm, {
             q: this.props.q, 

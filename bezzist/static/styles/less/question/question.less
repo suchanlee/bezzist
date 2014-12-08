@@ -1,7 +1,7 @@
 @import '../LESSHat/lesshat.less';
 @import '../var/var.less';
 
-@questionMaxWidth: 460px;
+@pageMaxWidth: 600px;
 
 .question-box {
   text-align: center;
@@ -9,7 +9,7 @@
   margin: 0 auto;
   margin-top: 50px;
   width: 100%;
-  max-width: @questionMaxWidth;
+  max-width: @pageMaxWidth;
   background-color: @red;
   color: white;
 }
@@ -24,7 +24,7 @@
 
 .question-answer-list {
   width: 100%;
-  max-width: @questionMaxWidth;
+  max-width: @pageMaxWidth;
   text-align: left;
   margin: 0 auto;
   font-size: 28px;
@@ -52,7 +52,7 @@
   right: 0px;
   top: 0px;
   height: 100%;
-  width: 55px;
+  width: 60px;
   background-color: @red;
   text-align: center;
   cursor: pointer;
@@ -114,7 +114,7 @@
 }
 
 .answer-text-input-container {
-  max-width: @questionMaxWidth;
+  max-width: @pageMaxWidth;
   background-color: @red;
   .text-input {
       background-color: @red;
@@ -127,11 +127,9 @@
 
 // NEED TO SEPARATE THE FOLLOWING TO A DIFFERENT FILE
 
-@upcomingMaxWidth: 600px;
-
 .upcoming-container {
   width: 100%;
-  max-width: @upcomingMaxWidth;
+  max-width: @pageMaxWidth;
   margin: 0 auto;
   margin-top: 80px;
   color: white;
@@ -200,7 +198,7 @@
 }
 
 .question-text-input-container {
-  max-width: @upcomingMaxWidth;
+  max-width: @pageMaxWidth;
   background-color: @green;
   .text-input {
       background-color: @green;

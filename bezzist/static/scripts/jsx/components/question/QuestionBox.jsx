@@ -2,8 +2,9 @@
 'use strict';
 
 define(
-['react', 'jquery', 'components/question/QuestionTime', 'components/answer/AnswerBox'],
-function (React, $, QuestionTime, AnswerBox) {
+['react', 'jquery', 'underscore',
+ 'components/question/QuestionTime', 'components/answer/AnswerBox'],
+function (React, $, _, QuestionTime, AnswerBox) {
   return React.createClass({
     getInitialState: function() {
       return {
@@ -36,6 +37,20 @@ function (React, $, QuestionTime, AnswerBox) {
       });
     },
 
+    updateAnswer: function(a) {
+      var answers = this.state.answers;
+      for (var i=0; i<answers.length; i++) {
+        if (answers[i].id === a.id) {
+          answers[i] = a;
+          this.setState({
+            answers: answers
+          });
+          console.log(answers);
+          break;
+        }
+      }
+    },
+
     _getQuestionText: function() {
       var q = '';
       if (this.state.q) {
@@ -55,7 +70,8 @@ function (React, $, QuestionTime, AnswerBox) {
           <AnswerBox
             q={this.state.q}
             answers={this.state.answers}
-            addAnswer={this.addAnswer} />
+            addAnswer={this.addAnswer}
+            updateAnswer={this.updateAnswer} />
         </div>
       );
     }
