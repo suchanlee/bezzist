@@ -51,13 +51,17 @@ function (React, $) {
         this.setState({
           value: ''
         });
-        if (this.props.seeMore.hidden) {
-          this.props.toggleAnswers();
-        }
-        $('html, body').animate({
-          scrollTop: $('.question-see-more-button').offset().top - 200
-        }, 1000);
+        this._toggleAnswersAndAnimate();
       }.bind(this));
+    },
+
+    _toggleAnswersAndAnimate: function() {
+      if (this.props.seeMore.hidden) {
+        this.props.toggleAnswers();
+      }
+      $('html, body').animate({
+        scrollTop: $('.question-see-more-button').offset().top - 200
+      }, 1000);
     },
 
     _setFormError: function() {

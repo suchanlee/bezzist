@@ -2,11 +2,14 @@
 'use strict';
 
 define(
-['react', 'lib/Utils'],
-function (React, Utils) {
+['react', 'store', 'lib/Utils'],
+function (React, store, Utils) {
   return React.createClass({
     handleVoteClick: function() {
-      this._updateAnswerVote();
+      if (!this._hasVoted()) {
+        this._updateAnswerVote();
+        this._storeVote();
+      }
       return false;
     },
 
@@ -22,6 +25,17 @@ function (React, Utils) {
       }).done(function(answer) {
         this.props.updateAnswer(answer);
       }.bind(this));
+    },
+
+    _hasVoted: function() {
+      return store.get('bz-answers').hasOwnProperty(this.props.answer.id);
+    },
+
+    _storeVote: function() {
+      var update = {};
+      update[this.props.answer.id] = true;
+      store.set('bz-answers',
+                _.extend(store.get('bz-answers'), update));
     },
 
     render: function() {

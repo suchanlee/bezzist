@@ -2,9 +2,9 @@
 'use strict';
 
 define(
-['react', 'jquery', 'underscore',
+['react', 'jquery', 'underscore', 'store',
  'components/question/QuestionTime', 'components/answer/AnswerBox'],
-function (React, $, _, QuestionTime, AnswerBox) {
+function (React, $, _, store, QuestionTime, AnswerBox) {
   return React.createClass({
     getInitialState: function() {
       return {
@@ -22,6 +22,7 @@ function (React, $, _, QuestionTime, AnswerBox) {
             q: qList['questions'][0]
           });
         }
+        this._updateStore();
         $.getJSON('/api/v1/questions/' + this.state.q.id + '/answers')
          .done(function(answers) {
           this.setState({
@@ -45,9 +46,16 @@ function (React, $, _, QuestionTime, AnswerBox) {
           this.setState({
             answers: answers
           });
-          console.log(answers);
           break;
         }
+      }
+    },
+
+    _updateStore: function() {
+      if (!store.get('bz-current-question') ||
+          store.get('bz-current-question') !== this.state.q.id) {
+        store.set('bz-current-question', this.state.q.id);
+        store.set('bz-answers', {});
       }
     },
 
