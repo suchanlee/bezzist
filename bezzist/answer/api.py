@@ -13,10 +13,11 @@ class AnswerResource(AbstractBezzistResource):
     resource_name = 'answers'
 
     preparer = FieldsPreparer(fields={
-        'pk': 'pk',
+        'id': 'id',
         'answer': 'answer',
         'score': 'score',
-        'created': 'created'
+        'created': 'created',
+        'last_modified': 'modified'
     })
 
     def list(self):
