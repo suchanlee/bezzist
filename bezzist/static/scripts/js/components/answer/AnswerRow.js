@@ -2,8 +2,8 @@
 'use strict';
 
 define(
-['react'],
-function (React) {
+['react', 'lib/Utils'],
+function (React, Utils) {
   return React.createClass({
     getInitialState: function() {
       return {
@@ -37,7 +37,9 @@ function (React) {
         React.createElement("li", {className: className}, 
           React.createElement("div", {className: "answer-row-content"}, 
             React.createElement("span", {className: "answer-idx"}, this.props.idx), 
-            React.createElement("span", {className: "answer-text"}, this.props.answer.answer)
+            React.createElement("span", {className: "answer-text"}, 
+              Utils.capitalize(this.props.answer.answer)
+            )
           ), 
           React.createElement("div", {
             onClick: this.incrementVote, 

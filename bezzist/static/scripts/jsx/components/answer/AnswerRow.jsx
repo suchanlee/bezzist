@@ -2,8 +2,8 @@
 'use strict';
 
 define(
-['react'],
-function (React) {
+['react', 'lib/Utils'],
+function (React, Utils) {
   return React.createClass({
     getInitialState: function() {
       return {
@@ -37,7 +37,9 @@ function (React) {
         <li className={className}>
           <div className='answer-row-content'>
             <span className='answer-idx'>{this.props.idx}</span>
-            <span className='answer-text'>{this.props.answer.answer}</span>
+            <span className='answer-text'>
+              {Utils.capitalize(this.props.answer.answer)}
+            </span>
           </div>
           <div
             onClick={this.incrementVote}

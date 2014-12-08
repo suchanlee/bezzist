@@ -5,10 +5,11 @@
 'use strict';
 
 define(
-['react', 'jquery'],
-function (React, $) {
+['react', 'jquery', 'lib/Utils'],
+function (React, $, Utils) {
   return React.createClass({
     getClassName: function() {
+      console.log(Utils);
       var c = 'question-row';
       if (this.props.last) {
         c += ' question-row-last';
@@ -42,7 +43,7 @@ function (React, $) {
               src: '/static/imgs/bezz_thumbsup.png', 
               onClick: this.incrementVote})
           ), 
-          React.createElement("p", null, this.props.q.question)
+          React.createElement("p", null, Utils.capitalize(this.props.q.question))
         )
       );
     }
