@@ -9,6 +9,7 @@
 
 body {
   margin: 0 0 0 0;
+  padding-bottom: 100px;
   font-family: @sans-serif;
   position: relative;
   z-index: @zBase;
@@ -19,11 +20,28 @@ body {
   max-width: @containerWidth;
   margin: 0 auto;
   padding: 0px @containerSidePadding;
-  padding-bottom: 100px;
 }
 
 .hidden {
   display: none;
+}
+
+footer {
+  text-align: center;
+  p {
+    background-color: white;
+    padding: 5px 10px;
+    margin-top: 100px;
+    display: inline-block;
+    &:hover {
+      .box-shadow(3px 3px 0px 0px rgba(168, 168, 168, 1));
+    }
+    a {
+      color: @red;
+      font-style: italic;
+      font-size: 18px;
+    }
+  }
 }
 
 @import 'header.less';
