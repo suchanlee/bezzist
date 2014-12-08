@@ -15,26 +15,12 @@ function (React, $) {
       };
     },
 
-    submitHandler: function() {
-      var data;
-
+    handleSubmit: function() {
       if (this.state.value.trim().length === 0) {
         this._setFormError();
         return false;
       }
-
-      data = {qId: this.props.q.id, answer: this.state.value};
-      $.post('/api/v1/answers/', JSON.stringify(data))
-      .done(function(answer) {
-        this.props.addAnswer(answer);
-        this.setState({
-          value: ''
-        });
-        this.props.toggleAnswers();
-        $('html, body').animate({
-          scrollTop: $('.question-see-more-button').offset().top - 200
-        }, 1000);
-      }.bind(this));
+      this._createAnswer();
       return false;
     },
 
@@ -57,6 +43,21 @@ function (React, $) {
       }
     },
 
+    _createAnswer: function() {
+      var data = {qId: this.props.q.id, answer: this.state.value};
+      $.post('/api/v1/answers/', JSON.stringify(data))
+      .done(function(answer) {
+        this.props.addAnswer(answer);
+        this.setState({
+          value: ''
+        });
+        this.props.toggleAnswers();
+        $('html, body').animate({
+          scrollTop: $('.question-see-more-button').offset().top - 200
+        }, 1000);
+      }.bind(this));
+    },
+
     _setFormError: function() {
       this.setState({
         formError: 'The answer field cannot be empty :('
@@ -74,7 +75,7 @@ function (React, $) {
               value: this.state.value, 
               className: "text-input", 
               onChange: this.handleChange}), 
-            React.createElement("button", {className: "form-button", onClick: this.submitHandler}, "Submit")
+            React.createElement("button", {className: "form-button", onClick: this.handleSubmit}, "Submit")
           )
         )
       );
