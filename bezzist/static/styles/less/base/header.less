@@ -3,8 +3,39 @@
 
 
 header {
-  width: 100%;
-  background-color: @red;
+  max-width: @pageMaxWidth;
+  margin: 0 auto;
+  margin-top: 50px;
+  text-align: center;
+}
+
+.logo-container, .days-remaining {
+  background-color: white;
+  color: black;
+  display: inline-block;
+}
+
+.logo-container {
+  font-size: 28px;
+  font-weight: 700;
+  span {
+    padding: 0px 10px;
+  }
+  &:hover {
+    .box-shadow(3px 3px 0px 0px rgba(168, 168, 168, 1));
+  }
+}
+
+.days-remaining-container {
+  margin-top: 15px;
+}
+
+.days-remaining {
+  display: inline-block;
+  font-size: 12px;
+  span {
+    padding: 0px 5px;
+  }
 }
 
 .header-container {

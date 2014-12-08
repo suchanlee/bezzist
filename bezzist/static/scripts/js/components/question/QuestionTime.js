@@ -14,14 +14,23 @@ define(['react', 'moment'], function (React, moment) {
       var rem_str;
 
       if (this.props.q) {
-        rem_str = this._getRemainingDays() + ' days remaining';
+        rem_str = this._getRemainingDays() + ' days left for this question';
       } else {
         rem_str = '';
       }
 
       return (
-        React.createElement("p", {className: "question-days-remaining"}, 
-          rem_str
+        React.createElement("header", null, 
+          React.createElement("div", {className: "logo-container"}, 
+            React.createElement("span", null, "Bezzist")
+          ), 
+          React.createElement("div", {className: "days-remaining-container"}, 
+            React.createElement("div", {className: "days-remaining"}, 
+              React.createElement("span", {className: "question-days-remaining"}, 
+                rem_str
+              )
+            )
+          )
         )
       );
     }

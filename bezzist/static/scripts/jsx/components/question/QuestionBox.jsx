@@ -70,6 +70,7 @@ function (React, $, _, store, QuestionTime, AnswerBox) {
     render: function() {
       return (
         <div>
+          <QuestionTime q={this.state.q} />
           <div className='question-box'>
             <h2 className='question-text'>
               {this._getQuestionText()}

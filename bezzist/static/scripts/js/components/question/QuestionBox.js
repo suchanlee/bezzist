@@ -70,6 +70,7 @@ function (React, $, _, store, QuestionTime, AnswerBox) {
     render: function() {
       return (
         React.createElement("div", null, 
+          React.createElement(QuestionTime, {q: this.state.q}), 
           React.createElement("div", {className: "question-box"}, 
             React.createElement("h2", {className: "question-text"}, 
               this._getQuestionText()
