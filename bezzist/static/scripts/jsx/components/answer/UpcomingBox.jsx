@@ -18,10 +18,10 @@ function (React, store, QuestionList, QuestionForm) {
       $.getJSON('/api/v1/questions/', {
         'active': 'false'
       }).done(function(qs) {
+        this._updateStore();
         this.setState({
           qs: qs['questions']
         });
-        this._updateStore();
       }.bind(this));
     },
 

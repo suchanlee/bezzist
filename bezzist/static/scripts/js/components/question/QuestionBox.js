@@ -17,12 +17,12 @@ function (React, $, _, store, QuestionTime, AnswerBox) {
       $.getJSON('/api/v1/questions/', {
         'active': 'true'
       }).done(function(qList) {
+        this._updateStore();
         if (this.isMounted()) {
           this.setState({
             q: qList['questions'][0]
           });
         }
-        this._updateStore();
         $.getJSON('/api/v1/questions/' + this.state.q.id + '/answers')
          .done(function(answers) {
           this.setState({
