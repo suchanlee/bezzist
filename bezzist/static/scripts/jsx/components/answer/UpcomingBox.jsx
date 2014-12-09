@@ -5,8 +5,8 @@
 'use strict';
 
 define(
-['react', 'components/question/QuestionList', 'components/question/QuestionForm'],
-function (React, QuestionList, QuestionForm) {
+['react', 'store', 'components/question/QuestionList', 'components/question/QuestionForm'],
+function (React, store, QuestionList, QuestionForm) {
   return React.createClass({
     getInitialState: function() {
       return {
@@ -21,6 +21,7 @@ function (React, QuestionList, QuestionForm) {
         this.setState({
           qs: qs['questions']
         });
+        this._updateStore();
       }.bind(this));
     },
 
@@ -30,14 +31,42 @@ function (React, QuestionList, QuestionForm) {
       });
     },
 
+    updateQuestion: function(q) {
+      var qs = this.state.qs;
+      for (var i=0; i<qs.length; i++) {
+        if (qs[i].id === q.id) {
+          qs[i] = q;
+          this.setState({
+            qs: qs
+          });
+          break;
+        }
+      }
+    },
+
+    expandRows: function() {
+      return this.refs.questionList.refs.list.expandRows();
+    },
+
+    _updateStore: function() {
+      if (!store.get('bz-questions')) {
+        store.set('bz-questions', {});
+      }
+    },
+
     render: function() {
       return (
         <div className='upcoming-container'>
           <div className='upcoming-header'>
             <h2 className='upcoming-header-text'>what would you like to ask?</h2>
           </div>
-          <QuestionList qs={this.state.qs} />
-          <QuestionForm addQuestion={this.addQuestion} />
+          <QuestionList
+            ref='questionList'
+            qs={this.state.qs}
+            updateQuestion={this.updateQuestion} />
+          <QuestionForm
+            expandRows={this.expandRows}
+            addQuestion={this.addQuestion} />
         </div>
       );
     }

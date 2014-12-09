@@ -8,46 +8,22 @@ define(
 ['react', 'components/answer/AnswerList', 'components/answer/AnswerForm'],
 function (React, AnswerList, AnswerForm) {
   return React.createClass({
-    getInitialState: function() {
-      return {
-        seeMore: {
-          hidden: true,
-          text: 'show more answers'
-        }
-      };
-    },
-
-    toggleHiddenAnswers: function() {
-      if (this.state.seeMore.hidden) {
-        this.setState({
-          seeMore: {
-            hidden: false,
-            text: 'hide answers'
-          }
-        });
-      } else {
-        this.setState({
-          seeMore: {
-            hidden: true,
-            text: 'show more answers'
-          }
-        });
-      }
+    // really hacky
+    expandRows: function() {
+      this.refs.answerList.refs.list.expandRows();
     },
 
     render: function() {
       return (
         React.createElement("div", null, 
           React.createElement(AnswerList, {
+            ref: "answerList", 
             answers: this.props.answers, 
-            toggleAnswers: this.toggleHiddenAnswers, 
-            updateAnswer: this.props.updateAnswer, 
-            seeMore: this.state.seeMore}), 
+            updateAnswer: this.props.updateAnswer}), 
           React.createElement(AnswerForm, {
             q: this.props.q, 
             addAnswer: this.props.addAnswer, 
-            seeMore: this.state.seeMore, 
-            toggleAnswers: this.toggleHiddenAnswers})
+            expandRows: this.expandRows})
         )
       );
     }

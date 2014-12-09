@@ -10,7 +10,7 @@ require.config({
     jquery: '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min',
     underscore: '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min',
     backbone: '//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min',
-    react: 'http://fb.me/react-0.12.1.min',
+    react: 'http://fb.me/react-with-addons-0.12.1.min',
     moment: '//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min',
     store: '//cdnjs.cloudflare.com/ajax/libs/store.js/1.3.7/store.min'
   },

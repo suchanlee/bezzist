@@ -5,21 +5,27 @@
 'use strict';
 
 define(
-['react', 'underscore', 'components/question/QuestionRow'],
-function (React, _, QuestionRow) {
+['react', 'underscore', 'components/base/List', 'components/question/QuestionRow'],
+function (React, _, List, QuestionRow) {
   return React.createClass({
-    render: function() {
-      var rows = _.map(this.props.qs, function(q, idx) {
-        if ((idx + 1) % 3 === 0) {
-          return React.createElement(QuestionRow, {q: q, last: true});
-        } else {
-          return React.createElement(QuestionRow, {q: q});
-        }
+    _getRows: function() {
+      var questions = _.sortBy(this.props.qs, function(q) {
+        return -1 * q.score;
       });
+      return _.map(questions, function(q, idx) {
+        return React.createElement(QuestionRow, {
+                q: q, 
+                idx: idx+1, 
+                updateQuestion: this.props.updateQuestion});
+      }.bind(this));
+    },
+
+    render: function() {
       return (
-        React.createElement("ul", {className: "question-list"}, 
-          rows
-        )
+        React.createElement(List, {
+          ref: "list", 
+          qList: true, 
+          rows: this._getRows()})
       );
     }
   });

@@ -5,19 +5,15 @@
 'use strict';
 
 define(
-['react', 'jquery', 'lib/Utils'],
-function (React, $, Utils) {
+['react', 'jquery', 'components/base/Row', 'lib/Utils'],
+function (React, $, Row) {
   return React.createClass({
-    getClassName: function() {
-      var c = 'question-row';
-      if (this.props.last) {
-        c += ' question-row-last';
-      }
-      return c;
+
+    getStoreKey: function() {
+      return 'bz-questions';
     },
 
-    incrementVote: function(evt) {
-      var img = $(evt.target);
+    updateQuestionVote: function() {
       $.ajax({
         url: '/api/v1/questions/' + this.props.q.id + '/',
         type: 'PUT',
@@ -27,23 +23,19 @@ function (React, $, Utils) {
         }),
         dataType: 'json'
       }).done(function(q) {
-        var overlay = img.parent();
-        img.hide();
-        overlay.html('<p>Thanks for liking!</p>')
-      })
-      return false;
+        this.props.updateQuestion(q);
+      }.bind(this));
     },
 
     render: function() {
       return (
-        <li className={this.getClassName()}>
-          <div className='question-row-overlay'>
-            <img
-              src={'/static/imgs/bezz_thumbsup.png'}
-              onClick={this.incrementVote} />
-          </div>
-          <p>{Utils.capitalize(this.props.q.question)}</p>
-        </li>
+        <Row
+          storeKey={this.getStoreKey()}
+          updateRowVote={this.updateQuestionVote}
+          id={this.props.q.id}
+          content={this.props.q.question}
+          score={this.props.q.score}
+          idx={this.props.idx} />
       );
     }
   });

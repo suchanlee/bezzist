@@ -5,85 +5,26 @@
 'use strict';
 
 define(
-['react' ,'jquery'],
-function (React, $) {
+['react', 'components/base/Form'],
+function (React, Form) {
   return React.createClass({
-    getInitialState: function() {
-      return {
-        value: '',
-        formError: ''
-      };
+    getFormError: function() {
+      return 'The answer field cannot be empty :(';
     },
 
-    handleSubmit: function() {
-      if (this.state.value.trim().length === 0) {
-        this._setFormError();
-        return false;
-      }
-      this._createAnswer();
-      return false;
-    },
-
-    handleChange: function(evt) {
-      var formError = this.state.formError;
-      if (evt.target.value.trim().length > 0) {
-        formError = '';
-      }
-      this.setState({
-        value: evt.target.value,
-        formError: formError
-      });
-    },
-
-    getClassName: function() {
-      if (this.props.hidden) {
-        return 'answer-form hidden';
-      } else {
-        return 'answer-form';
-      }
-    },
-
-    _createAnswer: function() {
-      var data = {qId: this.props.q.id, answer: this.state.value};
-      $.post('/api/v1/answers/', JSON.stringify(data))
-      .done(function(answer) {
-        this.props.addAnswer(answer);
-        this.setState({
-          value: ''
-        });
-        this._toggleAnswersAndAnimate();
-      }.bind(this));
-    },
-
-    _toggleAnswersAndAnimate: function() {
-      if (this.props.seeMore.hidden) {
-        this.props.toggleAnswers();
-      }
-      $('html, body').animate({
-        scrollTop: $('.question-see-more-button').offset().top - 200
-      }, 1000);
-    },
-
-    _setFormError: function() {
-      this.setState({
-        formError: 'The answer field cannot be empty :('
-      });
+    createAnswer: function(answer) {
+      var data = {qId: this.props.q.id, answer: answer};
+      return $.post('/api/v1/answers/', JSON.stringify(data));
     },
 
     render: function() {
       return (
-        <form className={this.getClassName()}>
-          <p>{this.state.formError}</p>
-          <div className='text-input-container answer-text-input-container'>
-            <input
-              type='text'
-              placeholder='your answer'
-              value={this.state.value}
-              className='text-input'
-              onChange={this.handleChange} />
-            <button className='form-button' onClick={this.handleSubmit}>Submit</button>
-          </div>
-        </form>
+        <Form
+          formError={this.getFormError()}
+          createRow={this.createAnswer}
+          addRow={this.props.addAnswer}
+          expandRows={this.props.expandRows}
+          answerForm={true} />
       );
     }
   });
