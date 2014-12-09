@@ -68,8 +68,8 @@ class QuestionResource(AbstractBezzistResource):
                 question = Question.objects.get(pk=pk)
             except Question.DoesNotExist:
                 question = Question()
-            if question.user and question.user != self.request.user:
-                raise Unauthorized()
+            # if question.user and question.user != self.request.user:
+            #     raise Unauthorized()
 
             # Unsanitized inputs
             # Will need to add support for answer additions
