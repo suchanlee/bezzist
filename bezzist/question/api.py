@@ -33,7 +33,7 @@ class QuestionResource(AbstractBezzistResource):
             }
         })
 
-    # GET /api/v1/questions
+    # GET /api/v1/questions/
     def list(self):
         query_filters = self.request.GET
         questions = Question.objects.all()
@@ -47,7 +47,7 @@ class QuestionResource(AbstractBezzistResource):
     def detail(self, pk):
         return get_object_or_404(Question, pk=pk)
 
-    # POST /api/posts/
+    # POST /api/questions/
     def create(self):
         # Unsanitized inputs
         if self.is_authenticated():
@@ -61,33 +61,28 @@ class QuestionResource(AbstractBezzistResource):
         else:
             raise Unauthorized()
 
-    # PUT /api/posts/<pk>
+    # PUT /api/questions/<pk>
     def update(self, pk):
-        if self.is_authenticated():
-            try:
-                question = Question.objects.get(pk=pk)
-            except Question.DoesNotExist:
-                question = Question()
-            # if question.user and question.user != self.request.user:
-            #     raise Unauthorized()
-
+        question = get_object_or_404(Question, pk=pk)
+        if self.is_owner(question):
             # Unsanitized inputs
             # Will need to add support for answer additions
-            question.question = self.data.get('question')
+            question.question = self.data.get('question').strip()
             question.score = self.data.get('score')
             question.save()
             return question
         else:
             raise Unauthorized()
 
+    # DELETE /api/questions/<pk>/
     def delete(self, pk):
         question = get_object_or_404(Question, pk=pk)
-        if (self.request.user.is_authenticated() and
-                question.user == self.request.user):
+        if self.is_owner(question):
             question.delete()
         else:
             raise Unauthorized()
 
+    # GET /api/questions/<pk>/answer
     @skip_prepare
     def answers(self, pk):
         question = get_object_or_404(Question, pk=pk)

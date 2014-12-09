@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404
 
-from restless.exceptions import Unauthorized
+from restless.exceptions import BadRequest, Unauthorized
 from restless.preparers import FieldsPreparer
 
 from base.api import AbstractBezzistResource
@@ -36,19 +36,24 @@ class AnswerResource(AbstractBezzistResource):
 
     # PUT /api/answers/<pk>
     def update(self, pk):
-        if self.is_authenticated():
-            try:
-                answer = Answer.objects.get(pk=pk)
-            except Answer.DoesNotExist:
-                answer = Question()
-            # if question.user and question.user != self.request.user:
-            #     raise Unauthorized()
-
+        answer = get_object_or_404(Answer, pk=pk)
+        if self.is_owner(answer):
             # Unsanitized inputs
             # Will need to add support for answer additions
-            answer.answer = self.data.get('answer')
+            answer.answer = self.data.get('answer').strip()
             answer.score = self.data.get('score')
             answer.save()
             return answer
         else:
             raise Unauthorized()
+
+    def delete(self, pk):
+        answer = get_object_or_404(Answer, pk=pk)
+        if self.is_owner(answer):
+            try:
+                answer.delete()
+            except:
+                raise BadRequest(msg='Failed to delete answer.')
+        else:
+            raise Unauthorized()
+
