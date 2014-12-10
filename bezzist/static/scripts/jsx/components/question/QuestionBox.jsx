@@ -71,8 +71,8 @@ function (React, $, _, store, QuestionTime, AnswerBox) {
       return (
         <div>
           <QuestionTime q={this.state.q} />
-          <div className='question-box'>
-            <h2 className='question-text'>
+          <div className='list-header primary-list-header'>
+            <h2>
               {this._getQuestionText()}
             </h2>
           </div>

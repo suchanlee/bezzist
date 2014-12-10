@@ -25,7 +25,7 @@ function (React, store, Utils) {
 
     render: function() {
       return (
-        React.createElement("li", {className: "row-container"}, 
+        React.createElement("li", {className: "row"}, 
           React.createElement("div", {className: "row-content"}, 
             React.createElement("span", {className: "row-idx"}, this.props.idx), 
             React.createElement("span", {className: "row-text"}, 

@@ -57,8 +57,8 @@ function (React, store, QuestionList, QuestionForm) {
     render: function() {
       return (
         <div className='upcoming-container'>
-          <div className='upcoming-header'>
-            <h2 className='upcoming-header-text'>what would you like to ask?</h2>
+          <div className='list-header secondary-list-header'>
+            <h2>what would you like to ask?</h2>
           </div>
           <QuestionList
             ref='questionList'

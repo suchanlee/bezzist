@@ -43,7 +43,8 @@ function (React, $) {
       promise.done(function(row) {
         this.props.addRow(row);
         this.setState({
-          value: ''
+          value: '',
+          numChars: 0,
         });
         this._expandAndAnimate();
       }.bind(this));
@@ -54,9 +55,9 @@ function (React, $) {
       var button;
       this.props.expandRows();
       if (this.props.formError.indexOf('question') > 0) {
-        button = $('.question-see-more-button')[1];
+        button = $('.expander-button')[1];
       } else {
-        button = $('.question-see-more-button')[0];
+        button = $('.expander-button')[0];
       }
       $('html, body').animate({
         scrollTop: $(button).offset().top - 200

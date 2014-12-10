@@ -50,16 +50,17 @@ function (React, _) {
       var cx, showMoreClassname, toggleRowsClassname;
       cx = React.addons.classSet;
       showMoreClassname = cx({
-        'question-see-more-container': true,
+        'expander-container': true,
         'hidden': this.props.rows.length < 6
       });
       toggleRowsClassname = cx({
-        'question-answer-list': true,
+        'list': true,
         'hidden': !this.state.expanded
       });
+      // TODO (suchanl): remove the classname hack below
       return (
         <div className={this.props.qList ? 'question-list' : ''}>
-          <ul className='question-answer-list'>
+          <ul className='list'>
             {this.props.rows.slice(0, 5)}
           </ul>
           <ul className={toggleRowsClassname}>
@@ -67,7 +68,7 @@ function (React, _) {
           </ul>
           <div className={showMoreClassname}>
             <p
-              className='question-see-more-button'
+              className='expander-button'
               onClick={this.seeMoreclickHandler}>
               {this._expandButtonText()}
             </p>

@@ -1,26 +1,31 @@
 @import '../LESSHat/lesshat.less';
 @import '../var/var.less';
 
-.question-box {
+.list-header {
   text-align: center;
   padding: 18px 0px;
   margin: 0 auto;
-  margin-top: 7px;
+  margin-top: 10px;
   width: 100%;
   max-width: @pageMaxWidth;
-  background-color: @red;
   color: white;
+  h2 {
+    max-width: 350px;
+    margin: 0 auto;
+    font-size: 30px;
+    line-height: 33px;
+  }
 }
 
-.question-text {
-  max-width: 350px;
-  margin: 0 auto;
-  text-transform: lowercase;
-  font-size: 35px;
-  line-height: 42px;
+.primary-list-header {
+  background-color: @red;
 }
 
-.question-answer-list {
+.secondary-list-header {
+  background-color: @green;
+}
+
+.list {
   width: 100%;
   max-width: @pageMaxWidth;
   text-align: left;
@@ -30,11 +35,11 @@
   padding-left: 0px;
 }
 
-.question-see-more-container {
+.expander-container {
   text-align: center;
 }
 
-.question-see-more-button {
+.expander-button {
   display: inline-block;
   font-size: 16px;
   cursor: pointer;
@@ -45,7 +50,7 @@
   }
 }
 
-.row-container {
+.row {
   margin: 14px 0px;
   background-color: white;
   padding: 7px 0px;
@@ -193,7 +198,54 @@
   }
 }
 
+// responsiveness
+@media screen and (max-width: 480px) {
+  .list-header {
+    padding: 12px 0px;
+    line-height: 33px;
+    font-size: 30px;
+  }
 
+  .list {
+    font-size: 25px;
+  }
+
+  .row {
+    margin: 8px 0px;
+    line-height: 30px;
+  }
+
+  .row-idx {
+    margin-left: 13px;
+    width: 30px;
+  }
+
+  .row-text {
+    padding-left: 10px;
+    max-width: calc(~'100% - 115px');
+  }
+
+  .form-container {
+    margin-top: 10px;
+  }
+
+  .text-input {
+    font-size: 25px;
+  }
+
+  .vote-box {
+    width: 50px;
+    line-height: 15px;
+  }
+
+  .vote-icon {
+    width: 25px;
+  }
+
+  .vote-score {
+    font-size: 12px;
+  }
+}
 
 
 

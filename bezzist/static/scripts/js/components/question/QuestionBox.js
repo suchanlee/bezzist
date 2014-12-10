@@ -71,8 +71,8 @@ function (React, $, _, store, QuestionTime, AnswerBox) {
       return (
         React.createElement("div", null, 
           React.createElement(QuestionTime, {q: this.state.q}), 
-          React.createElement("div", {className: "question-box"}, 
-            React.createElement("h2", {className: "question-text"}, 
+          React.createElement("div", {className: "list-header primary-list-header"}, 
+            React.createElement("h2", null, 
               this._getQuestionText()
             )
           ), 

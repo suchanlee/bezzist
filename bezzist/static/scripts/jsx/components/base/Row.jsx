@@ -25,7 +25,7 @@ function (React, store, Utils) {
 
     render: function() {
       return (
-        <li className='row-container'>
+        <li className='row'>
           <div className='row-content'>
             <span className='row-idx'>{this.props.idx}</span>
             <span className='row-text'>
