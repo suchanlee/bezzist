@@ -4,6 +4,7 @@ from .models import Question
 
 
 class QuestionAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('question', 'score', 'flags', 'flagged', 'created')
+    ordering = ['-created']
 
 admin.site.register(Question, QuestionAdmin)
