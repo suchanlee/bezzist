@@ -23,10 +23,20 @@ class AbstractUserCreatedModel(AbstractTimeStampedModel):
     and must have a user.
     '''
 
+    deleted = models.BooleanField(default=False)
+    flags = models.IntegerField(default=0)
     user = models.ForeignKey(User, null=True)  # while all posting is allowed
 
     class Meta:
         abstract = True
+
+    def increment_flags(self):
+        self.flags += 1
+        self.save()
+
+    def soft_delete(self):
+        self.deleted = True
+        self.save()
 
     def save(self, *args, **kwargs):
         '''
