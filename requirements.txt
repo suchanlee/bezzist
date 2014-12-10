@@ -1,4 +1,5 @@
 Django==1.7.1
+django-mobile==0.4.0
 gunicorn==19.1.1
 psycopg2==2.5.4
 restless==2.0.1

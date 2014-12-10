@@ -16,6 +16,9 @@
     <!-- Styles -->
     <link rel='stylesheet' type='text/css' href='{% static "styles/css/base/base.css" %}'>
     <link rel='stylesheet' type='text/css' href='{% static "styles/css/question/question.css" %}'>
+    {% if flavour == 'full' %}
+    <link rel="stylesheet" type='text/css' href='{% static "styles/css/question/desktop.css" %}'>
+    {% endif %}
     <!-- End Styles -->
 
     <!-- Libraries -->
