@@ -22,7 +22,7 @@ define(['react', 'moment'], function (React, moment) {
       return (
         React.createElement("header", null, 
           React.createElement("div", {className: "logo-container"}, 
-            React.createElement("span", null, "Bezzist")
+            React.createElement("span", null, "BEZZIST")
           ), 
           React.createElement("div", {className: "days-remaining-container"}, 
             React.createElement("div", {className: "days-remaining"}, 

@@ -25,20 +25,22 @@ function (React, store, Utils) {
 
     render: function() {
       return (
-        <li className='answer-row'>
-          <div className='answer-row-content'>
-            <span className='answer-idx'>{this.props.idx}</span>
-            <span className='answer-text'>
+        <li className='row-container'>
+          <div className='row-content'>
+            <span className='row-idx'>{this.props.idx}</span>
+            <span className='row-text'>
               {Utils.capitalize(this.props.content)}
             </span>
           </div>
           <div
             onClick={this.handleVoteClick}
-            className={this._hasVoted() ? 'answer-vote-box voted' : 'answer-vote-box'}>
-            <img
-              className='answer-vote-icon'
-              src={'/static/imgs/bezz_thumbsup.png'} />
-            <p className='answer-score'>{this.props.score}</p>
+            className={this._hasVoted() ? 'vote-box voted' : 'vote-box'}>
+            <div className='vote-box-inner'>
+              <img
+                className='vote-icon'
+                src={'/static/imgs/bezz_thumbsup.png'} />
+              <p className='vote-score'>{this.props.score}</p>
+            </div>
           </div>
         </li>
       );

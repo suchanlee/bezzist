@@ -25,20 +25,22 @@ function (React, store, Utils) {
 
     render: function() {
       return (
-        React.createElement("li", {className: "answer-row"}, 
-          React.createElement("div", {className: "answer-row-content"}, 
-            React.createElement("span", {className: "answer-idx"}, this.props.idx), 
-            React.createElement("span", {className: "answer-text"}, 
+        React.createElement("li", {className: "row-container"}, 
+          React.createElement("div", {className: "row-content"}, 
+            React.createElement("span", {className: "row-idx"}, this.props.idx), 
+            React.createElement("span", {className: "row-text"}, 
               Utils.capitalize(this.props.content)
             )
           ), 
           React.createElement("div", {
             onClick: this.handleVoteClick, 
-            className: this._hasVoted() ? 'answer-vote-box voted' : 'answer-vote-box'}, 
-            React.createElement("img", {
-              className: "answer-vote-icon", 
-              src: '/static/imgs/bezz_thumbsup.png'}), 
-            React.createElement("p", {className: "answer-score"}, this.props.score)
+            className: this._hasVoted() ? 'vote-box voted' : 'vote-box'}, 
+            React.createElement("div", {className: "vote-box-inner"}, 
+              React.createElement("img", {
+                className: "vote-icon", 
+                src: '/static/imgs/bezz_thumbsup.png'}), 
+              React.createElement("p", {className: "vote-score"}, this.props.score)
+            )
           )
         )
       );

@@ -22,7 +22,7 @@ define(['react', 'moment'], function (React, moment) {
       return (
         <header>
           <div className='logo-container'>
-            <span>Bezzist</span>
+            <span>BEZZIST</span>
           </div>
           <div className='days-remaining-container'>
             <div className='days-remaining'>
