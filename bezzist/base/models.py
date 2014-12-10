@@ -25,6 +25,7 @@ class AbstractUserCreatedModel(AbstractTimeStampedModel):
 
     deleted = models.BooleanField(default=False)
     flags = models.IntegerField(default=0)
+    flagged = models.BooleanField(default=False)
     user = models.ForeignKey(User, null=True)  # while all posting is allowed
 
     class Meta:
