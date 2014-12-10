@@ -5,7 +5,7 @@ from base.models import AbstractUserScoredModel, MappableModel
 
 class Answer(AbstractUserScoredModel, MappableModel):
 
-    answer = models.CharField(max_length=500)
+    answer = models.CharField(max_length=300)
 
     class Meta:
         ordering = ['-score', 'created']

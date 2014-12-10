@@ -7,7 +7,7 @@ from answer.models import Answer
 
 class Question(AbstractUserScoredModel):
 
-    question = models.CharField(max_length=200)
+    question = models.CharField(max_length=300)
     answers = models.ManyToManyField(Answer, blank=True)
 
     # Meta
