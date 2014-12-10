@@ -124,10 +124,29 @@
 }
 
 .answer-text-input-container {
-  max-width: @pageMaxWidth;
   background-color: @red;
   .text-input {
       background-color: @red;
+  }
+}
+
+.form-container {
+  max-width: @pageMaxWidth;
+  width: 100%;
+  margin: 0 auto;
+  margin-top: 15px;
+  position: relative;
+}
+
+.form-info-box {
+  position: absolute;
+  left: 0px;
+  top: -18px;
+  background-color: white;
+  p {
+    margin: 0px;
+    padding: 0px 5px;
+    font-size: 12px
   }
 }
 
@@ -168,7 +187,6 @@
 }
 
 .question-text-input-container {
-  max-width: @pageMaxWidth;
   background-color: @green;
   .text-input {
       background-color: @green;

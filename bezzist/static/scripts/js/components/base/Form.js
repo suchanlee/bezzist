@@ -11,13 +11,14 @@ function (React, $) {
     getInitialState: function() {
       return {
         value: '',
-        formError: ''
+        formError: '',
+        numChars: 0
       };
     },
 
     handleSubmit: function() {
       if (this.state.value.trim().length === 0) {
-        this._setFormError();
+        this._setFormErrorOnSubmit();
         return false;
       }
       this._createRow();
@@ -25,11 +26,16 @@ function (React, $) {
     },
 
     handleChange: function(evt) {
-      var formError = evt.target.value.trim().length > 0 ? '' : this.state.formError;
-      this.setState({
-        value: evt.target.value,
-        formError: formError
-      });
+      this._updateStateOnChange(evt.target.value);
+    },
+
+    getFormInfo: function() {
+      if (this.state.formError.length > 0) {
+        return this.state.formError;
+      }
+      if (this.state.numChars > 0) {
+        return this.state.numChars + '/300';
+      }
     },
 
     _createRow: function() {
@@ -57,7 +63,16 @@ function (React, $) {
       }, 1000);
     },
 
-    _setFormError: function() {
+    _updateStateOnChange: function(val) {
+      var formError = val.length > 0 ? '' : this.state.formError;
+      this.setState({
+        value: val,
+        numChars: val.length,
+        formError: formError
+      });
+    },
+
+    _setFormErrorOnSubmit: function() {
       this.setState({
         formError: this.props.formError
       });
@@ -72,14 +87,17 @@ function (React, $) {
         'question-text-input-container': this.props.qForm
       });
       return (
-        React.createElement("form", {className: "answer-form"}, 
-          React.createElement("p", null, this.state.formError), 
+        React.createElement("form", {className: "form-container"}, 
+          React.createElement("div", {className: "form-info-box"}, 
+            React.createElement("p", null, this.getFormInfo())
+          ), 
           React.createElement("div", {className: inputContainerClass}, 
             React.createElement("input", {
               type: "text", 
               placeholder: "your answer", 
               value: this.state.value, 
               className: "text-input", 
+              maxLength: "300", 
               onChange: this.handleChange}), 
             React.createElement("button", {className: "form-button", onClick: this.handleSubmit}, "Submit")
           )
