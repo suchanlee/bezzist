@@ -43,10 +43,16 @@ function (React, $) {
       promise.done(function(row) {
         this.props.addRow(row);
         this.setState({
+          formError: '',
           value: '',
           numChars: 0,
         });
         this._expandAndAnimate();
+      }.bind(this));
+      promise.fail(function() {
+        this.setState({
+          formError: 'Failed to submit. Please try again.'
+        });
       }.bind(this));
     },
 
@@ -95,7 +101,7 @@ function (React, $) {
           <div className={inputContainerClass}>
             <input
               type='text'
-              placeholder='your answer'
+              placeholder={this.props.placeholder}
               value={this.state.value}
               className='text-input'
               maxLength='300'

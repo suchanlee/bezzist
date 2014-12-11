@@ -24,6 +24,7 @@ function (React, Form) {
           createRow: this.createQuestion, 
           addRow: this.props.addQuestion, 
           expandRows: this.props.expandRows, 
+          placeholder: "add new question", 
           qForm: true})
       );
     }

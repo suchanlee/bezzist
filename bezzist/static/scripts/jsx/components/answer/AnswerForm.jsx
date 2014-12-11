@@ -24,6 +24,7 @@ function (React, Form) {
           createRow={this.createAnswer}
           addRow={this.props.addAnswer}
           expandRows={this.props.expandRows}
+          placeholder='add new answer'
           answerForm={true} />
       );
     }
