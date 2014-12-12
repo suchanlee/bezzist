@@ -94,7 +94,7 @@ function (React, $) {
         'question-text-input-container': this.props.qForm
       });
       return (
-        React.createElement("form", {className: "form-container"}, 
+        React.createElement("form", {className: "form-container", onSubmit: this.handleSubmit}, 
           React.createElement("div", {className: "form-info-box"}, 
             React.createElement("p", null, this.getFormInfo())
           ), 

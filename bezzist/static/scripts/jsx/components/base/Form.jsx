@@ -94,7 +94,7 @@ function (React, $) {
         'question-text-input-container': this.props.qForm
       });
       return (
-        <form className='form-container'>
+        <form className='form-container' onSubmit={this.handleSubmit}>
           <div className='form-info-box'>
             <p>{this.getFormInfo()}</p>
           </div>
