@@ -2,8 +2,8 @@
 'use strict';
 
 define(
-['react', 'backbone', 'views/LandingView'],
-function(React, Backbone, LandingView) {
+['react', 'director', 'views/LandingView'],
+function(React, director, LandingView) {
 
   var curView = null;
   var rootNode = document.getElementById('app');
@@ -15,20 +15,15 @@ function(React, Backbone, LandingView) {
     React.renderComponent(curView, rootNode);
   };
 
-  return Backbone.Router.extend({
+  var router = Router({
 
-    initialize: function() {
-      Backbone.history.start();
-    },
-
-    routes: {
-      '': 'landing',
-    },
-
-    'landing': function() {
+    '/': function() {
       setView(new LandingView());
     }
 
   });
-
+  router.configure({
+    html5history: true
+  });
+  return router;
 });
