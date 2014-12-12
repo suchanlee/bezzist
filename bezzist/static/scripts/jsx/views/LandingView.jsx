@@ -19,7 +19,6 @@ function (React, QuestionBox, UpcomingBox, Footer, store) {
     },
 
     notifyLoaded: function() {
-      $('.loader-centering-container').hide();
       this.setState({
         loaded: true
       });
@@ -33,9 +32,6 @@ function (React, QuestionBox, UpcomingBox, Footer, store) {
       });
       return (
         <div className='landing'>
-          <div className='loader-centering-container'>
-            <div className='loader'>Loading...</div>
-          </div>
           <div className={content}>
             <QuestionBox notifyLoaded={this.notifyLoaded} />
             <UpcomingBox />

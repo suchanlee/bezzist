@@ -19,7 +19,6 @@ function (React, QuestionBox, UpcomingBox, Footer, store) {
     },
 
     notifyLoaded: function() {
-      $('.loader-centering-container').hide();
       this.setState({
         loaded: true
       });
@@ -33,9 +32,6 @@ function (React, QuestionBox, UpcomingBox, Footer, store) {
       });
       return (
         React.createElement("div", {className: "landing"}, 
-          React.createElement("div", {className: "loader-centering-container"}, 
-            React.createElement("div", {className: "loader"}, "Loading...")
-          ), 
           React.createElement("div", {className: content}, 
             React.createElement(QuestionBox, {notifyLoaded: this.notifyLoaded}), 
             React.createElement(UpcomingBox, null), 
