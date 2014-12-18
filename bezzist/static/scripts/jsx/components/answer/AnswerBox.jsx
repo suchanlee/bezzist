@@ -13,6 +13,17 @@ function (React, AnswerList, AnswerForm) {
       this.refs.answerList.refs.list.expandRows();
     },
 
+    getForm: function() {
+      if (this.props.q && !this.props.q.finished) {
+        return (<AnswerForm
+            q={this.props.q}
+            addAnswer={this.props.addAnswer}
+            expandRows={this.expandRows} />);
+      } else {
+        return;
+      }
+    },
+
     render: function() {
       return (
         <div>
@@ -21,10 +32,7 @@ function (React, AnswerList, AnswerForm) {
             q={this.props.q}
             answers={this.props.answers}
             updateAnswer={this.props.updateAnswer} />
-          <AnswerForm
-            q={this.props.q}
-            addAnswer={this.props.addAnswer}
-            expandRows={this.expandRows} />
+          {this.getForm()}
         </div>
       );
     }
