@@ -33,8 +33,13 @@ function (React, QuestionBox, UpcomingBox, Footer, store) {
       return (
         React.createElement("div", {className: "landing"}, 
           React.createElement("div", {className: content}, 
-            React.createElement(QuestionBox, {notifyLoaded: this.notifyLoaded}), 
+            React.createElement("header", null, 
+              React.createElement("div", {className: "logo-container"}, 
+                React.createElement("span", null, "BEZZIST")
+              )
+            ), 
             React.createElement(UpcomingBox, null), 
+            React.createElement(QuestionBox, {notifyLoaded: this.notifyLoaded}), 
             React.createElement(Footer, null)
           )
         )

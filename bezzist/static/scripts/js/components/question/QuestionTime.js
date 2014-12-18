@@ -31,15 +31,10 @@ define(['react', 'moment'], function (React, moment) {
 
     render: function() {
       return (
-        React.createElement("header", null, 
-          React.createElement("div", {className: "logo-container"}, 
-            React.createElement("span", null, "BEZZIST")
-          ), 
-          React.createElement("div", {className: "days-remaining-container"}, 
-            React.createElement("div", {className: "days-remaining"}, 
-              React.createElement("span", {className: "question-days-remaining"}, 
-                this.getDates()
-              )
+        React.createElement("div", {className: "days-remaining-container"}, 
+          React.createElement("div", {className: "days-remaining"}, 
+            React.createElement("span", {className: "question-days-remaining"}, 
+              this.getDates()
             )
           )
         )

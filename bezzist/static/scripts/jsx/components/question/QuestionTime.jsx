@@ -31,18 +31,13 @@ define(['react', 'moment'], function (React, moment) {
 
     render: function() {
       return (
-        <header>
-          <div className='logo-container'>
-            <span>BEZZIST</span>
+        <div className='days-remaining-container'>
+          <div className='days-remaining'>
+            <span className='question-days-remaining'>
+              {this.getDates()}
+            </span>
           </div>
-          <div className='days-remaining-container'>
-            <div className='days-remaining'>
-              <span className='question-days-remaining'>
-                {this.getDates()}
-              </span>
-            </div>
-          </div>
-        </header>
+        </div>
       );
     }
   });

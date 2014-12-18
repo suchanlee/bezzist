@@ -33,8 +33,13 @@ function (React, QuestionBox, UpcomingBox, Footer, store) {
       return (
         <div className='landing'>
           <div className={content}>
-            <QuestionBox notifyLoaded={this.notifyLoaded} />
+            <header>
+              <div className='logo-container'>
+                <span>BEZZIST</span>
+              </div>
+            </header>
             <UpcomingBox />
+            <QuestionBox notifyLoaded={this.notifyLoaded} />
             <Footer />
           </div>
         </div>

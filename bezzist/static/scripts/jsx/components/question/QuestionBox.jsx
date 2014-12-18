@@ -72,13 +72,13 @@ function (React, $, _, store, QuestionTime, AnswerBox) {
 
     render: function() {
       return (
-        <div>
-          <QuestionTime q={this.state.q} />
+        <div className="question-box">
           <div className='list-header primary-list-header'>
             <h2>
               {this._getQuestionText()}
             </h2>
           </div>
+          <QuestionTime q={this.state.q} />
           <AnswerBox
             q={this.state.q}
             answers={this.state.answers}

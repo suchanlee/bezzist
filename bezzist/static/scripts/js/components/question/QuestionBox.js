@@ -72,13 +72,13 @@ function (React, $, _, store, QuestionTime, AnswerBox) {
 
     render: function() {
       return (
-        React.createElement("div", null, 
-          React.createElement(QuestionTime, {q: this.state.q}), 
+        React.createElement("div", {className: "question-box"}, 
           React.createElement("div", {className: "list-header primary-list-header"}, 
             React.createElement("h2", null, 
               this._getQuestionText()
             )
           ), 
+          React.createElement(QuestionTime, {q: this.state.q}), 
           React.createElement(AnswerBox, {
             q: this.state.q, 
             answers: this.state.answers, 

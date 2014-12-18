@@ -58,7 +58,7 @@ function (React, store, QuestionList, QuestionForm) {
       return (
         React.createElement("div", {className: "upcoming-container"}, 
           React.createElement("div", {className: "list-header secondary-list-header"}, 
-            React.createElement("h2", null, "what would you like to ask?")
+            React.createElement("h2", null, "what would you like to ask the cornell community?")
           ), 
           React.createElement(QuestionList, {
             ref: "questionList", 
