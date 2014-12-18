@@ -14,6 +14,7 @@ function (React, store, Row) {
         url: '/api/v1/answers/' + this.props.answer.id + '/',
         type: 'PUT',
         data: JSON.stringify({
+          'qId': this.props.qId,
           'answer': this.props.answer.answer,
           'score': this.props.answer.score + 1
         }),
@@ -24,8 +25,8 @@ function (React, store, Row) {
     },
 
     hasVoted: function() {
-      if (store.get(this.getStoreKey()).hasOwnProperty(this.props.answer.id) &&
-        this.props.isActive) {
+      if (store.get(this.getStoreKey()).hasOwnProperty(this.props.answer.id) ||
+        this.props.isFinished) {
         return true;
       } else {
         return false;

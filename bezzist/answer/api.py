@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404
 
-from restless.exceptions import BadRequest, Unauthorized
+from restless.exceptions import BadRequest, HttpError, Unauthorized
 from restless.preparers import FieldsPreparer
 
 from base.api import AbstractBezzistResource
@@ -38,11 +38,13 @@ class AnswerResource(AbstractBezzistResource):
     def update(self, pk):
         answer = get_object_or_404(Answer, pk=pk)
         if self.is_owner(answer):
-            # Unsanitized inputs
-            # Will need to add support for answer additions
-            answer.answer = self.data.get('answer').strip()
-            answer.score = self.data.get('score')
-            answer.save()
+            question = get_object_or_404(Question, id=self.data.get('qId'))
+            if not question.finished:
+                answer.answer = self.data.get('answer').strip()
+                answer.score = self.data.get('score')
+                answer.save()
+            else:
+                raise HttpError(msg='This answer can no longer be modified because the question is now closed.')
             return answer
         else:
             raise Unauthorized()

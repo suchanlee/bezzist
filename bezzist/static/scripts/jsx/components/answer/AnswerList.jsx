@@ -13,7 +13,8 @@ function (React, _, List, AnswerRow) {
         return <AnswerRow
                 answer={answer}
                 idx={idx+1}
-                isActive={this.props.q.active}
+                qId={this.props.q.id}
+                isFinished={this.props.q.finished}
                 updateAnswer={this.props.updateAnswer} />;
       }.bind(this));
     },

@@ -12,9 +12,10 @@ class Question(AbstractUserScoredModel):
 
     # Meta
     active = models.BooleanField(default=False)
+    finished = models.BooleanField(default=False)
 
     class Meta:
         ordering = ['-score', 'created']
 
-    def __str__(self):
+    def __unicode__(self):
         return '{} by {}'.format(self.question, self.user.get_full_name())

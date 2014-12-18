@@ -10,7 +10,7 @@ class Answer(AbstractUserScoredModel, MappableModel):
     class Meta:
         ordering = ['-score', 'created']
 
-    def __str__(self):
+    def __unicode__(self):
         return self.answer
 
     def objectify(self):

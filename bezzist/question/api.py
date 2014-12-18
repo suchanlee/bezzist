@@ -19,6 +19,7 @@ class QuestionResource(AbstractBezzistResource):
         'question': 'question',
         'score': 'score',
         'active': 'active',
+        'finished': 'finished',
         'posted_by': 'user.username',
         'created': 'created',
         'last_modified': 'modified'
