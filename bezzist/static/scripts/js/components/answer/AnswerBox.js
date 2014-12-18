@@ -18,6 +18,7 @@ function (React, AnswerList, AnswerForm) {
         React.createElement("div", null, 
           React.createElement(AnswerList, {
             ref: "answerList", 
+            q: this.props.q, 
             answers: this.props.answers, 
             updateAnswer: this.props.updateAnswer}), 
           React.createElement(AnswerForm, {

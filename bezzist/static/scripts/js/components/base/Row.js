@@ -6,15 +6,11 @@ define(
 function (React, store, Utils) {
   return React.createClass({
     handleVoteClick: function() {
-      if (!this._hasVoted()) {
+      if (!this.props.hasVoted()) {
         this.props.updateRowVote();
         this._storeVote();
       }
       return false;
-    },
-
-    _hasVoted: function() {
-      return store.get(this.props.storeKey).hasOwnProperty(this.props.id);
     },
 
     _storeVote: function() {
@@ -34,7 +30,7 @@ function (React, store, Utils) {
           ), 
           React.createElement("div", {
             onClick: this.handleVoteClick, 
-            className: this._hasVoted() ? 'vote-box voted' : 'vote-box'}, 
+            className: this.props.hasVoted() ? 'vote-box voted' : 'vote-box'}, 
             React.createElement("div", {className: "vote-box-inner"}, 
               React.createElement("img", {
                 className: "vote-icon", 

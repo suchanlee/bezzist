@@ -23,6 +23,15 @@ function (React, store, Row) {
       }.bind(this));
     },
 
+    hasVoted: function() {
+      if (store.get(this.getStoreKey()).hasOwnProperty(this.props.answer.id) &&
+        this.props.isActive) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+
     render: function() {
       return (
         <Row
@@ -31,7 +40,8 @@ function (React, store, Row) {
           id={this.props.answer.id}
           content={this.props.answer.answer}
           score={this.props.answer.score}
-          idx={this.props.idx} />
+          idx={this.props.idx}
+          hasVoted={this.hasVoted} />
       );
     }
   });

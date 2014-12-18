@@ -18,6 +18,7 @@ function (React, AnswerList, AnswerForm) {
         <div>
           <AnswerList
             ref='answerList'
+            q={this.props.q}
             answers={this.props.answers}
             updateAnswer={this.props.updateAnswer} />
           <AnswerForm

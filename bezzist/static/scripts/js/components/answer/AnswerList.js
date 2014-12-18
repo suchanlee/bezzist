@@ -13,6 +13,7 @@ function (React, _, List, AnswerRow) {
         return React.createElement(AnswerRow, {
                 answer: answer, 
                 idx: idx+1, 
+                isActive: this.props.q.active, 
                 updateAnswer: this.props.updateAnswer});
       }.bind(this));
     },

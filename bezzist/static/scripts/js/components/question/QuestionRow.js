@@ -5,8 +5,8 @@
 'use strict';
 
 define(
-['react', 'jquery', 'components/base/Row', 'lib/Utils'],
-function (React, $, Row) {
+['react', 'jquery', 'store', 'components/base/Row', 'lib/Utils'],
+function (React, $, store, Row) {
   return React.createClass({
 
     getStoreKey: function() {
@@ -27,6 +27,14 @@ function (React, $, Row) {
       }.bind(this));
     },
 
+    hasVoted: function() {
+      if (store.get(this.getStoreKey()).hasOwnProperty(this.props.q.id)) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+
     render: function() {
       return (
         React.createElement(Row, {
@@ -35,7 +43,8 @@ function (React, $, Row) {
           id: this.props.q.id, 
           content: this.props.q.question, 
           score: this.props.q.score, 
-          idx: this.props.idx})
+          idx: this.props.idx, 
+          hasVoted: this.hasVoted})
       );
     }
   });
