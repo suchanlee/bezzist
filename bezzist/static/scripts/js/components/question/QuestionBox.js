@@ -25,7 +25,6 @@ function (React, $, _, store, QuestionTime, AnswerBox) {
         this._updateStore();
         $.getJSON('/api/v1/questions/' + this.state.q.id + '/answers')
          .done(function(answers) {
-          console.log(answers);
           this.setState({
             answers: answers['answers']
           });
