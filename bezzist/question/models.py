@@ -12,7 +12,6 @@ class Question(AbstractUserScoredModel):
 
     # Meta
     active = models.BooleanField(default=False)
-    finished = models.BooleanField(default=False)  # For 1 question/week
 
     class Meta:
         ordering = ['-score', 'created']
