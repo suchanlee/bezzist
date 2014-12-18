@@ -57,6 +57,8 @@ function (React, $, _, store, QuestionTime, AnswerBox) {
       if (!store.get('bz-current-question') ||
           store.get('bz-current-question') !== this.state.q.id) {
         store.set('bz-current-question', this.state.q.id);
+      }
+      if (!store.get('bz-answers')) {
         store.set('bz-answers', {});
       }
     },
