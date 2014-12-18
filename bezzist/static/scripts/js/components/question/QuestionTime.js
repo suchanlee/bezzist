@@ -15,20 +15,21 @@ define(['react', 'moment'], function (React, moment) {
       }
     },
 
-    render: function() {
-      var rem_str, dates;
-
+    getDates: function() {
+      var dates;
       if (this.props.q) {
         dates = this._getRemainingDays();
         if (dates > 0) {
-          rem_str = dates + ' days left for this question';
+          return dates + ' days left for this question';
         } else {
-          rem_str = 'This question is now closed.'
+          return 'This question is now closed.';
         }
       } else {
-        rem_str = '';
+        return '';
       }
+    },
 
+    render: function() {
       return (
         React.createElement("header", null, 
           React.createElement("div", {className: "logo-container"}, 
@@ -37,7 +38,7 @@ define(['react', 'moment'], function (React, moment) {
           React.createElement("div", {className: "days-remaining-container"}, 
             React.createElement("div", {className: "days-remaining"}, 
               React.createElement("span", {className: "question-days-remaining"}, 
-                rem_str
+                this.getDates()
               )
             )
           )
