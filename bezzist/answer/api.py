@@ -28,10 +28,13 @@ class AnswerResource(AbstractBezzistResource):
 
     def create(self):
         question = get_object_or_404(Question, id=self.data.get('qId'))
-        answer = Answer.objects.create(
-            answer=self.data.get('answer')
-        )
-        question.answers.add(answer)
+        if not question.finished:
+            answer = Answer.objects.create(
+                answer=self.data.get('answer')
+            )
+            question.answers.add(answer)
+        else:
+            raise HttpError(msg='Answers cannot be added to a closed question.')
         return answer
 
     # PUT /api/answers/<pk>

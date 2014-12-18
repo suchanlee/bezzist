@@ -61,9 +61,9 @@ function (React, $) {
       var button;
       this.props.expandRows();
       if (this.props.formError.indexOf('question') > 0) {
-        button = $('.expander-button')[1];
-      } else {
         button = $('.expander-button')[0];
+      } else {
+        button = $('.expander-button')[1];
       }
       $('html, body').animate({
         scrollTop: $(button).offset().top - 200
