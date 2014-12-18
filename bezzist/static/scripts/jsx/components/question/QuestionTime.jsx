@@ -5,9 +5,14 @@ define(['react', 'moment'], function (React, moment) {
   return React.createClass({
 
     _getRemainingDays: function() {
-      var expr_dt;
+      var expr_dt, days;
       expr_dt = moment(this.props.q.created).add(7, 'days');
-      return moment.duration(expr_dt.diff(moment())).days() + 1;
+      days = moment.duration(expr_dt.diff(moment())).days() + 1;
+      if (days >= 0) {
+        return days;
+      } else {
+        return 0;
+      }
     },
 
     render: function() {
