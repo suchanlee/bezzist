@@ -21,6 +21,7 @@ INSTALLED_APPS = (
     'django_mobile',
     'question',
     'answer',
+    'alert',
     'mail'
 )
 
