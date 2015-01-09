@@ -10,10 +10,11 @@ class AlertModelForm(forms.ModelForm):
 
     class Meta:
         model = Alert
+        exclude = ['displayed']
+
 
 class AlertAdmin(admin.ModelAdmin):
     form = AlertModelForm
-    exclude = ('displayed',)
     ordering = ['-created']
 
 admin.site.register(Alert, AlertAdmin)
