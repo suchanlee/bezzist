@@ -2,9 +2,9 @@
 'use strict';
 
 define(
-['react', 'components/question/QuestionBox', 'components/answer/UpcomingBox',
- 'components/base/Footer', 'store'],
-function (React, QuestionBox, UpcomingBox, Footer, store) {
+['react','components/alert/AlertContainer', 'components/question/QuestionBox',
+ 'components/answer/UpcomingBox', 'components/base/Footer', 'store'],
+function (React, AlertContainer, QuestionBox, UpcomingBox, Footer, store) {
   return React.createClass({
     getInitialState: function() {
       return {
@@ -32,6 +32,7 @@ function (React, QuestionBox, UpcomingBox, Footer, store) {
       });
       return (
         <div className='landing'>
+          <AlertContainer />
           <div className={content}>
             <header>
               <div className='logo-container'>

@@ -34,7 +34,7 @@ function (React, store, Utils) {
             React.createElement("div", {className: "vote-box-inner"}, 
               React.createElement("img", {
                 className: "vote-icon", 
-                src: '/static/imgs/bezz_thumbsup.png'}), 
+                src: '/static/imgs/icons/bezz_thumbsup.png'}), 
               React.createElement("p", {className: "vote-score"}, this.props.score)
             )
           )

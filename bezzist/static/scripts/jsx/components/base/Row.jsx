@@ -34,7 +34,7 @@ function (React, store, Utils) {
             <div className='vote-box-inner'>
               <img
                 className='vote-icon'
-                src={'/static/imgs/bezz_thumbsup.png'} />
+                src={'/static/imgs/icons/bezz_thumbsup.png'} />
               <p className='vote-score'>{this.props.score}</p>
             </div>
           </div>
