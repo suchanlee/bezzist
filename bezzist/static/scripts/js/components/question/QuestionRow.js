@@ -15,13 +15,11 @@ function (React, $, store, Row) {
 
     updateQuestionVote: function() {
       $.ajax({
-        url: '/api/v1/questions/' + this.props.q.id + '/',
-        type: 'PUT',
-        data: JSON.stringify({
-          'question': this.props.q.question,
-          'score': this.props.q.score + 1
-        }),
-        dataType: 'json'
+        url: '/api/v1/questions/' + this.props.q.id + '/incrementScore',
+        type: 'POST',
+        data: {
+          'csrfmiddlewaretoken': $('#csrf input').val()
+        },
       }).done(function(q) {
         this.props.updateQuestion(q);
       }.bind(this));

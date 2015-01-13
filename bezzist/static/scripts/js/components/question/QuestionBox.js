@@ -39,11 +39,18 @@ function (React, $, _, store, QuestionTime, AnswerBox) {
       });
     },
 
-    updateAnswer: function(a) {
+    updateAnswer: function(answer) {
       var answers = this.state.answers;
       for (var i=0; i<answers.length; i++) {
-        if (answers[i].id === a.id) {
-          answers[i] = a;
+        if (answers[i].id === answer.id) {
+          var answerKeySet = Object.keys(answer);
+          if (Object.keys(answers[i]).length === answerKeySet.length) {
+            answers[i] = answer;
+          } else {
+            _.map(answerKeySet, function(key) {
+              answers[i][key] = answer[key];
+            });
+          }
           this.setState({
             answers: answers
           });

@@ -1,4 +1,9 @@
+from threading import Lock
+
+from django.contrib.auth.models import User
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
+from django.views.generic import View
 
 from restless.exceptions import BadRequest, HttpError, Unauthorized
 from restless.preparers import FieldsPreparer
@@ -11,6 +16,7 @@ from question.models import Question
 class AnswerResource(AbstractBezzistResource):
 
     resource_name = 'answers'
+    resource_lock = Lock()
 
     preparer = FieldsPreparer(fields={
         'id': 'id',
@@ -39,22 +45,26 @@ class AnswerResource(AbstractBezzistResource):
 
     # PUT /api/answers/<pk>
     def update(self, pk):
+        self.resource_lock.acquire()
         answer = get_object_or_404(Answer, pk=pk)
-        if self.is_owner(answer):
-            question = get_object_or_404(Question, id=self.data.get('qId'))
+        if answer.is_owner(self.request.user):
+            question = answer.question.all().get()  # question must exist for answer to exist
             if not question.finished:
                 answer.answer = self.data.get('answer').strip()
                 answer.score = self.data.get('score')
                 answer.save()
+                self.resource_lock.release()
+                return answer
             else:
-                raise HttpError(msg='This answer can no longer be modified because the question is now closed.')
-            return answer
+                self.resource_lock.release()
+                raise HttpError(msg='This answer can no longer be modified because the question is now closed.' )
         else:
+            self.resource_lock.release()
             raise Unauthorized()
 
     def delete(self, pk):
         answer = get_object_or_404(Answer, pk=pk)
-        if self.is_owner(answer):
+        if answer.is_owner(self.request.user):
             try:
                 answer.delete()
             except:
@@ -62,3 +72,18 @@ class AnswerResource(AbstractBezzistResource):
         else:
             raise Unauthorized()
 
+class AnswerScoreRpcResource(View):
+
+    # POST /api/answers/<pk>/incrementScore
+    def post(self, request, pk):
+        answer = get_object_or_404(Answer, pk=pk)
+        try:
+            user = get_object_or_404(User, id=self.request.POST.get('userId'))
+        except:
+            user = None
+        answer.increment_score(user)
+        return JsonResponse({
+            'id': answer.id,
+            'question': answer.answer,
+            'score': answer.score
+        })

@@ -1,5 +1,10 @@
+from threading import Lock
+
 from django.conf.urls import patterns, url
+from django.contrib.auth.models import User
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
+from django.views.generic import View
 
 from restless.exceptions import Unauthorized
 from restless.preparers import FieldsPreparer
@@ -13,6 +18,7 @@ from mail.models import Email
 class QuestionResource(AbstractBezzistResource):
 
     resource_name = 'questions'
+    resource_lock = Lock()
 
     preparer = FieldsPreparer(fields={
         'id': 'id',
@@ -50,34 +56,33 @@ class QuestionResource(AbstractBezzistResource):
     # POST /api/questions/
     def create(self):
         # Unsanitized inputs
-        if self.is_authenticated():
-            try:
-                Email.objects.get(email=self.data.get('email'))
-            except:
-                Email.objects.create(email=self.data.get('email'))
-            return Question.objects.create(
-                question=self.data.get('question')
-            )
-        else:
-            raise Unauthorized()
+        try:
+            Email.objects.get(email=self.data.get('email'))
+        except:
+            Email.objects.create(email=self.data.get('email'))
+        return Question.objects.create(
+            question=self.data.get('question')
+        )
 
     # PUT /api/questions/<pk>
     def update(self, pk):
+        # Currently allows editing question and score
+        self.resource_lock.acquire()
         question = get_object_or_404(Question, pk=pk)
-        if self.is_owner(question):
-            # Unsanitized inputs
-            # Will need to add support for answer additions
+        if question.is_owner(self.request.user):
             question.question = self.data.get('question').strip()
             question.score = self.data.get('score')
             question.save()
+            self.resource_lock.release()
             return question
         else:
+            self.resource_lock.release()
             raise Unauthorized()
 
     # DELETE /api/questions/<pk>/
     def delete(self, pk):
         question = get_object_or_404(Question, pk=pk)
-        if self.is_owner(question):
+        if question.is_owner(self.request.user):
             question.delete()
         else:
             raise Unauthorized()
@@ -99,3 +104,21 @@ class QuestionResource(AbstractBezzistResource):
                 cls.as_view('answers'),
                 name=cls.build_url_name('answers', name_prefix)),
         )
+
+
+class QuestionScoreRpcResource(View):
+
+    # POST /api/questions/<pk>/incrementScore
+    def post(self, request, pk):
+        question = get_object_or_404(Question, pk=pk)
+        try:
+            user = get_object_or_404(User, id=self.request.POST.get('userId'))
+        except:
+            user = None
+        question.increment_score(user)
+        return JsonResponse({
+            'id': question.id,
+            'question': question.question,
+            'score': question.score
+        })
+

@@ -11,14 +11,11 @@ function (React, store, Row) {
 
     updateAnswerVote: function() {
       $.ajax({
-        url: '/api/v1/answers/' + this.props.answer.id + '/',
-        type: 'PUT',
-        data: JSON.stringify({
-          'qId': this.props.qId,
-          'answer': this.props.answer.answer,
-          'score': this.props.answer.score + 1
-        }),
-        dataType: 'json'
+        url: '/api/v1/answers/' + this.props.answer.id + '/incrementScore',
+        type: 'POST',
+        data: {
+          'csrfmiddlewaretoken': $('#csrf input').val()
+        },
       }).done(function(answer) {
         this.props.updateAnswer(answer);
       }.bind(this));

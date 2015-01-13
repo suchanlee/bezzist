@@ -5,8 +5,8 @@
 'use strict';
 
 define(
-['react', 'underscore'],
-function (React, _) {
+['react'],
+function (React) {
   return React.createClass({
     getInitialState: function() {
       return {

@@ -5,8 +5,8 @@
 'use strict';
 
 define(
-['react', 'store', 'components/question/QuestionList', 'components/question/QuestionForm'],
-function (React, store, QuestionList, QuestionForm) {
+['react', 'underscore', 'store', 'components/question/QuestionList', 'components/question/QuestionForm'],
+function (React, _, store, QuestionList, QuestionForm) {
   return React.createClass({
     getInitialState: function() {
       return {
@@ -35,7 +35,14 @@ function (React, store, QuestionList, QuestionForm) {
       var qs = this.state.qs;
       for (var i=0; i<qs.length; i++) {
         if (qs[i].id === q.id) {
-          qs[i] = q;
+          var questionKeySet = Object.keys(q);
+          if (Object.keys(qs[i]).length === questionKeySet.length) {
+            qs[i] = q;
+          } else {
+            _.map(questionKeySet, function(key) {
+              qs[i][key] = q[key];
+            });
+          }
           this.setState({
             qs: qs
           });

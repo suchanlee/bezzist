@@ -14,8 +14,4 @@ class Answer(AbstractUserScoredModel, MappableModel):
         return self.answer
 
     def objectify(self):
-        ansObj = {}
-        for field in self._meta.fields:
-            if field.name != 'user':
-                ansObj[field.name] = getattr(self, field.name)
-        return ansObj
+        return self.shallow_mappify()

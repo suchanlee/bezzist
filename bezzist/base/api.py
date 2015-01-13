@@ -2,8 +2,6 @@ from abc import ABCMeta
 
 from restless.dj import DjangoResource
 
-from .models import AbstractUserCreatedModel
-
 
 class AbstractBezzistResource(DjangoResource):
 
@@ -14,16 +12,10 @@ class AbstractBezzistResource(DjangoResource):
     resource_name = None
 
     def is_authenticated(self):
-        return True  # HORRIBLE BUT REQUIRED FOR NO AUTH POST
-
-    def is_owner(self, instance):
-        '''
-        Checks to see if request user is the owner of a model instance.
-        The model must be an instance of AbstractUserCreatedModel.
-        '''
-        if not isinstance(instance, AbstractUserCreatedModel):
-            return False
-        return True
+        if self.endpoint in ('update', 'create', 'delete'):
+            return self.request.user.is_authenticated()
+        else:
+            return True
 
     def is_debug(self):
         return False

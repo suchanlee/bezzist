@@ -8,7 +8,7 @@ from answer.models import Answer
 class Question(AbstractUserScoredModel):
 
     question = models.CharField(max_length=300)
-    answers = models.ManyToManyField(Answer, blank=True)
+    answers = models.ManyToManyField(Answer, blank=True, related_name='question')
 
     # Meta
     active = models.BooleanField(default=False)

@@ -22,6 +22,7 @@ class AbstractUserCreatedModel(AbstractTimeStampedModel):
     Abstract model class that inherits from AbstractTimeStampedModel
     and must have a user.
     '''
+    UNAUTHORIZED_STATUS_CODE = 401
 
     deleted = models.BooleanField(default=False)
     flags = models.IntegerField(default=0)
@@ -48,6 +49,11 @@ class AbstractUserCreatedModel(AbstractTimeStampedModel):
             self.user = User.objects.get(id=1)
         return super(AbstractUserCreatedModel, self).save(*args, **kwargs)
 
+    def is_owner(self, user):
+        if self.user == user:
+            return True
+        return False
+
 
 class AbstractUserScoredModel(AbstractUserCreatedModel):
 
@@ -63,14 +69,14 @@ class AbstractUserScoredModel(AbstractUserCreatedModel):
     class Meta:
         abstract = True
 
-    def increment_score(self, user):
-        self.liked.add(user)
-        self.liked.save()
+    def increment_score(self, user=None):
+        if user:
+            self.liked.add(user)
         return self._modify_score(self.score+1)
 
-    def decrement_score(self, user):
-        self.disliked.add(user)
-        self.disliked.save()
+    def decrement_score(self, user=None):
+        if user:
+            self.disliked.add(user)
         return self._modify_score(self.score-1)
 
     def _modify_score(self, score):
