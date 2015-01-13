@@ -22,7 +22,8 @@ INSTALLED_APPS = (
     'question',
     'answer',
     'alert',
-    'mail'
+    'mail',
+    'userprofile'
 )
 
 MIDDLEWARE_CLASSES = (
