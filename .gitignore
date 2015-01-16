@@ -1,0 +1,10 @@
+*.pyc
+.DS_Store
+.bowerrc
+Gruntfile.js
+*.txt
+bundle.js
+local.py
+*.log
+*.map
+node_modules/
