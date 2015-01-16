@@ -91,19 +91,15 @@ var Form = React.createClass({
   },
 
   render: function() {
-    var cx, inputContainerClass;
-    cx = React.addons.classSet;
-    inputContainerClass = cx({
-      'text-input-container': true,
-      'answer-text-input-container': this.props.answerForm,
-      'question-text-input-container': this.props.qForm
-    });
+    var questionInputContainer = this.props.qForm ? 'question-text-input-container' : '';
+    var answerInputContainer = this.props.answerForm ? 'answer-text-input-container' : '';
+    var inputContainerClassName = 'text-input-container ' + answerInputContainer + questionInputContainer;
     return (
       <form className='form-container' onSubmit={this.handleSubmit}>
         <div className='form-info-box'>
           <p>{this.getFormInfo()}</p>
         </div>
-        <div className={inputContainerClass}>
+        <div className={inputContainerClassName}>
           <input
             type='text'
             placeholder={this.props.placeholder}

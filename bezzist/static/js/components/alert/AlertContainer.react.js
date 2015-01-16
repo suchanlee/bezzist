@@ -31,12 +31,8 @@ var AlertContainer = React.createClass({
   },
 
   render: function() {
-    var cx, className;
-    cx = React.addons.classSet;
-    className = cx({
-      'hidden': !this.state.loaded,
-      'alert-container': true
-    });
+    var hiddenClassName = !this.state.loaded ? 'hidden' : ''
+    var className = 'alert-container ' + hiddenClassName;
     return (
       <div className={className}>
         {this._getAlerts()}

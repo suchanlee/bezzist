@@ -28,15 +28,11 @@ var LandingView = React.createClass({
   },
 
   render: function() {
-    var cx, content;
-    cx = React.addons.classSet;
-    content = cx({
-      'hidden': !this.state.loaded
-    });
+    var className = !this.state.loaded ? 'hidden' : '';
     return (
       <div className='landing'>
         <AlertContainer />
-        <div className={content}>
+        <div className={className}>
           <header>
             <div className='logo-container'>
               <span>BEZZIST</span>

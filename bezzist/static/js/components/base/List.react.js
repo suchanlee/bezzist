@@ -47,26 +47,24 @@ var List = React.createClass({
   },
 
   render: function() {
-    var cx, showMoreClassname, toggleRowsClassname;
-    cx = React.addons.classSet;
-    showMoreClassname = cx({
-      'expander-container': true,
-      'hidden': this.props.rows.length < 6
-    });
-    toggleRowsClassname = cx({
-      'list': true,
-      'hidden': !this.state.expanded
-    });
+    var showMoreClassName = 'expander-container ';
+    if (this.props.rows.length < 6) {
+      showMoreClassName += 'hidden';
+    }
+    var toggleRowsClassName = 'list ';
+    if (!this.state.expanded) {
+      toggleRowsClassName += 'hidden'
+    }
     // TODO (suchanl): remove the classname hack below
     return (
       <div className={this.props.qList ? 'question-list' : ''}>
         <ul className='list'>
           {this.props.rows.slice(0, 5)}
         </ul>
-        <ul className={toggleRowsClassname}>
+        <ul className={toggleRowsClassName}>
           {this.props.rows.slice(5)}
         </ul>
-        <div className={showMoreClassname}>
+        <div className={showMoreClassName}>
           <p
             className='expander-button'
             onClick={this.seeMoreclickHandler}>
