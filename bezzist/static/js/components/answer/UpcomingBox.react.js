@@ -14,33 +14,6 @@ var QuestionForm = require('../question/QuestionForm.react');
 
 var UpcomingBox = React.createClass({
 
-
-  // addQuestion: function(q) {
-  //   this.setState({
-  //     qs: this.state.qs.concat(q)
-  //   });
-  // },
-
-  // updateQuestion: function(q) {
-  //   var qs = this.state.qs;
-  //   for (var i=0; i<qs.length; i++) {
-  //     if (qs[i].id === q.id) {
-  //       var questionKeySet = Object.keys(q);
-  //       if (Object.keys(qs[i]).length === questionKeySet.length) {
-  //         qs[i] = q;
-  //       } else {
-  //         _.map(questionKeySet, function(key) {
-  //           qs[i][key] = q[key];
-  //         });
-  //       }
-  //       this.setState({
-  //         qs: qs
-  //       });
-  //       break;
-  //     }
-  //   }
-  // },
-
   expandRows: function() {
     return this.refs.questionList.refs.list.expandRows();
   },
