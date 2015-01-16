@@ -7,6 +7,7 @@
 var React = require('react');
 var $ = require('jquery');
 var Form = require('../base/Form.react');
+var AnswerViewActionCreators = require('../../actions/AnswerViewActionCreators');
 
 var AnswerForm = React.createClass({
   getFormError: function() {
@@ -14,8 +15,7 @@ var AnswerForm = React.createClass({
   },
 
   createAnswer: function(answer) {
-    var data = {qId: this.props.q.id, answer: answer};
-    return $.post('/api/v1/answers/', JSON.stringify(data));
+    return AnswerViewActionCreators.createAnswer(this.props.question.id, answer);
   },
 
   render: function() {
@@ -23,7 +23,6 @@ var AnswerForm = React.createClass({
       <Form
         formError={this.getFormError()}
         createRow={this.createAnswer}
-        addRow={this.props.addAnswer}
         expandRows={this.props.expandRows}
         placeholder='add new answer'
         answerForm={true} />

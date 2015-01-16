@@ -5,6 +5,7 @@ var React = require('react');
 var $ = require('jquery');
 var store = require('store');
 var Row = require('../base/Row.react');
+var AnswerViewActionCreators = require('../../actions/AnswerViewActionCreators');
 
 var AnswerRow = React.createClass({
   getStoreKey: function() {
@@ -12,20 +13,12 @@ var AnswerRow = React.createClass({
   },
 
   updateAnswerVote: function() {
-    $.ajax({
-      url: '/api/v1/answers/' + this.props.answer.id + '/incrementScore',
-      type: 'POST',
-      data: {
-        'csrfmiddlewaretoken': $('#csrf input').val()
-      },
-    }).done(function(answer) {
-      this.props.updateAnswer(answer);
-    }.bind(this));
+    AnswerViewActionCreators.upvoteAnswer(this.props.question.id, this.props.answer.id)
   },
 
   hasVoted: function() {
     if (store.get(this.getStoreKey()).hasOwnProperty(this.props.answer.id) ||
-      this.props.isFinished) {
+      this.props.question.finished) {
       return true;
     } else {
       return false;

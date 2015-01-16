@@ -42,7 +42,6 @@ var Form = React.createClass({
   _createRow: function() {
     var promise = this.props.createRow(this.state.value);
     promise.done(function(row) {
-      this.props.addRow(row);
       this.setState({
         formError: '',
         value: '',
@@ -60,8 +59,8 @@ var Form = React.createClass({
   _displayLoginForm: function() {
     alert('user is not logged in!');
   },
-  // things revolving this method are hacky
 
+  // things revolving this method are hacky
   _expandAndAnimate: function() {
     var button;
     this.props.expandRows();

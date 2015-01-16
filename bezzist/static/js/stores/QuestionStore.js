@@ -1,15 +1,21 @@
 'use strict';
 
+var _ = require('underscore');
 var assign = require('object-assign');
 var EventEmitter = require('events').EventEmitter;
+
 var AppDispatcher = require('../dispatcher/AppDispatcher');
+
+var AnswerViewActionCreators = require('../actions/AnswerViewActionCreators');
+
 var QuestionConstants = require('../constants/QuestionConstants');
 var BezzistConstants = require('../constants/BezzistConstants');
 
 var CHANGE_EVENT = BezzistConstants.Events.CHANGE;
 
 var _questions = [];
-var _featuredQuestionId = null;
+var _featuredQuestion = null;
+var _activeQuestions = [];
 
 var QuestionStore = assign({}, EventEmitter.prototype, {
 
@@ -17,10 +23,34 @@ var QuestionStore = assign({}, EventEmitter.prototype, {
     this.emit(CHANGE_EVENT);
   },
 
+  /**
+   * @param {function} callback
+   */
+  addChangeListener: function(callback) {
+    this.on(CHANGE_EVENT, callback);
+  },
+
+  /**
+   * @param {function} callback
+   */
+  removeChangeListener: function(callback) {
+    this.removeListener(CHANGE_EVENT, callback);
+  },
+
   init: function(questions) {
-    questions.forEach(function(question) {
-      _questions.push(question);
+    _.map(questions, function(question) {
+      if (question.featured) {
+        _featuredQuestion = question;
+      } else if (questions.active) {
+        _activeQuestions.push(question);
+      } else {
+        _questions.push(question);
+      }
     });
+  },
+
+  getFeaturedQuestion: function() {
+    return _featuredQuestion;
   },
 
   getAll: function() {
@@ -34,7 +64,7 @@ AppDispatcher.register(function(payload) {
 
   switch(action.type) {
 
-    case ActionTypes.ACTION_RECEIVE_ACTIVE_QUESTIONS:
+    case ActionTypes.ACTION_RECEIVE_ALL_QUESTIONS:
       QuestionStore.init(action.questions);
       QuestionStore.emitChange();
       break;

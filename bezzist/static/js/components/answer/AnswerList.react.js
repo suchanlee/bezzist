@@ -5,19 +5,39 @@ var React = require('react');
 var _ = require('underscore');
 var List = require('../base/List.react');
 var AnswerRow = require('../answer/AnswerRow.react');
+var AnswerStore = require('../../stores/AnswerStore');
 
 var AnswerList = React.createClass({
+  getInitialState: function() {
+    return this._getStateFromStores();
+  },
+
+  _onChange: function() {
+    this.setState(this._getStateFromStores());
+  },
+
+  _getStateFromStores: function() {
+    var questionId = this.props.question ? this.props.question.id : -1;
+    return {
+      answers: AnswerStore.getAnswersForQuestion(questionId)
+    };
+  },
+
+  componentDidMount: function() {
+    AnswerStore.addChangeListener(this._onChange);
+  },
+
+  componentWillUnmount: function() {
+    AnswerStore.removeChangeListener(this._onChange);
+  },
+
   _getRows: function() {
-    var answers = _.sortBy(this.props.answers, function(answer) {
-      return -1 * answer.score;
-    });
-    return _.map(answers, function(answer, idx) {
+    return _.map(this.state.answers, function(answer, idx) {
       return <AnswerRow
               key={answer.id}
               answer={answer}
               idx={idx+1}
-              qId={this.props.q.id}
-              isFinished={this.props.q.finished}
+              question={this.props.question}
               updateAnswer={this.props.updateAnswer} />;
     }.bind(this));
   },

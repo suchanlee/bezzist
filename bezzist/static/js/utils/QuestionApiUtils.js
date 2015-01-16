@@ -1,16 +1,14 @@
 'use strict';
 
 var $ = require('jquery');
-var QuestionActionCreators = require('../actions/QuestionActionCreators');
-var QuestionConstants = require('../constants/QuestionConstants');
+var QuestionServerActionCreators = require('../actions/QuestionServerActionCreators');
 
 module.exports = {
 
-  getActiveQuestions: function() {
-    var promise = $.getJSON('/api/v1/questions/', {
-      'active': true
-    });
-    promise.done(function() {
+  getAllQuestions: function() {
+    var promise = $.getJSON('/api/v1/questions/');
+    promise.done(function(questions) {
+      QuestionServerActionCreators.receiveAllQuestions(questions.questions);
     });
   },
 

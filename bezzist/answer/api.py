@@ -1,6 +1,7 @@
 from threading import Lock
 
 from django.contrib.auth.models import User
+from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.views.generic import View
@@ -71,6 +72,19 @@ class AnswerResource(AbstractBezzistResource):
                 raise BadRequest(msg='Failed to delete answer.')
         else:
             raise Unauthorized()
+
+class ActiveAndFeaturedAnswerRpcResource(View):
+
+    def get(self, request):
+        questions = Question.objects.filter(Q(active=True) | Q(featured=True))
+        answers = []
+        for question in questions:
+            answers.append({
+                'questionId': question.id,
+                'answers': map(lambda a: a.shallow_mappify(), question.answers.all())
+            })
+        return JsonResponse(answers, safe=False)
+
 
 class AnswerScoreRpcResource(View):
 

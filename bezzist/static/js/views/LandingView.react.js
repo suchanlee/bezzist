@@ -5,8 +5,24 @@ var React = require('react');
 var store = require('store');
 var AlertContainer = require('../components/alert/AlertContainer.react');
 var QuestionBox = require('../components/question/QuestionBox.react');
+var QuestionApiUtils = require('../utils/QuestionApiUtils');
+var AnswerApiUtils = require('../utils/AnswerApiUtils');
 var UpcomingBox = require('../components/answer/UpcomingBox.react');
 var Footer = require('../components/base/Footer.react');
+
+QuestionApiUtils.getAllQuestions(); // initialize questions
+AnswerApiUtils.getActiveAndFeaturedAnswers(); //initialize answers
+
+var maybeInitializeStore = function() {
+  if (!store.get('bz-answers')) {
+    store.set('bz-answers', {});
+  }
+  if (!store.get('bz-questions')) {
+    store.set('bz-questions', {});
+  }
+};
+
+maybeInitializeStore();
 
 var LandingView = React.createClass({
   getInitialState: function() {
@@ -28,7 +44,7 @@ var LandingView = React.createClass({
   },
 
   render: function() {
-    var className = !this.state.loaded ? 'hidden' : '';
+    var className = !this.state.loaded ? '' : '';
     return (
       <div className='landing'>
         <AlertContainer />

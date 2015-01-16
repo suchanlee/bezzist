@@ -25,6 +25,7 @@ class QuestionResource(AbstractBezzistResource):
         'question': 'question',
         'score': 'score',
         'active': 'active',
+        'featured': 'featured',
         'finished': 'finished',
         'posted_by': 'user.username',
         'created': 'created',

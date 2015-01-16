@@ -5,9 +5,13 @@ var keyMirror = require('keyMirror');
 module.exports = {
 
   ActionTypes: keyMirror({
-    ACTION_CREATE: null,
-    ACTION_UPVOTE: null,
-    ACTION_RECEIVE_ANSWERS: null
+    CREATE: null,
+    UPDATE: null,
+    UPVOTE: null,
+    CREATE_FAILED: null,
+    UPVOTE_FAILED: null,
+    GET_ANSWERS_FOR_QUESTION: null,
+    RECEIVE_ANSWERS_FOR_QUESTION: null
   })
 
 };
