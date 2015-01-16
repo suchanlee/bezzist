@@ -11,6 +11,7 @@ class Question(AbstractUserScoredModel):
     answers = models.ManyToManyField(Answer, blank=True, related_name='question')
 
     # Meta
+    featured = models.BooleanField(default=False)
     active = models.BooleanField(default=False)
     finished = models.BooleanField(default=False)
 
