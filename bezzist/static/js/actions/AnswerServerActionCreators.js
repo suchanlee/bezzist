@@ -15,7 +15,7 @@ module.exports = {
 
   updateAnswer: function(questionId, answer) {
     AppDispatcher.handleServerAction({
-      type: ActionTypes.UPDATE,
+      type: ActionTypes.ANSWER_UPDATE,
       questionId: questionId,
       answer: answer
     });
@@ -23,14 +23,14 @@ module.exports = {
 
   createAnswerFailed: function(questionId) {
     AppDispatcher.handleServerAction({
-      type: ActionTypes.CREATE_FAILED,
+      type: ActionTypes.ANSWER_CREATE_FAILED,
       questionId: questionId
     });
   },
 
   upvoteFailedForAnswer: function(questionId, answerId) {
     AppDispatcher.handleServerAction({
-      type: ActionTypes.UPVOTE_FAILED,
+      type: ActionTypes.ANSWER_UPVOTE_FAILED,
       questionId: questionId,
       answerId: answerId
     });

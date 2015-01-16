@@ -15,7 +15,7 @@ module.exports = {
 
   createAnswer: function(questionId, answer) {
     AppDispatcher.handleViewAction({
-      type: ActionTypes.CREATE,
+      type: ActionTypes.ANSWER_CREATE,
       questionId: questionId,
       answer: answer
     });
@@ -24,7 +24,7 @@ module.exports = {
 
   upvoteAnswer: function(questionId, answerId) {
     AppDispatcher.handleViewAction({
-      type: ActionTypes.UPVOTE,
+      type: ActionTypes.ANSWER_UPVOTE,
       questionId: questionId,
       answerId: answerId
     });

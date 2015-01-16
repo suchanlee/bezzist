@@ -8,6 +8,7 @@ var React = require('react');
 var $ = require('jquery');
 var store = require('store');
 var Row = require('../base/Row.react');
+var QuestionViewActionCreators = require('../../actions/QuestionViewActionCreators');
 
 var QuestionRow = React.createClass({
   getStoreKey: function() {
@@ -15,19 +16,11 @@ var QuestionRow = React.createClass({
   },
 
   updateQuestionVote: function() {
-    $.ajax({
-      url: '/api/v1/questions/' + this.props.q.id + '/incrementScore',
-      type: 'POST',
-      data: {
-        'csrfmiddlewaretoken': $('#csrf input').val()
-      },
-    }).done(function(q) {
-      this.props.updateQuestion(q);
-    }.bind(this));
+    QuestionViewActionCreators.upvoteQuestion(this.props.question.id);
   },
 
   hasVoted: function() {
-    if (store.get(this.getStoreKey()).hasOwnProperty(this.props.q.id)) {
+    if (store.get(this.getStoreKey()).hasOwnProperty(this.props.question.id)) {
       return true;
     } else {
       return false;
@@ -39,9 +32,9 @@ var QuestionRow = React.createClass({
       <Row
         storeKey={this.getStoreKey()}
         updateRowVote={this.updateQuestionVote}
-        id={this.props.q.id}
-        content={this.props.q.question}
-        score={this.props.q.score}
+        id={this.props.question.id}
+        content={this.props.question.question}
+        score={this.props.question.score}
         idx={this.props.idx}
         hasVoted={this.hasVoted} />
     );

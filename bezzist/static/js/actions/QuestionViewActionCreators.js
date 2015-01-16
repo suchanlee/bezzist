@@ -2,22 +2,24 @@
 
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var ActionTypes = require('../constants/QuestionConstants').ActionTypes;
+var QuestionApiUtils = require('../utils/QuestionApiUtils');
 
 module.exports = {
 
-  create: function(question, userId) {
+  upvoteQuestion: function(questionId) {
     AppDispatcher.handleViewAction({
-      type: ActionTypes.ACTION_CREATE,
-      question: question,
-      userId: userId
+      type: ActionTypes.QUESTION_UPVOTE,
+      questionId: questionId
     });
+    QuestionApiUtils.upvoteQuestion(questionId);
   },
 
-  upvote: function(questionId, userId) {
+  createQuestion: function(question) {
     AppDispatcher.handleViewAction({
-      type: ActionTypes.ACTION_UPVOTE,
-      question: questionId,
-      userId: userId
+      type: ActionTypes.QUESTION_CREATE,
+      question: question
     });
+    return QuestionApiUtils.createQuestion(question);
   }
+
 };

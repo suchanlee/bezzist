@@ -97,27 +97,28 @@ AppDispatcher.register(function(payload) {
     case ActionTypes.GET_ANSWERS_FOR_QUESTION:
       break;
 
-    case ActionTypes.CREATE:
+    case ActionTypes.ANSWER_CREATE:
       AnswerStore.addAnswer(action.questionId, {
         id: TMP_ANSWER_ID,
         answer: action.answer,
         score: 0,
         created: new Date(),
+        modified: new Date()
       });
       AnswerStore.emitChange();
       break;
 
-    case ActionTypes.CREATE_FAILED:
+    case ActionTypes.ANSWER_CREATE_FAILED:
       AnswerStore.removeAnswer(action.questionId, TMP_ANSWER_ID);
       AnswerStore.emitChange();
       break;
 
-    case ActionTypes.UPDATE:
+    case ActionTypes.ANSWER_UPDATE:
       AnswerStore.updateAnswer(action.questionId, action.answer);
       AnswerStore.emitChange();
       break;
 
-    case ActionTypes.UPVOTE:
+    case ActionTypes.ANSWER_UPVOTE:
       _.map(AnswerStore.getAnswersForQuestion(action.questionId), function(answer) {
         if (answer.id === action.answerId) {
           answer.score += 1;
@@ -126,7 +127,7 @@ AppDispatcher.register(function(payload) {
       AnswerStore.emitChange();
       break;
 
-    case ActionTypes.UPVOTE_FAILED:
+    case ActionTypes.ANSWER_UPVOTE_FAILED:
       _.map(AnswerStore.getAnswersForQuestion(action.questionId), function(answer) {
         if (answer.id === action.answerId) {
           answer.score -= 1;

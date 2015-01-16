@@ -25,23 +25,6 @@ var QuestionBox = React.createClass({
 
   componentDidMount: function() {
     QuestionStore.addChangeListener(this._onChange);
-    // $.getJSON('/api/v1/questions/', {
-    //   'active': 'true'
-    // }).done(function(qList) {
-    //   if (this.isMounted()) {
-    //     this.setState({
-    //       q: qList['questions'][0]
-    //     });
-    //   }
-    //   this._updateStore();
-    //   $.getJSON('/api/v1/questions/' + this.state.q.id + '/answers')
-    //    .done(function(answers) {
-    //     this.setState({
-    //       answers: answers['answers']
-    //     });
-    //     this.props.notifyLoaded();
-    //   }.bind(this));
-    // }.bind(this));
   },
 
   componentWillUnmount: function() {

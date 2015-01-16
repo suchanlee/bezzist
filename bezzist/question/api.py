@@ -57,10 +57,6 @@ class QuestionResource(AbstractBezzistResource):
     # POST /api/questions/
     def create(self):
         # Unsanitized inputs
-        try:
-            Email.objects.get(email=self.data.get('email'))
-        except:
-            Email.objects.create(email=self.data.get('email'))
         return Question.objects.create(
             question=self.data.get('question')
         )

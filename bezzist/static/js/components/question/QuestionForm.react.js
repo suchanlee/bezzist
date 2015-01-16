@@ -7,6 +7,7 @@
 var React = require('react');
 var $ = require('jquery');
 var Form = require('../base/Form.react');
+var QuestionViewActionCreators = require('../../actions/QuestionViewActionCreators');
 
 var QuestionForm = React.createClass({
   getFormError: function() {
@@ -14,8 +15,7 @@ var QuestionForm = React.createClass({
   },
 
   createQuestion: function(question) {
-    var data = {question: question, email: ''};
-    return $.post('/api/v1/questions/', JSON.stringify(data))
+    return QuestionViewActionCreators.createQuestion(question);
   },
 
   render: function() {

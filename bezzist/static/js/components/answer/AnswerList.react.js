@@ -37,8 +37,7 @@ var AnswerList = React.createClass({
               key={answer.id}
               answer={answer}
               idx={idx+1}
-              question={this.props.question}
-              updateAnswer={this.props.updateAnswer} />;
+              question={this.props.question} />;
     }.bind(this));
   },
 
