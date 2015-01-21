@@ -1,12 +1,12 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-from base.models import AbstractTimeStampedModel
+from base.models import AbstractTimeStampedModel, MappableModel
 from question.models import Question
 from answer.models import Answer
 
 
-class UserProfile(AbstractTimeStampedModel):
+class UserProfile(AbstractTimeStampedModel, MappableModel):
 
     user = models.OneToOneField(User, primary_key=True)
     score = models.IntegerField(default=0)

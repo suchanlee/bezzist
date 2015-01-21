@@ -195,7 +195,6 @@ class MappableModel(object):
 
     def _mappify(self, deep_copy=False, exception_fields=[]):
         model = {}
-
         for field in self._meta.fields:
             if field.name in exception_fields:
                 pass
@@ -213,6 +212,7 @@ class MappableModel(object):
                     except:
                         model[field.name] = ''
             elif isinstance(field, models.ManyToManyField):
+                print field.name
                 if deep_copy:
                     model[field.name] = self._mappify(getattr(self, field.name))
                 else:

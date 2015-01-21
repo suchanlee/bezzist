@@ -7,11 +7,14 @@ var AlertContainer = require('../components/alert/AlertContainer.react');
 var QuestionBox = require('../components/question/QuestionBox.react');
 var QuestionApiUtils = require('../utils/QuestionApiUtils');
 var AnswerApiUtils = require('../utils/AnswerApiUtils');
+var UserApiUtils = require('../utils/UserApiUtils');
 var UpcomingBox = require('../components/answer/UpcomingBox.react');
 var Footer = require('../components/base/Footer.react');
 
+
 QuestionApiUtils.getAllQuestions(); // initialize questions
 AnswerApiUtils.getActiveAndFeaturedAnswers(); //initialize answers
+UserApiUtils.getUser();
 
 var maybeInitializeStore = function() {
   if (!store.get('bz-answers')) {
