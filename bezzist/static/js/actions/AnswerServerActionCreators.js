@@ -28,11 +28,12 @@ module.exports = {
     });
   },
 
-  upvoteFailedForAnswer: function(questionId, answerId) {
+  upvoteFailedForAnswer: function(questionId, answerId, status) {
     AppDispatcher.handleServerAction({
       type: ActionTypes.ANSWER_UPVOTE_FAILED,
       questionId: questionId,
-      answerId: answerId
+      answerId: answerId,
+      status: status
     });
   },
 

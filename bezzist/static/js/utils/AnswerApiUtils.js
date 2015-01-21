@@ -2,6 +2,7 @@
 
 var _ = require('underscore');
 var $ = require('jquery');
+var Fingerprint = require('fingerprintjs');
 var AnswerServerActionCreators = require('../actions/AnswerServerActionCreators');
 
 module.exports = {
@@ -39,11 +40,12 @@ module.exports = {
       url: '/api/v1/answers/' + answerId + '/incrementScore',
       type: 'POST',
       data: {
+        'bId': new Fingerprint().get(),  // unique browser id from browser fingerprinting
         'csrfmiddlewaretoken': $('#csrf input').val()
       },
     });
-    promise.fail(function() {
-      AnswerServerActionCreators.upvoteFailedForAnswer(questionId, answerId);
+    promise.fail(function(err) {
+      AnswerServerActionCreators.upvoteFailedForAnswer(questionId, answerId, err.status);
     });
   },
 

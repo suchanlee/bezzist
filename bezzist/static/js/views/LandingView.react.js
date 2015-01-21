@@ -33,7 +33,9 @@ var LandingView = React.createClass({
 
   componentDidMount: function() {
     if (!store.enabled) {
-      alert("Bezzist does not work in Safari's Private Mode. We are sorry for the inconvinience.");
+      alert("Please enable Cookies and LocalStorage to use Bezzist. " +
+            "Safari private browsing mode is not supported. " +
+            "We are sorry for the inconvenience.");
     }
   },
 

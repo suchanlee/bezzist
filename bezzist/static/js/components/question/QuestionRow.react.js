@@ -9,18 +9,15 @@ var $ = require('jquery');
 var store = require('store');
 var Row = require('../base/Row.react');
 var QuestionViewActionCreators = require('../../actions/QuestionViewActionCreators');
+var Stores = require('../../constants/BezzistConstants').Stores;
 
 var QuestionRow = React.createClass({
-  getStoreKey: function() {
-    return 'bz-questions';
-  },
-
-  updateQuestionVote: function() {
+  vote: function() {
     QuestionViewActionCreators.upvoteQuestion(this.props.question.id);
   },
 
   hasVoted: function() {
-    if (store.get(this.getStoreKey()).hasOwnProperty(this.props.question.id)) {
+    if (store.get(Stores.BEZZIST_QUESTIONS).hasOwnProperty(this.props.question.id)) {
       return true;
     } else {
       return false;
@@ -30,8 +27,7 @@ var QuestionRow = React.createClass({
   render: function() {
     return (
       <Row
-        storeKey={this.getStoreKey()}
-        updateRowVote={this.updateQuestionVote}
+        vote={this.vote}
         id={this.props.question.id}
         content={this.props.question.question}
         score={this.props.question.score}

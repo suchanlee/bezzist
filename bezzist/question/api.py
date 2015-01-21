@@ -12,7 +12,6 @@ from restless.resources import skip_prepare
 
 from base.api import AbstractBezzistResource
 from .models import Question
-from mail.models import Email
 
 
 class QuestionResource(AbstractBezzistResource):
@@ -108,11 +107,7 @@ class QuestionScoreRpcResource(View):
     # POST /api/questions/<pk>/incrementScore
     def post(self, request, pk):
         question = get_object_or_404(Question, pk=pk)
-        try:
-            user = get_object_or_404(User, id=self.request.POST.get('userId'))
-        except:
-            user = None
-        question.increment_score(user)
+        question.increment_score(request)
         return JsonResponse({
             'id': question.id,
             'question': question.question,

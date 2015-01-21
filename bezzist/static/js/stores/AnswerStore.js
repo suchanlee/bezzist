@@ -2,6 +2,7 @@
 
 var _ = require('underscore');
 var assign = require('object-assign');
+var store = require('store');
 var EventEmitter = require('events').EventEmitter;
 
 var AppDispatcher = require('../dispatcher/AppDispatcher');
@@ -65,16 +66,21 @@ var AnswerStore = assign({}, EventEmitter.prototype, {
   },
 
   removeAnswer: function(questionId, answerId) {
-    _.map(_answers[questionId], function(_answer) {
-      if (_answer.id === answerId) {
-        var idx = _answers[questionId].indexOf(_answer);
-        _answers[questionId].splice(idx, 1);
-      }
-    });
+    var answer = this.getAnswerForQuestion(questionId, answerId);
+    _answers[questionId].splice(_answers[questionId].indexOf(answer), 1);
   },
 
   storeAnswers: function(questionId, answers) {
     _answers[questionId] = answers;
+  },
+
+  getAnswerForQuestion: function(questionId, answerId) {
+    for (var i=0; i<_answers[questionId].length; i++) {
+      if (_answers[questionId][i].id === answerId) {
+        return _answers[questionId][i];
+      }
+    }
+    throw Error('Answer with id ' + answerId + ' for question with id ' + questionId + ' cannot be found.');
   },
 
   getAnswersForQuestion: function(questionId) {
@@ -90,6 +96,8 @@ var AnswerStore = assign({}, EventEmitter.prototype, {
 AppDispatcher.register(function(payload) {
 
   var ActionTypes = AnswerConstants.ActionTypes;
+  var Stores = BezzistConstants.Stores;
+  var Status = BezzistConstants.Status;
   var action = payload.action;
 
   switch(action.type) {
@@ -119,20 +127,20 @@ AppDispatcher.register(function(payload) {
       break;
 
     case ActionTypes.ANSWER_UPVOTE:
-      _.map(AnswerStore.getAnswersForQuestion(action.questionId), function(answer) {
-        if (answer.id === action.answerId) {
-          answer.score += 1;
-        }
-      });
+      AnswerStore.getAnswerForQuestion(action.questionId, action.answerId).score += 1;
+      var update = {};
+      update[action.answerId] = true;
+      store.set(Stores.BEZZIST_ANSWERS, _.extend(store.get(Stores.BEZZIST_ANSWERS), update));
       AnswerStore.emitChange();
       break;
 
     case ActionTypes.ANSWER_UPVOTE_FAILED:
-      _.map(AnswerStore.getAnswersForQuestion(action.questionId), function(answer) {
-        if (answer.id === action.answerId) {
-          answer.score -= 1;
-        }
-      });
+      AnswerStore.getAnswerForQuestion(action.questionId, action.answerId).score -= 1;
+      if (action.status !== Status.FORBIDDEN) {
+        var votedAnswers = store.get(Stores.BEZZIST_ANSWERS);
+        delete votedAnswers[action.answerId];
+        store.set(Stores.BEZZIST_ANSWERS, votedAnswers);
+      }
       AnswerStore.emitChange();
       break;
 

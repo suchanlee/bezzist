@@ -5,6 +5,7 @@
   "main": "js/app.js",
   "dependencies": {
     "director": "^1.2.7",
+    "fingerprintjs": "^0.5.3",
     "flux": "^2.0.0",
     "jquery": "^2.1.3",
     "keymirror": "~0.1.0",

@@ -1,6 +1,7 @@
 'use strict';
 
 var $ = require('jquery');
+var Fingerprint = require('fingerprintjs');
 var QuestionServerActionCreators = require('../actions/QuestionServerActionCreators');
 
 module.exports = {
@@ -30,11 +31,12 @@ module.exports = {
       url: '/api/v1/questions/' + questionId + '/incrementScore',
       type: 'POST',
       data: {
+        'bId': new Fingerprint().get(),
         'csrfmiddlewaretoken': $('#csrf input').val()
       },
     });
-    promise.fail(function() {
-      QuestionServerActionCreators.upvoteFailedForQuestion(questionId);
+    promise.fail(function(err) {
+      QuestionServerActionCreators.upvoteFailedForQuestion(questionId, err.status);
     });
   }
 

@@ -19,6 +19,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_mobile',
+    'base',
     'question',
     'answer',
     'alert',

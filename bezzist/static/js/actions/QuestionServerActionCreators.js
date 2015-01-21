@@ -12,17 +12,18 @@ module.exports = {
     });
   },
 
-  upvoteFailedForQuestion: function(questionId) {
+  upvoteFailedForQuestion: function(questionId, status) {
     AppDispatcher.handleServerAction({
       type: ActionTypes.QUESTION_UPVOTE_FAILED,
-      questionId: questionId
+      questionId: questionId,
+      status: status
     });
   },
 
   updateQuestion: function(question) {
     AppDispatcher.handleServerAction({
       type: ActionTypes.QUESTION_UPDATE,
-      question: question
+      question: question,
     });
   },
 

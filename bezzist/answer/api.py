@@ -1,6 +1,5 @@
 from threading import Lock
 
-from django.contrib.auth.models import User
 from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
@@ -81,7 +80,7 @@ class ActiveAndFeaturedAnswerRpcResource(View):
         for question in questions:
             answers.append({
                 'questionId': question.id,
-                'answers': map(lambda a: a.shallow_mappify(), question.answers.all())
+                'answers': map(lambda a: a.shallow_mappify(exception_fields=['liked_browsers']), question.answers.all())
             })
         return JsonResponse(answers, safe=False)
 
@@ -91,11 +90,7 @@ class AnswerScoreRpcResource(View):
     # POST /api/answers/<pk>/incrementScore
     def post(self, request, pk):
         answer = get_object_or_404(Answer, pk=pk)
-        try:
-            user = get_object_or_404(User, id=self.request.POST.get('userId'))
-        except:
-            user = None
-        answer.increment_score(user)
+        answer.increment_score(request)
         return JsonResponse({
             'id': answer.id,
             'question': answer.answer,

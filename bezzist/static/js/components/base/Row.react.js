@@ -9,17 +9,10 @@ var Utils = require('../../lib/Utils');
 var Row = React.createClass({
   handleVoteClick: function(e) {
     if (!this.props.hasVoted()) {
-      this.props.updateRowVote();
-      this._storeVote();
+      this.props.vote();
     }
     e.stopPropagation();
     e.preventDefault();
-  },
-
-  _storeVote: function() {
-    var update = {};
-    update[this.props.id] = true;
-    store.set(this.props.storeKey, _.extend(store.get(this.props.storeKey), update));
   },
 
   render: function() {

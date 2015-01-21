@@ -2,6 +2,7 @@
 
 var _ = require('underscore');
 var assign = require('object-assign');
+var store = require('store');
 var EventEmitter = require('events').EventEmitter;
 
 var AppDispatcher = require('../dispatcher/AppDispatcher');
@@ -78,16 +79,21 @@ var QuestionStore = assign({}, EventEmitter.prototype, {
   },
 
   removeQuestion: function(questionId) {
-    _.map(_questions, function(question) {
-      if (question.id === questionId) {
-        var idx = _questions.indexOf(question);
-        _questions.splice(idx, 1);
-      }
-    });
+    var question = this.getQuestion(questionId);
+    _questions.splice(_questions.indexOf(question), 1);
   },
 
   getFeaturedQuestion: function() {
     return _featuredQuestion;
+  },
+
+  getQuestion: function(questionId) {
+    for (var i=0; i<_questions.length; i++) {
+      if (_questions[i].id === questionId) {
+        return _questions[i];
+      }
+    }
+    throw Error('Failed to find question with id ' + questionId + '.');
   },
 
   getQuestions: function() {
@@ -97,25 +103,27 @@ var QuestionStore = assign({}, EventEmitter.prototype, {
 
 AppDispatcher.register(function(payload) {
   var ActionTypes = QuestionConstants.ActionTypes;
+  var Stores = BezzistConstants.Stores;
+  var Status = BezzistConstants.Status;
   var action = payload.action;
 
   switch(action.type) {
 
     case ActionTypes.QUESTION_UPVOTE:
-      _.map(_questions, function(question) {
-        if (question.id === action.questionId) {
-          question.score += 1;
-        }
-      });
+      QuestionStore.getQuestion(action.questionId).score += 1;
+      var update = {};
+      update[action.questionId] = true;
+      store.set(Stores.BEZZIST_QUESTIONS, _.extend(store.get(Stores.BEZZIST_QUESTIONS), update));
       QuestionStore.emitChange();
       break;
 
     case ActionTypes.QUESTION_UPVOTE_FAILED:
-      _.map(_questions, function(question) {
-        if (question.id === action.questionId) {
-          question.score -= 1;
-        }
-      });
+      QuestionStore.getQuestion(action.questionId).score -= 1;
+      if (action.status !== Status.FORBIDDEN) {
+        var votedQuestions = store.get(Stores.BEZZIST_QUESTIONS);
+        delete votedQuestions[action.questionId];
+        store.set(Stores.BEZZIST_QUESTIONS, votedQuestions);
+      }
       QuestionStore.emitChange();
       break;
 
