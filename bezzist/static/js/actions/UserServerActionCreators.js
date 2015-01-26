@@ -6,10 +6,11 @@ var ActionTypes = require('../constants/UserConstants').ActionTypes;
 
 module.exports = {
 
-  receiveUser: function(userprofile) {
+  receiveUser: function(userprofile, cb) {
     AppDispatcher.handleServerAction({
       type: ActionTypes.RECEIVE_USER,
-      userprofile: userprofile
+      userprofile: userprofile,
+      cb: cb
     });
   },
 

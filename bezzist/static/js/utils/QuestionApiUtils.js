@@ -1,6 +1,7 @@
 'use strict';
 
 var $ = require('jquery');
+var docCookies = require('../lib/cookies');
 var Fingerprint = require('fingerprintjs');
 var QuestionServerActionCreators = require('../actions/QuestionServerActionCreators');
 
@@ -32,7 +33,7 @@ module.exports = {
       type: 'POST',
       data: {
         'bId': new Fingerprint().get(),
-        'csrfmiddlewaretoken': $('#csrf input').val()
+        'csrfmiddlewaretoken': docCookies.getItem('csrftoken')
       },
     });
     promise.fail(function(err) {

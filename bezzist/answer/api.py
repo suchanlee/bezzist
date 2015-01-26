@@ -36,9 +36,11 @@ class AnswerResource(AbstractBezzistResource):
         question = get_object_or_404(Question, id=self.data.get('qId'))
         if not question.finished:
             answer = Answer.objects.create(
+                user=self.request.user,
                 answer=self.data.get('answer')
             )
             question.answers.add(answer)
+            self.request.user.userprofile.increment_score(10)
         else:
             raise HttpError(msg='Answers cannot be added to a closed question.')
         return answer

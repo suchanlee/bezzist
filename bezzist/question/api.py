@@ -1,7 +1,6 @@
 from threading import Lock
 
 from django.conf.urls import patterns, url
-from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.views.generic import View
@@ -28,7 +27,7 @@ class QuestionResource(AbstractBezzistResource):
         'finished': 'finished',
         'posted_by': 'user.username',
         'created': 'created',
-        'last_modified': 'modified'
+        'modified': 'modified'
     })
 
     def __init__(self, *args, **kwargs):
@@ -56,8 +55,10 @@ class QuestionResource(AbstractBezzistResource):
     # POST /api/questions/
     def create(self):
         # Unsanitized inputs
+        self.request.user.userprofile.increment_score(10)
         return Question.objects.create(
-            question=self.data.get('question')
+            question=self.data.get('question'),
+            user=self.request.user
         )
 
     # PUT /api/questions/<pk>

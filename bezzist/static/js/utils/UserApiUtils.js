@@ -1,6 +1,7 @@
 'use strict';
 
 var $ = require('jquery');
+var docCookies = require('../lib/cookies');
 var UserServerActionCreators = require('../actions/UserServerActionCreators');
 
 module.exports = {
@@ -13,6 +14,34 @@ module.exports = {
       } else {
         UserServerActionCreators.receiveNonUser();
       }
+    });
+  },
+
+  createUser: function(email, password, successCb, errCb) {
+    var promise = $.post('/api/v1/profiles/create', {
+      email: email,
+      password: password,
+      csrfmiddlewaretoken: docCookies.getItem('csrftoken')
+    });
+    promise.done(function(userprofile) {
+      UserServerActionCreators.receiveUser(userprofile, successCb);
+    });
+    promise.fail(function(err) {
+      errCb(err.responseText);
+    });
+  },
+
+  loginUser: function(email, password, successCb, errCb) {
+    var promise = $.post('/api/v1/profiles/login', {
+      email: email,
+      password: password,
+      csrfmiddlewaretoken: docCookies.getItem('csrftoken')
+    });
+    promise.done(function(userprofile) {
+      UserServerActionCreators.receiveUser(userprofile, successCb);
+    });
+    promise.fail(function(err) {
+      errCb(err.responseText);
     });
   },
 

@@ -7,9 +7,12 @@
 var React = require('react');
 var $ = require('jquery');
 var store = require('store');
-var Row = require('../base/Row.react');
+
 var QuestionViewActionCreators = require('../../actions/QuestionViewActionCreators');
 var Stores = require('../../constants/BezzistConstants').Stores;
+var UserStore = require('../../stores/UserStore');
+
+var Row = require('../base/Row.react');
 
 var QuestionRow = React.createClass({
   vote: function() {
@@ -17,11 +20,10 @@ var QuestionRow = React.createClass({
   },
 
   hasVoted: function() {
-    if (store.get(Stores.BEZZIST_QUESTIONS).hasOwnProperty(this.props.question.id)) {
+    if (!UserStore.isAuthenticated() && store.get(Stores.BEZZIST_QUESTIONS).hasOwnProperty(this.props.question.id)) {
       return true;
-    } else {
-      return false;
     }
+    return UserStore.containsQuestionLiked(this.props.question.id);
   },
 
   render: function() {

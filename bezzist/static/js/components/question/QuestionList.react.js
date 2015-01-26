@@ -26,7 +26,7 @@ var QuestionList = React.createClass({
 
   _getStateFromStores: function() {
     return {
-      questions: QuestionStore.getQuestions()
+      questions: QuestionStore.getInactiveQuestions()
     };
   },
 

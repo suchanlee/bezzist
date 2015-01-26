@@ -2,6 +2,7 @@
 
 var _ = require('underscore');
 var $ = require('jquery');
+var docCookies = require('../lib/cookies');
 var Fingerprint = require('fingerprintjs');
 var AnswerServerActionCreators = require('../actions/AnswerServerActionCreators');
 
@@ -41,7 +42,7 @@ module.exports = {
       type: 'POST',
       data: {
         'bId': new Fingerprint().get(),  // unique browser id from browser fingerprinting
-        'csrfmiddlewaretoken': $('#csrf input').val()
+        'csrfmiddlewaretoken': docCookies.getItem('csrftoken'),
       },
     });
     promise.fail(function(err) {

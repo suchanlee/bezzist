@@ -3,21 +3,24 @@
 var _ = require('underscore');
 var assign = require('object-assign');
 var store = require('store');
+var moment = require('moment');
 var EventEmitter = require('events').EventEmitter;
 
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 
 var AnswerViewActionCreators = require('../actions/AnswerViewActionCreators');
 
+var UserStore = require('./UserStore');
 var QuestionConstants = require('../constants/QuestionConstants');
 var BezzistConstants = require('../constants/BezzistConstants');
 
 var CHANGE_EVENT = BezzistConstants.Events.CHANGE;
 var TMP_QUESTION_ID = -1;
 
-var _questions = [];
-var _featuredQuestion = null;
-var _activeQuestions = [];
+var _questions = {};
+var _activeQuestionIds = [];
+var _inactiveQuestionIds = [];
+var _featuredQuestionId = null;
 
 var QuestionStore = assign({}, EventEmitter.prototype, {
 
@@ -41,63 +44,97 @@ var QuestionStore = assign({}, EventEmitter.prototype, {
 
   init: function(questions) {
     _.map(questions, function(question) {
-      if (question.featured) {
-        _featuredQuestion = question;
-      } else if (questions.active) {
-        _activeQuestions.push(question);
-      } else {
-        _questions.push(question);
-      }
-    });
+      this.addQuestion(question);
+    }.bind(this));
   },
 
-  _sortQuestions: function(questions) {
-    return _.sortBy(questions, function(question) {
+  _toList: function(questionIds) {
+    var questionList = []
+    if (!questionIds) {
+      questionIds = _questionList.keySet();
+    }
+    _.map(questionIds, function(id) {
+      questionList.push(_questions[id]);
+    });
+    return questionList;
+  },
+
+  _createQuestion: function(question) {
+    question.created = moment(question.created);
+    question.modified = moment(question.modified);
+    return question
+  },
+
+  _sortQuestionsByScore: function(questionList) {
+    return _.sortBy(questionList, function(question) {
       return -1 * question.score;
     });
   },
 
-  addQuestion: function(question) {
-    _questions.push(question);
-  },
-
-  updateQuestion: function(question) {
-    _.map(_questions, function(_question) {
-      if (_question.id === -1 || _question.id === question.id) {
-        var questionKeySet = Object.keys(question);
-        if (Object.keys(_question).length === questionKeySet.length) {
-          var idx = _questions.indexOf(_question);
-          _questions.splice(idx, 1);
-          _question.push(question);
-        } else {
-          _.map(questionKeySet, function(key) {
-            _question[key] = question[key];
-          });
-        }
-      }
+  _sortQuestionsByDatetime: function(questionList) {
+    return _.sortBy(questionList, function(question) {
+      return -1 * question.created;
     });
   },
 
-  removeQuestion: function(questionId) {
-    var question = this.getQuestion(questionId);
-    _questions.splice(_questions.indexOf(question), 1);
+  addQuestion: function(question) {
+    question = this._createQuestion(question);
+    _questions[question.id] = question;
+    if (question.featured) {
+      _featuredQuestionId = question.id;
+    } else if (question.active) {
+      _activeQuestionIds.push(question.id);
+    } else {
+      _inactiveQuestionIds.push(question.id);
+    }
   },
 
-  getFeaturedQuestion: function() {
-    return _featuredQuestion;
+  updateQuestion: function(newQuestion) {
+    // TODO: this needs to be refactored later
+    // in to a more digestible format
+    // it's gross right now
+    var oldQuestion;
+    if (_questions[TMP_QUESTION_ID]) {
+      oldQuestion = _questions[newQuestion.id] = _questions[TMP_QUESTION_ID];
+      delete _questions[TMP_QUESTION_ID];
+      var idx = _inactiveQuestionIds.indexOf(TMP_QUESTION_ID);
+      _inactiveQuestionIds.splice(idx, 1);
+      _inactiveQuestionIds.push(newQuestion.id);
+    } else {
+      oldQuestion = _questions[newQuestion.id];
+    }
+    var questionKeySet = Object.keys(newQuestion);
+    if (Object.keys(oldQuestion).length === questionKeySet.length) {
+      _questions[newQuestion.id] = newQuestion;
+    } else {
+      _.map(questionKeySet, function(key) {
+        oldQuestion[key] = newQuestion[key];
+      });
+    }
+  },
+
+  removeQuestion: function(questionId) {
+    delete _questions[questionId];
   },
 
   getQuestion: function(questionId) {
-    for (var i=0; i<_questions.length; i++) {
-      if (_questions[i].id === questionId) {
-        return _questions[i];
-      }
-    }
-    throw Error('Failed to find question with id ' + questionId + '.');
+    return _questions[questionId];
+  },
+
+  getFeaturedQuestion: function() {
+    return _questions[_featuredQuestionId];
+  },
+
+  getActiveQuestions: function() {
+    return this._sortQuestionsByDatetime(this._toList(_activeQuestionIds));
+  },
+
+  getInactiveQuestions: function() {
+    return this._sortQuestionsByScore(this._toList(_inactiveQuestionIds));
   },
 
   getQuestions: function() {
-    return this._sortQuestions(_questions);
+    return this._sortQuestionsByScore(this._toList());
   },
 });
 
@@ -111,18 +148,24 @@ AppDispatcher.register(function(payload) {
 
     case ActionTypes.QUESTION_UPVOTE:
       QuestionStore.getQuestion(action.questionId).score += 1;
-      var update = {};
-      update[action.questionId] = true;
-      store.set(Stores.BEZZIST_QUESTIONS, _.extend(store.get(Stores.BEZZIST_QUESTIONS), update));
+      if (!UserStore.isAuthenticated()) {
+        var update = {};
+        update[action.questionId] = true;
+        store.set(Stores.BEZZIST_QUESTIONS, _.extend(store.get(Stores.BEZZIST_QUESTIONS), update));
+      }
+      UserStore.addQuestionLiked(action.questionId);
       QuestionStore.emitChange();
       break;
 
     case ActionTypes.QUESTION_UPVOTE_FAILED:
       QuestionStore.getQuestion(action.questionId).score -= 1;
       if (action.status !== Status.FORBIDDEN) {
-        var votedQuestions = store.get(Stores.BEZZIST_QUESTIONS);
-        delete votedQuestions[action.questionId];
-        store.set(Stores.BEZZIST_QUESTIONS, votedQuestions);
+        if (!UserStore.isAuthenticated()) {
+          var votedQuestions = store.get(Stores.BEZZIST_QUESTIONS);
+          delete votedQuestions[action.questionId];
+          store.set(Stores.BEZZIST_QUESTIONS, votedQuestions);
+        }
+        UserStore.removeQuestionLiked(action.questionId);
       }
       QuestionStore.emitChange();
       break;

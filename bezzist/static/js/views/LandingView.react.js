@@ -1,15 +1,19 @@
 /** @jsx React.DOM */
 'use strict';
 
-var React = require('react');
-var store = require('store');
-var AlertContainer = require('../components/alert/AlertContainer.react');
-var QuestionBox = require('../components/question/QuestionBox.react');
-var QuestionApiUtils = require('../utils/QuestionApiUtils');
-var AnswerApiUtils = require('../utils/AnswerApiUtils');
-var UserApiUtils = require('../utils/UserApiUtils');
-var UpcomingBox = require('../components/answer/UpcomingBox.react');
-var Footer = require('../components/base/Footer.react');
+var React = require('react'),
+    store = require('store'),
+
+    QuestionApiUtils = require('../utils/QuestionApiUtils'),
+    AnswerApiUtils = require('../utils/AnswerApiUtils'),
+    UserApiUtils = require('../utils/UserApiUtils'),
+
+    AlertContainer = require('../components/alert/AlertContainer.react'),
+    Questions = require('../components/question/Questions.react'),
+    UpcomingBox = require('../components/answer/UpcomingBox.react'),
+    Footer = require('../components/base/Footer.react'),
+    Overlay = require('../components/base/Overlay.react'),
+    Nav = require('../components/base/Nav.react');
 
 
 QuestionApiUtils.getAllQuestions(); // initialize questions
@@ -51,17 +55,16 @@ var LandingView = React.createClass({
   render: function() {
     var className = !this.state.loaded ? '' : '';
     return (
-      <div className='landing'>
-        <AlertContainer />
-        <div className={className}>
-          <header>
-            <div className='logo-container'>
-              <span>BEZZIST</span>
-            </div>
-          </header>
-          <UpcomingBox />
-          <QuestionBox notifyLoaded={this.notifyLoaded} />
-          <Footer />
+      <div>
+        <Overlay />
+        <Nav />
+        <div className='landing'>
+          <AlertContainer />
+          <div className={className}>
+            <UpcomingBox />
+            <Questions notifyLoaded={this.notifyLoaded} />
+            <Footer />
+          </div>
         </div>
       </div>
     );

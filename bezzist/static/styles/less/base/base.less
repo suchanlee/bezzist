@@ -13,13 +13,13 @@ body {
   font-family: @sans-serif;
   position: relative;
   z-index: @zBase;
-  background-color: @light-grey;
 }
 
-.container {
+.landing {
   max-width: @containerWidth;
   margin: 0 auto;
   padding: 0px @containerSidePadding;
+  padding-top: @navTopPadding;
 }
 
 .hidden {
@@ -33,15 +33,35 @@ footer {
     padding: 5px 10px;
     margin-top: 100px;
     display: inline-block;
-    &:hover {
-      .box-shadow(3px 3px 0px 0px rgba(168, 168, 168, 1));
-    }
     a {
       color: black;
-      font-style: italic;
       font-size: 20px;
     }
   }
+}
+
+.overlay {
+  position: fixed;
+  z-index: @zOverlay;
+  background-color: white;
+  .opacity(0.98);
+  width: 100%;
+  min-height: 100%;
+  text-align: center;
+}
+
+.overlay-centered-container {
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  .translateX(-50%);
+}
+
+.overlay-hide-button {
+  display: inline-block;
+  margin-top: 20px;
+  font-size: 25px;
+  cursor: pointer;
 }
 
 // loader css from http://projects.lukehaas.me/css-loaders/

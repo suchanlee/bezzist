@@ -34,8 +34,8 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 
-# EMAIL_USE_TLS = True
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_PORT = 587
-# EMAIL_HOST_USER = 'contactpointr@gmail.com'
-# EMAIL_HOST_PASSWORD = 'hellopointr'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'hello@bezzist.com'
+EMAIL_HOST_PASSWORD = 'growthready15'

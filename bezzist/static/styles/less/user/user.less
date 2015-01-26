@@ -1,0 +1,56 @@
+@import '../LESSHat/lesshat.less';
+@import '../var/var.less';
+
+
+.auth-form {
+  border: 1px solid black;
+  text-align: center;
+  border-top: 10px solid black;
+  padding-right: 60px;
+  padding-bottom: 25px;
+  padding-left: 60px;
+  min-width: 300px;
+  h2 {
+    margin-bottom: 0px;
+  }
+  p {
+    margin-top: 5px;
+  }
+  input {
+    text-align: center;
+    font-size: 22px;
+    font-family: @sans-serif;
+    outline: none;
+    color: black;
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid @grey;
+    margin-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 7px;
+    .placeholder(@grey);
+  }
+  .form-error {
+    color: red;
+    margin: 0 0;
+  }
+}
+
+.auth-form-button {
+  padding: 10px 40px;
+  color: white;
+  text-decoration: none;
+  margin-top: 10px;
+  display: inline-block;
+  .border-radius(3px);
+}
+
+.auth-form-signup {
+  background-color: @blue;
+  margin-right: 5px;
+}
+
+.auth-form-submit {
+  background-color: @yellow;
+  margin-left: 5px;
+}

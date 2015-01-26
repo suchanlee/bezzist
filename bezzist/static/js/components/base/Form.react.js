@@ -4,10 +4,16 @@
   */
 'use strict';
 
-var React = require('react');
-var $ = require('jquery');
+var React = require('react'),
+    $ = require('jquery'),
+    EventMixin = require('../../mixins/EventMixin.react'),
+    OVERLAY_EVENT = require('../../constants/BezzistConstants').Events.OVERLAY_EVENT,
+    UserStore = require('../../stores/UserStore'),
+    AuthForm = require('../user/AuthForm.react');
+
 
 var Form = React.createClass({
+  mixins: [EventMixin],
   getInitialState: function() {
     return {
       value: '',
@@ -17,10 +23,14 @@ var Form = React.createClass({
   },
 
   handleSubmit: function(e) {
-    if (this.state.value.trim().length === 0) {
-      this._setFormErrorOnSubmit();
+    if (!UserStore.isAuthenticated()) {
+      this._displayLoginForm(this.createRow);
     } else {
-      this._createRow();
+      if (this.state.value.trim().length === 0) {
+        this._setFormErrorOnSubmit();
+      } else {
+        this.createRow();
+      }
     }
     e.stopPropagation();
     e.preventDefault();
@@ -39,7 +49,7 @@ var Form = React.createClass({
     }
   },
 
-  _createRow: function() {
+  createRow: function() {
     var promise = this.props.createRow(this.state.value);
     promise.done(function(row) {
       this.setState({
@@ -56,21 +66,19 @@ var Form = React.createClass({
     }.bind(this));
   },
 
-  _displayLoginForm: function() {
-    alert('user is not logged in!');
+  _displayLoginForm: function(cb) {
+    this.emit(OVERLAY_EVENT, {
+      hidden: false,
+      component: AuthForm,
+      props: {successCb: cb}
+    });
   },
 
   // things revolving this method are hacky
   _expandAndAnimate: function() {
-    var button;
     this.props.expandRows();
-    if (this.props.formError.indexOf('question') > 0) {
-      button = $('.expander-button')[0];
-    } else {
-      button = $('.expander-button')[1];
-    }
     $('html, body').animate({
-      scrollTop: $(button).offset().top - 200
+      scrollTop: $(this.refs.listForm.getDOMNode()).offset().top - 300
     }, 1000);
   },
 
@@ -94,7 +102,7 @@ var Form = React.createClass({
     var answerInputContainer = this.props.answerForm ? 'answer-text-input-container' : '';
     var inputContainerClassName = 'text-input-container ' + answerInputContainer + questionInputContainer;
     return (
-      <form className='form-container' onSubmit={this.handleSubmit}>
+      <form className='form-container' onSubmit={this.handleSubmit} ref='listForm'>
         <div className='form-info-box'>
           <p>{this.getFormInfo()}</p>
         </div>

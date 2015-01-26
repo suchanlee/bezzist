@@ -44,15 +44,6 @@ class AbstractUserCreatedModel(AbstractTimeStampedModel):
         self.deleted = True
         self.save()
 
-    def save(self, *args, **kwargs):
-        '''
-        Grabs user from request and saves it to the model.
-        '''
-        ## Can't enforce user currently.
-        if not self.user:
-            self.user = User.objects.get(id=1)
-        return super(AbstractUserCreatedModel, self).save(*args, **kwargs)
-
     def is_owner(self, user):
         if self.user == user:
             return True
@@ -114,6 +105,8 @@ class AbstractUserScoredModel(AbstractUserCreatedModel):
                 raise PermissionDenied()
             else:
                 self.liked.add(request.user)
+                request.user.userprofile.increment_score(1)
+                self.user.userprofile.increment_score(1)
         else:
             if self._anonymous_user_voted(request):
                 raise PermissionDenied()

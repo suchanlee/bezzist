@@ -2,10 +2,10 @@
  * Keep all hover styles unique to desktop.
  */
 
-@import '../LESSHat/lesshat.less';
+@import '../var/var.less';
 
-.expander-button, .row {
+.row-item, .expander-button {
   &:hover {
-    .box-shadow(3px 3px 0px 0px rgba(168, 168, 168, 1));
+    background-color: @light-grey;
   }
 }

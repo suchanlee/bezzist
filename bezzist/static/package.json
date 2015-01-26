@@ -26,7 +26,9 @@
     "watchify": "^2.1.1"
   },
   "scripts": {
-    "start": "watchify -o js/bundle.js -v -d .",
+    "js": "watchify -o js/bundle.js -v -d .",
+    "less": "watch-less -d styles/less -r styles/css -c -e .css",
+    "start": "npm run js & npm run less",
     "build": "NODE_ENV=production browserify . | uglifyjs -cm > js/bundle.min.js"
   },
   "author": "Suchan Lee",

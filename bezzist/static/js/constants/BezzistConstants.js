@@ -4,8 +4,15 @@ var keyMirror = require('keyMirror');
 
 module.exports = {
 
+  Regex: {
+    EMAIL: /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  },
+
   Status: {
-    FORBIDDEN: 403
+    BAD_REQUEST: 400,
+    FORBIDDEN: 403,
+    CONFLICT: 409,
+    SERVER_ERROR: 500
   },
 
   Stores: {
@@ -16,6 +23,7 @@ module.exports = {
 
   Events: keyMirror({
     CHANGE: null,
+    OVERLAY_EVENT: null,
   }),
 
   PayloadSources: keyMirror({

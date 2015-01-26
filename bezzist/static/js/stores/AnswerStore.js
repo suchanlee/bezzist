@@ -7,6 +7,7 @@ var EventEmitter = require('events').EventEmitter;
 
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 
+var UserStore = require('./UserStore');
 var AnswerConstants = require('../constants/AnswerConstants');
 var BezzistConstants = require('../constants/BezzistConstants');
 
@@ -128,18 +129,24 @@ AppDispatcher.register(function(payload) {
 
     case ActionTypes.ANSWER_UPVOTE:
       AnswerStore.getAnswerForQuestion(action.questionId, action.answerId).score += 1;
-      var update = {};
-      update[action.answerId] = true;
-      store.set(Stores.BEZZIST_ANSWERS, _.extend(store.get(Stores.BEZZIST_ANSWERS), update));
+      if (!UserStore.isAuthenticated()) {
+        var update = {};
+        update[action.answerId] = true;
+        store.set(Stores.BEZZIST_ANSWERS, _.extend(store.get(Stores.BEZZIST_ANSWERS), update));
+      }
+      UserStore.addAnswerLiked(action.answerId);
       AnswerStore.emitChange();
       break;
 
     case ActionTypes.ANSWER_UPVOTE_FAILED:
       AnswerStore.getAnswerForQuestion(action.questionId, action.answerId).score -= 1;
       if (action.status !== Status.FORBIDDEN) {
-        var votedAnswers = store.get(Stores.BEZZIST_ANSWERS);
-        delete votedAnswers[action.answerId];
-        store.set(Stores.BEZZIST_ANSWERS, votedAnswers);
+        if (!UserStore.isAuthenticated()) {
+          var votedAnswers = store.get(Stores.BEZZIST_ANSWERS);
+          delete votedAnswers[action.answerId];
+          store.set(Stores.BEZZIST_ANSWERS, votedAnswers);
+        }
+        UserStore.removeAnswerLiked(action.answerId);
       }
       AnswerStore.emitChange();
       break;

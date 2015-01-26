@@ -1,0 +1,48 @@
+/**
+ *
+ * Collection of global variables to be used in Bezzist
+ *
+ */
+nav {
+  z-index: 5;
+  position: fixed;
+  background-color: white;
+  border-top: solid 7px #1e90ff;
+  border-bottom: solid 2px #cbcbcb;
+  padding: 7px 0px;
+  width: 100%;
+  color: black;
+  font-size: 17px;
+}
+.nav-container {
+  margin: 0 auto;
+  max-width: 600px;
+}
+.nav-logo-img {
+  height: 33px;
+  vertical-align: middle;
+  cursor: pointer;
+}
+.nav-logo {
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0px 10px;
+  font-size: 18px;
+  vertical-align: middle;
+}
+.nav-login,
+.nav-user {
+  vertical-align: middle;
+  font-size: 15px;
+  margin-left: 15px;
+  float: right;
+  padding-top: 8px;
+}
+.nav-login a,
+.nav-user a {
+  color: black;
+  text-decoration: none;
+}
+.nav-logout {
+  margin-left: 15px;
+}

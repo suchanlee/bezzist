@@ -22,7 +22,7 @@ var UpcomingBox = React.createClass({
     return (
       <div className='upcoming-container'>
         <div className='list-header secondary-list-header'>
-          <h2>what would you like to ask the cornell community?</h2>
+          <h2>Ask questions to the Cornell community</h2>
         </div>
         <QuestionList
           ref='questionList' />
