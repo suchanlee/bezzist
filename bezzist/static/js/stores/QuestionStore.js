@@ -62,6 +62,9 @@ var QuestionStore = assign({}, EventEmitter.prototype, {
   _createQuestion: function(question) {
     question.created = moment(question.created);
     question.modified = moment(question.modified);
+    if (question.published) {
+      question.published = moment(question.published);
+    }
     return question
   },
 

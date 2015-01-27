@@ -19,6 +19,22 @@ var QuestionBox = React.createClass({
     this.refs.answerList.refs.list.expandRows();
   },
 
+  getQuestionDate: function() {
+    var today = moment();
+    var diffDays = Math.floor(moment.duration(today.diff(this.props.question.published)).asHours() / 24);
+    var date;
+    if (diffDays == 0) {
+      date = 'Today';
+    } else if (diffDays == 1) {
+      date = 'Yesterday'
+    } else if (diffDays < 7) {
+      date = this.props.question.published.format('dddd');
+    } else {
+      date = this.props.quesiton.published.format('MMMM D');
+    }
+    return date;
+  },
+
   getQuestionText: function() {
     return this.props.question ? this.props.question.question : '';
   },
@@ -38,7 +54,7 @@ var QuestionBox = React.createClass({
   render: function() {
     return (
       <div className='question-box'>
-        <h3 className='question-posted-date'>{this.props.question.created.format('MMM D, YYYY')}</h3>
+        <h3 className='question-posted-date'>{this.getQuestionDate()}</h3>
         <div className='list-header primary-list-header'>
           <h2>{this.getQuestionText()}</h2>
         </div>
