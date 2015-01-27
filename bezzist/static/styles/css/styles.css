@@ -118,7 +118,11 @@ footer p a {
 @media screen and (max-width: 480px) {
   .container,
   footer {
+    padding: 0px 0px;
+  }
+  .landing {
     padding: 0px 8px;
+    padding-top: 75px;
   }
 }
 nav {
@@ -163,6 +167,20 @@ nav {
 }
 .nav-logout {
   margin-left: 15px;
+}
+@media screen and (max-width: 480px) {
+  nav {
+    padding: 8px 0px;
+  }
+  .nav-logo-img {
+    height: 30px;
+    margin-left: 10px;
+  }
+  .nav-login,
+  .nav-user {
+    padding-right: 11px;
+    padding-top: 4px;
+  }
 }
 header {
   max-width: 600px;
@@ -477,26 +495,40 @@ header {
     line-height: 33px;
     font-size: 30px;
   }
-  .list {
+  .list-header h2 {
+    width: 90%;
     font-size: 25px;
+  }
+  .days-remaining-container {
+    margin-bottom: 5px;
+  }
+  .list {
+    font-size: 20px;
+    margin-top: 10px;
+  }
+  .row-item {
+    padding: 1px 0px;
   }
   .row {
     margin: 8px 0px;
-    line-height: 30px;
+    line-height: 25px;
   }
   .row-idx {
     margin-left: 13px;
-    width: 30px;
+    width: 25px;
   }
   .row-text {
     padding-left: 8px;
     max-width: calc(100% - 115px);
   }
+  .expander-button {
+    margin-bottom: 0px;
+  }
   .form-container {
-    margin-top: 10px;
+    margin-top: 20px;
   }
   .text-input {
-    font-size: 25px;
+    font-size: 20px;
   }
   .vote-box {
     width: 50px;
@@ -557,8 +589,11 @@ header {
   padding: 10px 40px;
   color: white;
   text-decoration: none;
-  margin-top: 10px;
+  margin-top: 15px;
   display: inline-block;
+  font-family: 'brandon-grotesque', 'Helvetica', 'Arial', sans-serif;
+  font-size: 15px;
+  border: none;
   -webkit-border-radius: 3px;
   -webkit-background-clip: padding-box;
   -moz-border-radius: 3px;
@@ -573,4 +608,21 @@ header {
 .auth-form-submit {
   background-color: #ffd800;
   margin-left: 5px;
+}
+@media screen and (max-width: 480px) {
+  .overlay-centered {
+    width: 95%;
+  }
+  .auth-form {
+    width: 100%;
+    min-width: none;
+    padding: 0 0 0 0;
+    border-top: 5px solid black;
+  }
+  .auth-form h2,
+  .auth-form p,
+  .auth-form form {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
 }
