@@ -7,7 +7,7 @@ var moment = require('moment');
 var QuestionTime = React.createClass({
   _getRemainingDays: function() {
     var expr_dt, days;
-    expr_dt = this.props.q.created.add(7, 'days');
+    expr_dt = this.props.q.published.add(7, 'days');
     days = moment.duration(expr_dt.diff(moment())).days() + 1;
     if (days > 0) {
       return days;
