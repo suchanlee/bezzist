@@ -106,7 +106,8 @@ class AbstractUserScoredModel(AbstractUserCreatedModel):
             else:
                 self.liked.add(request.user)
                 request.user.userprofile.increment_score(1)
-                self.user.userprofile.increment_score(1)
+                if (self.user != request.user):
+                    self.user.userprofile.increment_score(1)
         else:
             if self._anonymous_user_voted(request):
                 raise PermissionDenied()

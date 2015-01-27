@@ -3,7 +3,10 @@
 var $ = require('jquery');
 var docCookies = require('../lib/cookies');
 var Fingerprint = require('fingerprintjs');
+
 var QuestionServerActionCreators = require('../actions/QuestionServerActionCreators');
+var UserServerActionCreators = require('../actions/UserServerActionCreators');
+var PointsPerAction = require('../constants/UserConstants').PointsPerAction;
 
 module.exports = {
 
@@ -20,6 +23,7 @@ module.exports = {
     }));
     promise.done(function(question) {
       QuestionServerActionCreators.updateQuestion(question);
+      UserServerActionCreators.incrementPoints(PointsPerAction.CREATE);
     });
     promise.fail(function() {
       QuestionServerActionCreators.createQuestionFailed();
@@ -35,6 +39,9 @@ module.exports = {
         'bId': new Fingerprint().get(),
         'csrfmiddlewaretoken': docCookies.getItem('csrftoken')
       },
+    });
+    promise.done(function() {
+      UserServerActionCreators.incrementPoints(PointsPerAction.VOTE);
     });
     promise.fail(function(err) {
       QuestionServerActionCreators.upvoteFailedForQuestion(questionId, err.status);

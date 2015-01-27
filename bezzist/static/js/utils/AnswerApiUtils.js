@@ -4,7 +4,10 @@ var _ = require('underscore');
 var $ = require('jquery');
 var docCookies = require('../lib/cookies');
 var Fingerprint = require('fingerprintjs');
+
 var AnswerServerActionCreators = require('../actions/AnswerServerActionCreators');
+var UserServerActionCreators = require('../actions/UserServerActionCreators');
+var PointsPerAction = require('../constants/UserConstants').PointsPerAction;
 
 module.exports = {
 
@@ -29,6 +32,7 @@ module.exports = {
     var promise = $.post('/api/v1/answers/', JSON.stringify(data));
     promise.done(function(answer) {
       AnswerServerActionCreators.updateAnswer(questionId, answer);
+      UserServerActionCreators.incrementPoints(PointsPerAction.CREATE);
     });
     promise.fail(function() {
       AnswerServerActionCreators.createAnswerFailed(questionId);
@@ -44,6 +48,9 @@ module.exports = {
         'bId': new Fingerprint().get(),  // unique browser id from browser fingerprinting
         'csrfmiddlewaretoken': docCookies.getItem('csrftoken'),
       },
+    });
+    promise.done(function() {
+      UserServerActionCreators.incrementPoints(PointsPerAction.VOTE);
     });
     promise.fail(function(err) {
       AnswerServerActionCreators.upvoteFailedForAnswer(questionId, answerId, err.status);

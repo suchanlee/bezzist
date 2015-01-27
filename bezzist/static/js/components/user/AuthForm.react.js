@@ -24,7 +24,7 @@ var AuthForm = React.createClass({
   },
 
   _getTransformButtonText: function() {
-    return this.state.signup ? 'LOG IN?' : 'SIGN UP?';
+    return this.state.signup ? 'LOG IN' : 'SIGN UP';
   },
 
   _isInputValid: function() {
@@ -61,12 +61,10 @@ var AuthForm = React.createClass({
   },
 
   createSuccessCb: function() {
-    // this.emit(OVERLAY_EVENT, { hidden: true });
     location.reload();
   },
 
   loginSuccessCb: function() {
-    // this.emit(OVERLAY_EVENT, { hidden: true });
     location.reload();
   },
 
@@ -83,7 +81,7 @@ var AuthForm = React.createClass({
   },
 
   handleKeyUp: function(e) {
-    //TODO implement me
+    //TODO implement me -- close overlay on ESC press
   },
 
   handleSubmit: function(e) {
