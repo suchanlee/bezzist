@@ -46,3 +46,17 @@ nav {
 .nav-logout {
   margin-left: 15px;
 }
+@media screen and (max-width: 480px) {
+  nav {
+    padding: 8px 0px;
+  }
+  .nav-logo-img {
+    height: 30px;
+    margin-left: 10px;
+  }
+  .nav-login,
+  .nav-user {
+    padding-right: 11px;
+    padding-top: 4px;
+  }
+}

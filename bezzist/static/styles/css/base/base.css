@@ -118,6 +118,10 @@ footer p a {
 @media screen and (max-width: 480px) {
   .container,
   footer {
+    padding: 0px 0px;
+  }
+  .landing {
     padding: 0px 8px;
+    padding-top: 75px;
   }
 }
