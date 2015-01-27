@@ -75,6 +75,9 @@
   .overlay-centered {
     width: 95%;
   }
+  .nav-user-point-status {
+    display: none;
+  }
   .auth-form {
     width: 100%;
     min-width: none;

@@ -51,7 +51,8 @@ var Nav = React.createClass({
     if (this.state.user) {
       return (
         <span className='nav-user'>
-          <span>{UserStore.getPointStatus()}: {this.state.user.score} points</span>
+          <span className='nav-user-point-status'>{UserStore.getPointStatus()}: </span>
+          <span>{this.state.user.score} points</span>
           <a className='nav-logout' href='/profiles/logout'>Log out</a>
         </span>
       );
