@@ -71,3 +71,20 @@
   background-color: #ffd800;
   margin-left: 5px;
 }
+@media screen and (max-width: 480px) {
+  .overlay-centered {
+    width: 95%;
+  }
+  .auth-form {
+    width: 100%;
+    min-width: none;
+    padding: 0 0 0 0;
+    border-top: 5px solid black;
+  }
+  .auth-form h2,
+  .auth-form p,
+  .auth-form form {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
