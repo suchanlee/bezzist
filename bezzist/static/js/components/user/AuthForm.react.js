@@ -131,9 +131,9 @@ var AuthForm = React.createClass({
             type='password'
             onChange={this.handleInputChange}
             placeholder='confirm password' />
+          <a className='auth-form-button auth-form-signup' href='#' onClick={this.handleFormTransformClick}>{this._getTransformButtonText()}</a>
+          <button type='submit' className='auth-form-button auth-form-submit' href='#' onClick={this.handleSubmit}>SUBMIT</button>
         </form>
-        <a className='auth-form-button auth-form-signup' href='#' onClick={this.handleFormTransformClick}>{this._getTransformButtonText()}</a>
-        <a className='auth-form-button auth-form-submit' href='#' onClick={this.handleSubmit}>SUBMIT</a>
       </div>
     )
   }
