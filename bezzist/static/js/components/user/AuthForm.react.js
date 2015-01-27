@@ -52,7 +52,8 @@ var AuthForm = React.createClass({
     if (this.state.signup) {
       return 'Sign up with your @cornell.edu email';
     } else {
-      return 'Log in with your @cornell.edu email';
+      return 'Anyone can submit a vote, but to ask a question or submit a new answer you must be signed in. ' +
+        'Log in with your @cornell.edu email';
     }
   },
 
