@@ -27,7 +27,8 @@ class QuestionResource(AbstractBezzistResource):
         'finished': 'finished',
         'posted_by': 'user.username',
         'created': 'created',
-        'modified': 'modified'
+        'modified': 'modified',
+        'published': 'published_datetime'
     })
 
     def __init__(self, *args, **kwargs):
