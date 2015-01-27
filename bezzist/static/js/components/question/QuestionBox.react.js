@@ -30,7 +30,7 @@ var QuestionBox = React.createClass({
     } else if (diffDays < 7) {
       date = this.props.question.published.format('dddd');
     } else {
-      date = this.props.quesiton.published.format('MMMM D');
+      date = this.props.question.published.format('MMMM D');
     }
     return date;
   },
