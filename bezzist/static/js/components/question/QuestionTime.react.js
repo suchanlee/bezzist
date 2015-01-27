@@ -6,11 +6,12 @@ var moment = require('moment');
 
 var QuestionTime = React.createClass({
   _getRemainingDays: function() {
-    var expr_dt, days;
-    expr_dt = this.props.q.published.add(7, 'days');
-    days = moment.duration(expr_dt.diff(moment())).days() + 1;
-    if (days > 0) {
-      return days;
+    var expiryDate, remainingDays;
+    expiryDate = this.props.q.published;
+    expiryDate.add(7, 'days');
+    remainingDays = moment.duration(expiryDate.diff(moment())).days() + 1;
+    if (remainingDays > 0) {
+      return remainingDays;
     } else {
       return 0;
     }
