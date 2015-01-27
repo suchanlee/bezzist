@@ -31,6 +31,11 @@ class UserConfirmation(AbstractTimeStampedModel):
             [self.user.email])
 
     def confirm_user(self):
+        '''
+        Confirms a user, authenticates and logges her in,
+        and then send out an email to that user notifying
+        her of the confirmation.
+        '''
         self.user.is_active = True
         self.user.save()
         Mailer.send_html_mail(

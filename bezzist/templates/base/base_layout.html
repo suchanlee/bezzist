@@ -22,11 +22,15 @@
     <!-- End Typekit -->
 
     <!-- Styles -->
-    <link rel='stylesheet' type='text/css' href='{% static "styles/css/base/base.css" %}'>
-    <link rel='stylesheet' type='text/css' href='{% static "styles/css/question/question.css" %}'>
-    <link rel='stylesheet' type='text/css' href='{% static "styles/css/alert/alert.css" %}'>
-    <link rel='stylesheet' type='text/css' href='{% static "styles/css/user/user.css" %}'>
-    <link rel='stylesheet' type='text/css' href='{% static "styles/css/base/nav.css" %}'>
+    {% if DEBUG %}
+      <link rel='stylesheet' type='text/css' href='{% static "styles/css/base/base.css" %}'>
+      <link rel='stylesheet' type='text/css' href='{% static "styles/css/question/question.css" %}'>
+      <link rel='stylesheet' type='text/css' href='{% static "styles/css/alert/alert.css" %}'>
+      <link rel='stylesheet' type='text/css' href='{% static "styles/css/user/user.css" %}'>
+      <link rel='stylesheet' type='text/css' href='{% static "styles/css/base/nav.css" %}'>
+    {% else %}
+      <link rel="stylesheet" type="text/css" href='{% static "styles/css/styles.css" %}'>
+    {% endif %}
     {% if flavour == 'full' %}
     <link rel="stylesheet" type='text/css' href='{% static "styles/css/question/desktop.css" %}'>
     {% endif %}
