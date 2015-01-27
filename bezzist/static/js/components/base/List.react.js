@@ -40,9 +40,9 @@ var List = React.createClass({
 
   _expandButtonText: function() {
     if (this.state.expanded) {
-      return 'hide';
+      return 'Hide';
     } else {
-      return 'show more';
+      return 'Show More';
     }
   },
 

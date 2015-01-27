@@ -58,7 +58,7 @@ var Nav = React.createClass({
     } else {
       return (
         <span className='nav-login'>
-          <a href='javascript:void(0)' onClick={this.handleLoginClick}>Log in</a>
+          <a href='javascript:void(0)' onClick={this.handleLoginClick}>Log In</a>
         </span>
       );
     }
