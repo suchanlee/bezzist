@@ -11,6 +11,7 @@ module.exports = {
     QUESTION_DOWNVOTE: null,
     QUESTION_CREATE_FAILED: null,
     QUESTION_UPVOTE_FAILED: null,
+    SET_CURRENT_QUESTION: null,
     RECEIVE_ALL_QUESTIONS: null
   })
 

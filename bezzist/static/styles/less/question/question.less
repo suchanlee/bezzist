@@ -28,7 +28,6 @@
 
 .list {
   width: 100%;
-  max-width: @pageMaxWidth;
   text-align: left;
   margin: 0 auto;
   font-size: 25px;
@@ -133,11 +132,11 @@
 }
 
 .form-container {
-  max-width: @pageMaxWidth;
   width: 100%;
-  margin: 0 auto;
-  margin-top: 15px;
-  position: relative;
+  margin-bottom: 0px;
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
 }
 
 .form-info-box {
@@ -154,6 +153,62 @@
 
 .form-button {
   display: none;
+}
+
+.qna {
+  height: 100%;
+}
+
+.questions, .answers {
+  float: left;
+  height: ~"calc(100% - 56px)";
+  padding-top: 56px;
+  overflow-y: scroll;
+  border-right: 1px solid @grey;
+}
+
+.answers {
+  width: ~"calc(65% - 3px)";
+  position: relative;
+}
+
+.questions {
+  width: 35%;
+  border-left: 1px solid @grey;
+}
+
+.question-list {
+  padding: 0 0 0 0;
+  margin: 0 0 0 0;
+}
+
+.question-row {
+  padding: 20px 20px;
+  font-size: 22px;
+  border-bottom: 1px solid @grey;
+  cursor: pointer;
+  &:hover {
+    .opacity(0.8);
+  }
+}
+
+.question-row-ask {
+  background-color: @yellow;
+}
+
+.question-row-featured {
+  background-color: @red;
+  color: white;
+}
+
+.question-row-active {
+  background-color: @blue;
+  color: white;
+}
+
+.question-row-finished {
+  background-color: @green;
+  color: white;
 }
 
 .question-box {

@@ -20,7 +20,9 @@ var TMP_QUESTION_ID = -1;
 var _questions = {};
 var _activeQuestionIds = [];
 var _inactiveQuestionIds = [];
-var _featuredQuestionId = null;
+var _finishedQuestionIds = [];
+var _featuredQuestionIds = [];
+var _currentQuestion = null;
 
 var QuestionStore = assign({}, EventEmitter.prototype, {
 
@@ -46,6 +48,16 @@ var QuestionStore = assign({}, EventEmitter.prototype, {
     _.map(questions, function(question) {
       this.addQuestion(question);
     }.bind(this));
+    if (_featuredQuestionIds.length > 0) {
+      _currentQuestion = this.getQuestion(_featuredQuestionIds[0]);
+    } else if (_activeQuestionIds.length > 0) {
+      _currentQuestion = this.getQuestion(_activeQuestionIds[0]);
+    } else {
+      _currentQuestion = {
+        id: -1,
+        question: "What should tomorrow's question be?"
+      }
+    }
   },
 
   _toList: function(questionIds) {
@@ -84,9 +96,11 @@ var QuestionStore = assign({}, EventEmitter.prototype, {
     question = this._createQuestion(question);
     _questions[question.id] = question;
     if (question.featured) {
-      _featuredQuestionId = question.id;
+      _featuredQuestionIds.push(question.id);
     } else if (question.active) {
       _activeQuestionIds.push(question.id);
+    } else if (question.finished) {
+      _finishedQuestionIds.push(question.id);
     } else {
       _inactiveQuestionIds.push(question.id);
     }
@@ -124,8 +138,8 @@ var QuestionStore = assign({}, EventEmitter.prototype, {
     return _questions[questionId];
   },
 
-  getFeaturedQuestion: function() {
-    return _questions[_featuredQuestionId];
+  getFeaturedQuestions: function() {
+    return this._sortQuestionsByDatetime(this._toList(_featuredQuestionIds));
   },
 
   getActiveQuestions: function() {
@@ -134,6 +148,14 @@ var QuestionStore = assign({}, EventEmitter.prototype, {
 
   getInactiveQuestions: function() {
     return this._sortQuestionsByScore(this._toList(_inactiveQuestionIds));
+  },
+
+  getFinishedQuestions: function() {
+    return this._sortQuestionsByDatetime(this._toList(_finishedQuestionIds));
+  },
+
+  getCurrentQuestion: function() {
+    return _currentQuestion;
   },
 
   getQuestions: function() {
@@ -196,6 +218,11 @@ AppDispatcher.register(function(payload) {
 
     case ActionTypes.QUESTION_UPDATE:
       QuestionStore.updateQuestion(action.question);
+      QuestionStore.emitChange();
+      break;
+
+    case ActionTypes.SET_CURRENT_QUESTION:
+      _currentQuestion = action.question;
       QuestionStore.emitChange();
       break;
 

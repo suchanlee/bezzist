@@ -20,6 +20,13 @@ module.exports = {
       question: question
     });
     return QuestionApiUtils.createQuestion(question);
-  }
+  },
+
+  setCurrentQuestion: function(question) {
+    AppDispatcher.handleViewAction({
+      type: ActionTypes.SET_CURRENT_QUESTION,
+      question: question
+    });
+  },
 
 };

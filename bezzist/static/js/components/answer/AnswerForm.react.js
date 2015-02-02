@@ -8,14 +8,19 @@ var React = require('react');
 var $ = require('jquery');
 var Form = require('../base/Form.react');
 var AnswerViewActionCreators = require('../../actions/AnswerViewActionCreators');
+var QuestionViewActionCreators = require('../../actions/QuestionViewActionCreators');
+var QuestionStore = require('../../stores/QuestionStore');
 
 var AnswerForm = React.createClass({
   getFormError: function() {
-    return 'The answer field cannot be empty :(';
+    return 'The field cannot be empty :(';
   },
 
   createAnswer: function(answer) {
-    return AnswerViewActionCreators.createAnswer(this.props.question.id, answer);
+    if (QuestionStore.getCurrentQuestion().id === -1) {
+      return QuestionViewActionCreators.createQuestion(answer);
+    }
+    return AnswerViewActionCreators.createAnswer(QuestionStore.getCurrentQuestion().id, answer);
   },
 
   render: function() {

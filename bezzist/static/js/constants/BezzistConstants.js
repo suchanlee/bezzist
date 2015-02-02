@@ -24,6 +24,7 @@ module.exports = {
   Events: keyMirror({
     CHANGE: null,
     OVERLAY_EVENT: null,
+    SELECTED_QUESTION_CHANGE: null
   }),
 
   PayloadSources: keyMirror({

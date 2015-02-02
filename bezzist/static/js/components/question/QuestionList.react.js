@@ -4,12 +4,10 @@
   */
 'use strict';
 
-var React = require('react');
-var _ = require('underscore');
-var List = require('../base/List.react');
-var QuestionRow = require('./QuestionRow.react');
-var QuestionStore = require('../../stores/QuestionStore');
-var UserStore = require('../../stores/UserStore');
+var React = require('react'),
+    _ = require('underscore'),
+    QuestionRow = require('./QuestionRow.react'),
+    QuestionStore = require('../../stores/QuestionStore');
 
 
 var QuestionList = React.createClass({
@@ -19,40 +17,57 @@ var QuestionList = React.createClass({
 
   componentDidMount: function() {
     QuestionStore.addChangeListener(this._onChange);
-    UserStore.addChangeListener(this._onChange);
   },
 
   componentWillUnmount: function() {
     QuestionStore.removeChangeListener(this._onChange);
-    UserStore.removeChangeListener(this._onChange);
   },
 
-  _getStateFromStores: function() {
-    return {
-      questions: QuestionStore.getInactiveQuestions()
-    };
+  getQuestions: function() {
+    var ask, featured, active, finished;
+    ask = [<QuestionRow
+            key='-1'
+            question= { {question: "What should tomorrow's question be?", id: -1} }
+            status='ask' />];
+    featured = _.map(this.state.featured, function(question) {
+      return <QuestionRow
+              key={question.id}
+              question={question}
+              status='featured' />;
+    });
+    active = _.map(this.state.active, function(question) {
+      return <QuestionRow
+              key={question.id}
+              question={question}
+              status='active' />;
+    });
+    finished = _.map(this.state.finished, function(question) {
+      return <QuestionRow
+              key={question.id}
+              question={question}
+              status='finished' />;
+    });
+    return ask.concat(featured).concat(active).concat(finished);
   },
 
   _onChange: function() {
     this.setState(this._getStateFromStores());
   },
 
-  _getRows: function() {
-    return _.map(this.state.questions, function(question, idx) {
-      return <QuestionRow
-              key={question.id}
-              question={question}
-              idx={idx+1}
-              updateQuestion={this.props.updateQuestion} />;
-    }.bind(this));
+  _getStateFromStores: function() {
+    return {
+      featured: QuestionStore.getFeaturedQuestions(),
+      active: QuestionStore.getActiveQuestions(),
+      finished: QuestionStore.getFinishedQuestions()
+    };
   },
 
   render: function() {
     return (
-      <List
-        ref='list'
-        qList={true}
-        rows={this._getRows()} />
+      <ul className='question-list'>
+        <li className='question-row'>Questions</li>
+        {this.getQuestions()}
+      </ul>
     );
   }
 });

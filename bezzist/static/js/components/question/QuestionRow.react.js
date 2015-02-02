@@ -4,37 +4,29 @@
   */
 'use strict';
 
-var React = require('react');
-var $ = require('jquery');
-var store = require('store');
+var React = require('react'),
 
-var QuestionViewActionCreators = require('../../actions/QuestionViewActionCreators');
-var Stores = require('../../constants/BezzistConstants').Stores;
-var UserStore = require('../../stores/UserStore');
-
-var Row = require('../base/Row.react');
+    QuestionViewActionCreators = require('../../actions/QuestionViewActionCreators');
 
 var QuestionRow = React.createClass({
-  vote: function() {
-    QuestionViewActionCreators.upvoteQuestion(this.props.question.id);
+  setAsCurrentQuestion: function() {
+    QuestionViewActionCreators.setCurrentQuestion(this.props.question);
   },
 
-  hasVoted: function() {
-    if (!UserStore.isAuthenticated() && store.get(Stores.BEZZIST_QUESTIONS).hasOwnProperty(this.props.question.id)) {
-      return true;
-    }
-    return UserStore.containsQuestionLiked(this.props.question.id);
+  handleClick: function(evt) {
+    this.setAsCurrentQuestion();
+    evt.preventDefault();
+    evt.stopPropagation();
   },
 
   render: function() {
+    var className = 'question-row ' + 'question-row-' + this.props.status;
     return (
-      <Row
-        vote={this.vote}
-        id={this.props.question.id}
-        content={this.props.question.question}
-        score={this.props.question.score}
-        idx={this.props.idx}
-        hasVoted={this.hasVoted} />
+      <li
+        className={className}
+        onClick={this.handleClick}>
+        {this.props.question.question}
+      </li>
     );
   }
 });

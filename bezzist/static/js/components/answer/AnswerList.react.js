@@ -1,11 +1,12 @@
 /** @jsx React.DOM */
 'use strict';
 
-var React = require('react');
-var _ = require('underscore');
-var List = require('../base/List.react');
-var AnswerRow = require('../answer/AnswerRow.react');
-var AnswerStore = require('../../stores/AnswerStore');
+var React = require('react'),
+    _ = require('underscore'),
+
+    AnswerRow = require('../answer/AnswerRow.react'),
+    AnswerStore = require('../../stores/AnswerStore'),
+    QuestionStore = require('../../stores/QuestionStore');
 
 var AnswerList = React.createClass({
   getInitialState: function() {
@@ -17,18 +18,32 @@ var AnswerList = React.createClass({
   },
 
   _getStateFromStores: function() {
-    var questionId = this.props.question ? this.props.question.id : -1;
+    var question, questionId, answers;
+    question = QuestionStore.getCurrentQuestion();
+    questionId = question ? question.id : -2; //TODO: this is a hack -- fix it later.
+    if (questionId === -1) {
+      answers = QuestionStore.getInactiveQuestions();
+    } else {
+      answers = AnswerStore.getAnswersForQuestion(questionId);
+    }
     return {
-      answers: AnswerStore.getAnswersForQuestion(questionId)
+      question: question,
+      answers: answers
     };
   },
 
   componentDidMount: function() {
     AnswerStore.addChangeListener(this._onChange);
+    QuestionStore.addChangeListener(this._onChange);
   },
 
   componentWillUnmount: function() {
     AnswerStore.removeChangeListener(this._onChange);
+    QuestionStore.addChangeListener(this._onChange);
+  },
+
+  selectedQuestionChangeHandler: function(payload) {
+    this.setState(payload);
   },
 
   _getRows: function() {
@@ -37,15 +52,15 @@ var AnswerList = React.createClass({
               key={answer.id}
               answer={answer}
               idx={idx+1}
-              question={this.props.question} />;
+              question={this.state.question} />;
     }.bind(this));
   },
 
   render: function() {
     return (
-      <List
-        ref='list'
-        rows={this._getRows()} />
+      <ul className='list'>
+        {this._getRows()}
+      </ul>
     );
   }
 });

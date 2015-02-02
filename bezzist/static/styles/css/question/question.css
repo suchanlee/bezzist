@@ -27,7 +27,6 @@
 }
 .list {
   width: 100%;
-  max-width: 600px;
   text-align: left;
   margin: 0 auto;
   font-size: 25px;
@@ -137,11 +136,11 @@
   border-bottom: 6px solid #1e90ff;
 }
 .form-container {
-  max-width: 600px;
   width: 100%;
-  margin: 0 auto;
-  margin-top: 15px;
-  position: relative;
+  margin-bottom: 0px;
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
 }
 .form-info-box {
   position: absolute;
@@ -156,6 +155,57 @@
 }
 .form-button {
   display: none;
+}
+.qna {
+  height: 100%;
+}
+.questions,
+.answers {
+  float: left;
+  height: calc(100% - 56px);
+  padding-top: 56px;
+  overflow-y: scroll;
+  border-right: 1px solid #cbcbcb;
+}
+.answers {
+  width: calc(65% - 3px);
+  position: relative;
+}
+.questions {
+  width: 35%;
+  border-left: 1px solid #cbcbcb;
+}
+.question-list {
+  padding: 0 0 0 0;
+  margin: 0 0 0 0;
+}
+.question-row {
+  padding: 20px 20px;
+  font-size: 22px;
+  border-bottom: 1px solid #cbcbcb;
+  cursor: pointer;
+}
+.question-row:hover {
+  zoom: 1;
+  filter: alpha(opacity=80);
+  -webkit-opacity: 0.8;
+  -moz-opacity: 0.8;
+  opacity: 0.8;
+}
+.question-row-ask {
+  background-color: #ffd800;
+}
+.question-row-featured {
+  background-color: #ea212d;
+  color: white;
+}
+.question-row-active {
+  background-color: #1e90ff;
+  color: white;
+}
+.question-row-finished {
+  background-color: #4682b4;
+  color: white;
 }
 .question-box {
   margin-top: 80px;
