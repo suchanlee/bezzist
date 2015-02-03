@@ -11,19 +11,23 @@
   color: white;
 }
 .list-header h2 {
-  margin: 0 0 0 0;
-  font-size: 35px;
-  line-height: 44px;
-  font-weight: 500;
+  font-size: 33px;
+  line-height: 42px;
+  width: 90%;
+  margin: 0 auto;
+  text-transform: uppercase;
 }
 .primary-list-header {
   background-color: #1e90ff;
-  padding: 20px;
 }
 .secondary-list-header {
   background-color: #ffd800;
   color: black;
   cursor: pointer;
+}
+.secondary-list-header h2 {
+  font-size: 23px;
+  line-height: 25px;
 }
 .secondary-list-header:hover {
   background-color: #eec700;
@@ -36,10 +40,6 @@
   font-size: 25px;
   list-style-type: none;
   padding-left: 0px;
-}
-.upcoming-description {
-  color: #666;
-  margin: 0 auto;
 }
 .expander-container {
   text-align: center;
@@ -192,8 +192,8 @@
   margin-bottom: 80px;
 }
 .question-posted-date {
-  margin-top: 0px;
-  margin-bottom: 6px;
+  width: 90%;
+  margin: 0 auto;
   font-size: 15px;
   font-weight: 300;
 }
@@ -214,14 +214,38 @@
 }
 .upcoming-container {
   width: 100%;
-  max-width: 600px;
   margin: 0 auto;
+  margin-bottom: 30px;
+  max-width: 600px;
   text-align: center;
+}
+.upcoming-description {
+  color: #666;
+}
+.upcoming-list {
+  margin-bottom: 80px;
 }
 .upcoming-header-text {
   font-size: 30px;
   font-weight: 500;
   margin: 0px;
+}
+.question-days-remaining,
+.question-days-vote-now {
+  line-height: 15px;
+}
+.question-days-vote-now {
+  font-weight: 500;
+}
+.days-remaining-container {
+  font-size: 12px;
+  margin-top: 20px;
+  margin-bottom: 0px;
+}
+.vote-pointer {
+  height: 30px;
+  vertical-align: bottom;
+  margin-left: 10px;
 }
 .question-text-input-container {
   border-bottom: 2px solid #ffd800;
@@ -235,8 +259,6 @@
   .list-header h2 {
     width: 88%;
     font-size: 28px;
-    margin: 0 auto;
-    text-transform: uppercase;
     line-height: 33px;
   }
   .secondary-list-header h2 {
@@ -270,9 +292,6 @@
   .question-days-vote-now {
     line-height: 14px;
   }
-  .question-days-vote-now {
-    font-weight: 500;
-  }
   .days-remaining-container {
     font-size: 11px;
     margin-top: 15px;
@@ -280,8 +299,6 @@
   }
   .vote-pointer {
     height: 26px;
-    vertical-align: bottom;
-    margin-left: 10px;
   }
   .list {
     font-size: 22px;
@@ -316,8 +333,6 @@
   .list-header h2 {
     width: 88%;
     font-size: 24px;
-    margin: 0 auto;
-    text-transform: uppercase;
     line-height: 30px;
   }
   .secondary-list-header h2 {
@@ -351,9 +366,6 @@
   .question-days-vote-now {
     line-height: 13px;
   }
-  .question-days-vote-now {
-    font-weight: 500;
-  }
   .days-remaining-container {
     font-size: 10px;
     margin-top: 8px;
@@ -361,8 +373,6 @@
   }
   .vote-pointer {
     height: 26px;
-    vertical-align: bottom;
-    margin-left: 10px;
   }
   .list {
     font-size: 20px;
