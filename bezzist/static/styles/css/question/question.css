@@ -16,6 +16,7 @@
   width: 90%;
   margin: 0 auto;
   text-transform: uppercase;
+  font-weight: 500;
 }
 .primary-list-header {
   background-color: #1e90ff;
@@ -28,6 +29,7 @@
 .secondary-list-header h2 {
   font-size: 23px;
   line-height: 25px;
+  font-weight: 700;
 }
 .secondary-list-header:hover {
   background-color: #eec700;
