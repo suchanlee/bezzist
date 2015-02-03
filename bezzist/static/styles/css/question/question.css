@@ -11,8 +11,8 @@
   color: white;
 }
 .list-header h2 {
-  font-size: 33px;
-  line-height: 42px;
+  font-size: 30px;
+  line-height: 37px;
   width: 90%;
   margin: 0 auto;
   text-transform: uppercase;
@@ -199,10 +199,6 @@
   font-size: 15px;
   font-weight: 300;
 }
-.days-remaining-container {
-  text-align: center;
-  margin-bottom: 8px;
-}
 .days-remaining {
   display: inline-block;
 }
@@ -241,8 +237,9 @@
 }
 .days-remaining-container {
   font-size: 12px;
-  margin-top: 20px;
+  margin-top: 12px;
   margin-bottom: 0px;
+  text-align: center;
 }
 .vote-pointer {
   height: 30px;
