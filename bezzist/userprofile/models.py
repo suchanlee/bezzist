@@ -62,6 +62,10 @@ class UserProfile(AbstractTimeStampedModel, MappableModel):
         self.score += increment
         self.save()
 
+    def decrement_score(self, decrement):
+        self.score -= decrement
+        self.save()
+
     def liked_questions(self):
         return map(lambda question: question.id, self.user.question_liked_users.all())
 

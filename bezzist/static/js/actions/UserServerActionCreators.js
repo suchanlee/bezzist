@@ -27,4 +27,11 @@ module.exports = {
     });
   },
 
+  decrementPoints: function(decrement) {
+    AppDispatcher.handleServerAction({
+      type: ActionTypes.DECREMENT_USER_POINTS,
+      decrement: decrement
+    });
+  },
+
 };

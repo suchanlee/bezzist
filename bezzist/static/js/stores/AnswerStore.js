@@ -128,6 +128,9 @@ AppDispatcher.register(function(payload) {
       break;
 
     case ActionTypes.ANSWER_UPVOTE:
+      //TODO: all the upvote/unvote things need to be
+      // refactored out into the model, when it's made for answers and questions.
+      // currently, this has too much logic it should not.
       AnswerStore.getAnswerForQuestion(action.questionId, action.answerId).score += 1;
       if (!UserStore.isAuthenticated()) {
         var update = {};
@@ -147,6 +150,30 @@ AppDispatcher.register(function(payload) {
           store.set(Stores.BEZZIST_ANSWERS, votedAnswers);
         }
         UserStore.removeAnswerLiked(action.answerId);
+      }
+      AnswerStore.emitChange();
+      break;
+
+    case ActionTypes.ANSWER_UNVOTE:
+      AnswerStore.getAnswerForQuestion(action.questionId, action.answerId).score -= 1;
+      if (!UserStore.isAuthenticated()) {
+        var votedAnswers = store.get(Stores.BEZZIST_ANSWERS);
+        delete votedAnswers[action.answerId];
+        store.set(Stores.BEZZIST_ANSWERS, votedAnswers);
+      }
+      UserStore.removeAnswerLiked(action.answerId);
+      AnswerStore.emitChange();
+      break;
+
+    case ActionTypes.ANSWER_UNVOTE_FAILED:
+      AnswerStore.getAnswerForQuestion(action.questionId, action.answerId).score += 1;
+      if (action.status !== Status.FORBIDDEN) {
+        if (!UserStore.isAuthenticated()) {
+          var update = {};
+          update[action.answerId] = true;
+          store.set(Stores.BEZZIST_ANSWERS, _.extend(store.get(Stores.BEZZIST_ANSWERS), update));
+        }
+        UserStore.addAnswerLiked(action.answerId);
       }
       AnswerStore.emitChange();
       break;

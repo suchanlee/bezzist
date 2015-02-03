@@ -57,4 +57,21 @@ module.exports = {
     });
   },
 
+  unvoteAnswer: function(questionId, answerId) {
+    var promise = $.ajax({
+      url: '/api/v1/answers/' + answerId + '/decrementScore',
+      type: 'POST',
+      data: {
+        'bId': new Fingerprint().get(),  // unique browser id from browser fingerprinting
+        'csrfmiddlewaretoken': docCookies.getItem('csrftoken'),
+      },
+    });
+    promise.done(function() {
+      UserServerActionCreators.decrementPoints(PointsPerAction.VOTE);
+    });
+    promise.fail(function(err) {
+      AnswerServerActionCreators.unvoteFailedForAnswer(questionId, answerId, err.status);
+    });
+  },
+
 };

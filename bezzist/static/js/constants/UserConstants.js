@@ -31,7 +31,8 @@ module.exports = {
     RECEIVE_NON_USER: null,
     CREATE_USER: null,
     LOGIN_USER: null,
-    INCREMENT_USER_POINTS: null
+    INCREMENT_USER_POINTS: null,
+    DECREMENT_USER_POINTS: null
   })
 
 };

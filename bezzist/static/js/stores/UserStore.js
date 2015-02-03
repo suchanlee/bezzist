@@ -96,6 +96,11 @@ var UserStore = assign({}, EventEmitter.prototype, {
   incrementPoints: function(increment) {
     _user.score += increment;
     this._setPointStatus(_user.score);
+  },
+
+  decrementPoints: function(decrement) {
+    _user.score -= decrement;
+    this._setPointStatus(_user.score);
   }
 
 });
@@ -117,11 +122,13 @@ AppDispatcher.register(function(payload) {
       UserStore.emitChange();
       break;
 
-    case ActionTypes.RECEIVE_NON_USER:
-      break;
-
     case ActionTypes.INCREMENT_USER_POINTS:
       UserStore.incrementPoints(action.increment);
+      UserStore.emitChange();
+      break;
+
+    case ActionTypes.DECREMENT_USER_POINTS:
+      UserStore.decrementPoints(action.decrement);
       UserStore.emitChange();
       break;
 

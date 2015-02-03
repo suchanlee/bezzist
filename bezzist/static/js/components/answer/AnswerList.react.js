@@ -12,6 +12,14 @@ var AnswerList = React.createClass({
     return this._getStateFromStores();
   },
 
+  componentDidMount: function() {
+    AnswerStore.addChangeListener(this._onChange);
+  },
+
+  componentWillUnmount: function() {
+    AnswerStore.removeChangeListener(this._onChange);
+  },
+
   _onChange: function() {
     this.setState(this._getStateFromStores());
   },
@@ -21,14 +29,6 @@ var AnswerList = React.createClass({
     return {
       answers: AnswerStore.getAnswersForQuestion(questionId)
     };
-  },
-
-  componentDidMount: function() {
-    AnswerStore.addChangeListener(this._onChange);
-  },
-
-  componentWillUnmount: function() {
-    AnswerStore.removeChangeListener(this._onChange);
   },
 
   _getRows: function() {

@@ -116,7 +116,20 @@ class AbstractUserScoredModel(AbstractUserCreatedModel):
         return self._modify_score(self.score+1)
 
     def decrement_score(self, request):
-        raise NotImplementedError('Decrementing score is not implemented.')
+        if request.user.is_authenticated():
+            if request.user in self.liked.all():
+                self.liked.remove(request.user)
+                request.user.userprofile.decrement_score(1)
+                if (self.user != request.user):
+                    self.user.userprofile.decrement_score(1)
+            else:
+                raise PermissionDenied()
+        else:
+            if not self._anonymous_user_voted(request):
+                raise PermissionDenied()
+            else:
+                self._process_anonymous_user_unvote(request)
+        return self._modify_score(self.score-1)
 
     def _modify_score(self, score):
         self.score = score
@@ -130,7 +143,6 @@ class AbstractUserScoredModel(AbstractUserCreatedModel):
                 return True
         except:
             request.session[self._get_vote_session_key()] = {}  # using dictionary instead of set for JSON serializability
-
         # Check browser
         if self._get_or_create_browser_identifier(request) in self.liked_browsers.all():
             return True
@@ -142,6 +154,11 @@ class AbstractUserScoredModel(AbstractUserCreatedModel):
         request.session[self._get_vote_session_key()][self.id] = self.id
         request.session.modified = True
         self.liked_browsers.add(self._get_or_create_browser_identifier(request))
+
+    def _process_anonymouse_user_unvote(self, request):
+        request.session[self._get_vote_session_key()].pop(self.id)
+        request.session.modified = True
+        self.liked_browsers.remove(self._get_or_create_browser_identifier(request))
 
     def _get_or_create_browser_identifier(self, request):
         try:

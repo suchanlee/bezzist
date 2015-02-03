@@ -150,6 +150,7 @@ AppDispatcher.register(function(payload) {
   switch(action.type) {
 
     case ActionTypes.QUESTION_UPVOTE:
+      //TODO: remove all this logic out to model when it's made.
       QuestionStore.getQuestion(action.questionId).score += 1;
       if (!UserStore.isAuthenticated()) {
         var update = {};
@@ -169,6 +170,31 @@ AppDispatcher.register(function(payload) {
           store.set(Stores.BEZZIST_QUESTIONS, votedQuestions);
         }
         UserStore.removeQuestionLiked(action.questionId);
+      }
+      QuestionStore.emitChange();
+      break;
+
+
+    case ActionTypes.QUESTION_UNVOTE:
+      QuestionStore.getQuestion(action.questionId).score -= 1;
+      if (!UserStore.isAuthenticated()) {
+        var votedQuestions = store.get(Stores.BEZZIST_QUESTIONS);
+        delete votedQuestions[action.questionId];
+        store.set(Stores.BEZZIST_QUESTIONS, votedQuestions);
+      }
+      UserStore.removeQuestionLiked(action.questionId);
+      QuestionStore.emitChange();
+      break;
+
+    case ActionTypes.QUESTION_UNVOTE_FAILED:
+      QuestionStore.getQuestion(action.questionId).score += 1;
+      if (action.status !== Status.FORBIDDEN) {
+        if (!UserStore.isAuthenticated()) {
+          var update = {};
+          update[action.questionId] = true;
+          store.set(Stores.BEZZIST_QUESTIONS, _.extend(store.get(Stores.BEZZIST_QUESTIONS), update));
+        }
+        UserStore.addQuestionLiked(action.questionId);
       }
       QuestionStore.emitChange();
       break;

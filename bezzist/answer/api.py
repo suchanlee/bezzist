@@ -87,12 +87,24 @@ class ActiveAndFeaturedAnswerRpcResource(View):
         return JsonResponse(answers, safe=False)
 
 
-class AnswerScoreRpcResource(View):
+class IncrementScoreRpcResource(View):
 
     # POST /api/answers/<pk>/incrementScore
     def post(self, request, pk):
         answer = get_object_or_404(Answer, pk=pk)
         answer.increment_score(request)
+        return JsonResponse({
+            'id': answer.id,
+            'question': answer.answer,
+            'score': answer.score
+        })
+
+class DecrementScoreRpcResource(View):
+
+    # POST /api/answers/<pk>/incrementScore
+    def post(self, request, pk):
+        answer = get_object_or_404(Answer, pk=pk)
+        answer.decrement_score(request)
         return JsonResponse({
             'id': answer.id,
             'question': answer.answer,

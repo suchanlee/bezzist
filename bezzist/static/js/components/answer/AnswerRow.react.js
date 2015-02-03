@@ -16,6 +16,10 @@ var AnswerRow = React.createClass({
     return AnswerViewActionCreators.upvoteAnswer(this.props.question.id, this.props.answer.id);
   },
 
+  unvote: function() {
+    return AnswerViewActionCreators.unvoteAnswer(this.props.question.id, this.props.answer.id);
+  },
+
   hasVoted: function() {
     if (this.props.question.finished) {
       return true;
@@ -30,6 +34,7 @@ var AnswerRow = React.createClass({
     return (
       <Row
         vote={this.vote}
+        unvote={this.unvote}
         id={this.props.answer.id}
         content={this.props.answer.answer}
         score={this.props.answer.score}

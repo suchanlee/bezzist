@@ -46,6 +46,23 @@ module.exports = {
     promise.fail(function(err) {
       QuestionServerActionCreators.upvoteFailedForQuestion(questionId, err.status);
     });
+  },
+
+  unvoteQuestion: function(questionId) {
+    var promise = $.ajax({
+      url: '/api/v1/questions/' + questionId + '/decrementScore',
+      type: 'POST',
+      data: {
+        'bId': new Fingerprint().get(),
+        'csrfmiddlewaretoken': docCookies.getItem('csrftoken')
+      },
+    });
+    promise.done(function() {
+      UserServerActionCreators.decrementPoints(PointsPerAction.VOTE);
+    });
+    promise.fail(function(err) {
+      QuestionServerActionCreators.unvoteFailedForQuestion(questionId, err.status);
+    });
   }
 
 };

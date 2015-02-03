@@ -19,6 +19,10 @@ var QuestionRow = React.createClass({
     QuestionViewActionCreators.upvoteQuestion(this.props.question.id);
   },
 
+  unvote: function() {
+    QuestionViewActionCreators.unvoteQuestion(this.props.question.id);
+  },
+
   hasVoted: function() {
     if (!UserStore.isAuthenticated() && store.get(Stores.BEZZIST_QUESTIONS).hasOwnProperty(this.props.question.id)) {
       return true;
@@ -30,6 +34,7 @@ var QuestionRow = React.createClass({
     return (
       <Row
         vote={this.vote}
+        unvote={this.unvote}
         id={this.props.question.id}
         content={this.props.question.question}
         score={this.props.question.score}

@@ -20,6 +20,14 @@ module.exports = {
     });
   },
 
+  unvoteFailedForQuestion: function(questionId, status) {
+    AppDispatcher.handleServerAction({
+      type: ActionTypes.QUESTION_UNVOTE_FAILED,
+      questionId: questionId,
+      status: status
+    });
+  },
+
   updateQuestion: function(question) {
     AppDispatcher.handleServerAction({
       type: ActionTypes.QUESTION_UPDATE,
