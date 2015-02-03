@@ -155,9 +155,13 @@ class AbstractUserScoredModel(AbstractUserCreatedModel):
         request.session.modified = True
         self.liked_browsers.add(self._get_or_create_browser_identifier(request))
 
-    def _process_anonymouse_user_unvote(self, request):
-        request.session[self._get_vote_session_key()].pop(self.id)
-        request.session.modified = True
+    def _process_anonymous_user_unvote(self, request):
+        try:
+            request.session[self._get_vote_session_key()].pop(str(self.id))
+            request.session.modified = True
+        except:
+            # if it doesn't exist in the session, that's fine.
+            pass
         self.liked_browsers.remove(self._get_or_create_browser_identifier(request))
 
     def _get_or_create_browser_identifier(self, request):
