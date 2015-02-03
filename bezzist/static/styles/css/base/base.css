@@ -115,6 +115,16 @@ footer p a {
     transform: rotate(360deg);
   }
 }
+@media screen and (min-width: 481px) and (max-width: 650px) {
+  .container,
+  footer {
+    padding: 0px 0px;
+  }
+  .landing {
+    padding: 0px 8px;
+    padding-top: 90px;
+  }
+}
 @media screen and (max-width: 480px) {
   .container,
   footer {

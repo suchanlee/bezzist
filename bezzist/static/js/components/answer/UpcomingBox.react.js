@@ -42,7 +42,7 @@ var UpcomingBox = React.createClass({
         </div>
         <div className={listClass}>
           <p className='upcoming-description'>The question with the most votes is chosen
-          to be asked tomorrow. Cast your vote and add your question!</p>
+          to be asked tomorrow.<br />Cast your vote and add your question!</p>
           <QuestionList
             ref='questionList' />
           <QuestionForm expandRows={this.expandRows} />

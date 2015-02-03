@@ -226,6 +226,87 @@
 .question-text-input-container {
   border-bottom: 2px solid #ffd800;
 }
+@media screen and (min-width: 481px) and (max-width: 650px) {
+  .list-header {
+    padding: 14px 0px;
+    line-height: 33px;
+    font-size: 30px;
+  }
+  .list-header h2 {
+    width: 88%;
+    font-size: 28px;
+    margin: 0 auto;
+    text-transform: uppercase;
+    line-height: 33px;
+  }
+  .secondary-list-header h2 {
+    font-size: 20px;
+    line-height: 23px;
+  }
+  .upcoming-container {
+    margin-bottom: 20px;
+  }
+  .upcoming-list {
+    margin-bottom: 70px;
+  }
+  .upcoming-description {
+    margin-top: 12px;
+    margin-bottom: 12px;
+    line-height: 14px;
+    font-size: 13px;
+    width: 95%;
+  }
+  .question-box {
+    margin-bottom: 70px;
+  }
+  .question-posted-date {
+    width: 88%;
+    margin: 0 auto;
+    font-size: 13px;
+    margin-bottom: 0px;
+    line-height: 23px;
+  }
+  .question-days-remaining,
+  .question-days-vote-now {
+    line-height: 14px;
+  }
+  .question-days-vote-now {
+    font-weight: 500;
+  }
+  .days-remaining-container {
+    font-size: 11px;
+    margin-top: 15px;
+    margin-bottom: 0px;
+  }
+  .vote-pointer {
+    height: 26px;
+    vertical-align: bottom;
+    margin-left: 10px;
+  }
+  .list {
+    font-size: 22px;
+  }
+  .row-item {
+    padding: 8px 0px;
+  }
+  .row-text {
+    padding-left: 8px;
+    max-width: calc(100% - 115px);
+  }
+  .text-input {
+    font-size: 22px;
+  }
+  .vote-box {
+    width: 55px;
+    line-height: 15px;
+  }
+  .vote-icon {
+    width: 25px;
+  }
+  .vote-score {
+    font-size: 14px;
+  }
+}
 @media screen and (max-width: 480px) {
   .list-header {
     padding: 14px 0px;
