@@ -4,26 +4,29 @@
  *
  */
 .list-header {
-  text-align: center;
-  padding: 26px 0px;
+  padding: 20px 0px;
   margin: 0 auto;
   width: 100%;
   max-width: 600px;
+  color: white;
 }
 .list-header h2 {
-  max-width: 500px;
-  margin: 0 auto;
-  font-size: 28px;
-  line-height: 33px;
+  margin: 0 0 0 0;
+  font-size: 35px;
+  line-height: 44px;
   font-weight: 500;
 }
 .primary-list-header {
-  border-top: solid 5px #1e90ff;
+  background-color: #1e90ff;
   padding: 20px;
 }
 .secondary-list-header {
-  background-color: #1e90ff;
-  color: white;
+  background-color: #ffd800;
+  color: black;
+  cursor: pointer;
+}
+.secondary-list-header:hover {
+  background-color: #eec700;
 }
 .list {
   width: 100%;
@@ -33,6 +36,10 @@
   font-size: 25px;
   list-style-type: none;
   padding-left: 0px;
+}
+.upcoming-description {
+  color: #666;
+  margin: 0 auto;
 }
 .expander-container {
   text-align: center;
@@ -51,7 +58,7 @@
   cursor: pointer;
 }
 .row-item.voted {
-  background-color: #f2f2f2;
+  background-color: #e9f4ff;
   border-bottom: 1px solid white;
 }
 .row {
@@ -79,6 +86,15 @@
   text-align: center;
   cursor: pointer;
   border-left: 3px #1e90ff solid;
+}
+.question-list .row-idx {
+  color: black;
+}
+.question-list .vote-box {
+  border-left: 3px #ffd800 solid;
+}
+.question-list .row-item.voted {
+  background-color: #fffbe5;
 }
 .vote-box-inner {
   position: relative;
@@ -158,12 +174,13 @@
   display: none;
 }
 .question-box {
-  margin-top: 80px;
+  margin-bottom: 80px;
 }
 .question-posted-date {
-  text-align: center;
-  margin-bottom: 3px;
-  font-size: 17px;
+  margin-top: 0px;
+  margin-bottom: 6px;
+  font-size: 15px;
+  font-weight: 300;
 }
 .days-remaining-container {
   text-align: center;
@@ -171,10 +188,14 @@
 }
 .days-remaining {
   display: inline-block;
-  font-size: 12px;
 }
-.days-remaining span {
-  padding: 0px 5px;
+.question-days-remaining,
+.question-days-vote-now {
+  margin: 0 0 0 0;
+  text-align: right;
+}
+.question-days-remaining {
+  font-weight: 300;
 }
 .upcoming-container {
   width: 100%;
@@ -182,36 +203,73 @@
   margin: 0 auto;
   text-align: center;
 }
-.upcoming-header {
-  padding: 8px 15px;
-  background-color: #1e90ff;
-  padding: 5px 15px;
-  color: white;
-}
 .upcoming-header-text {
   font-size: 30px;
   font-weight: 500;
   margin: 0px;
 }
 .question-text-input-container {
-  border-bottom: 2px solid #1e90ff;
+  border-bottom: 2px solid #ffd800;
 }
 @media screen and (max-width: 480px) {
   .list-header {
-    padding: 12px 0px;
+    padding: 14px 0px;
     line-height: 33px;
     font-size: 30px;
   }
   .list-header h2 {
-    width: 90%;
-    font-size: 25px;
+    width: 88%;
+    font-size: 24px;
+    margin: 0 auto;
+    text-transform: uppercase;
+    line-height: 30px;
+  }
+  .secondary-list-header h2 {
+    font-size: 17px;
+    line-height: 20px;
+  }
+  .upcoming-container {
+    margin-bottom: 20px;
+  }
+  .upcoming-list {
+    margin-bottom: 60px;
+  }
+  .upcoming-description {
+    margin-top: 12px;
+    margin-bottom: 12px;
+    line-height: 14px;
+    font-size: 13px;
+    width: 95%;
+  }
+  .question-box {
+    margin-bottom: 60px;
+  }
+  .question-posted-date {
+    width: 88%;
+    margin: 0 auto;
+    font-size: 11px;
+    margin-bottom: 0px;
+    line-height: 23px;
+  }
+  .question-days-remaining,
+  .question-days-vote-now {
+    line-height: 13px;
+  }
+  .question-days-vote-now {
+    font-weight: 500;
   }
   .days-remaining-container {
-    margin-bottom: 5px;
+    font-size: 10px;
+    margin-top: 8px;
+    margin-bottom: 0px;
+  }
+  .vote-pointer {
+    height: 26px;
+    vertical-align: bottom;
+    margin-left: 10px;
   }
   .list {
     font-size: 20px;
-    margin-top: 10px;
   }
   .row-item {
     padding: 1px 0px;

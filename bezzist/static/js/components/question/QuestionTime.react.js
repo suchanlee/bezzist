@@ -16,30 +16,32 @@ var QuestionTime = React.createClass({
     }
   },
 
-  getDates: function() {
-    var dates;
-    if (this.props.q) {
-      dates = this.getRemainingDays();
-      if (dates > 0) {
-        return dates + ' days left for this question';
-      } else {
-        return 'This question is now closed.';
-      }
-    } else {
-      return '';
-    }
-  },
-
   render: function() {
-    return (
-      <div className='days-remaining-container'>
-        <div className='days-remaining'>
-          <span className='question-days-remaining'>
-            {this.getDates()}
-          </span>
+    var days = this.getRemainingDays();
+    if (days > 0) {
+      if (days === 1) {
+        days += ' DAY';
+      } else {
+        days += ' DAYS';
+      }
+      return (
+        <div className='days-remaining-container'>
+          <div className='days-remaining'>
+            <p className='question-days-remaining'>{days} TO VOTE</p>
+            <p className='question-days-vote-now'>VOTE NOW</p>
+          </div>
+          <img className='vote-pointer' src={'/static/imgs/icons/fingerdown.png'} />
         </div>
-      </div>
-    );
+      );
+    } else {
+      return (
+        <div className='days-remaining-container'>
+          <div className='days-remaining'>
+            <p className='question-days-remaining'>QUESTION CLOSED</p>
+          </div>
+        </div>
+      );
+    }
   }
 });
 

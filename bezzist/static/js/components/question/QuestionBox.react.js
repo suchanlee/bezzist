@@ -24,19 +24,15 @@ var QuestionBox = React.createClass({
     var diffDays = Math.floor(moment.duration(today.diff(this.props.question.published)).asHours() / 24);
     var date;
     if (diffDays == 0) {
-      date = 'Today';
+      date = "TODAY'S QUESTION";
     } else if (diffDays == 1) {
-      date = 'Yesterday'
+      date = "YESTERDAY'S QUESTION";
     } else if (diffDays < 7) {
-      date = this.props.question.published.format('dddd');
+      date = "FROM " + this.props.question.published.format('dddd').toUpperCase();
     } else {
-      date = this.props.question.published.format('MMMM D');
+      date = "FROM " + this.props.question.published.format('MMMM D').toUpperCase();
     }
     return date;
-  },
-
-  getQuestionText: function() {
-    return this.props.question ? this.props.question.question : '';
   },
 
   getForm: function() {
@@ -54,11 +50,11 @@ var QuestionBox = React.createClass({
   render: function() {
     return (
       <div className='question-box'>
-        <h3 className='question-posted-date'>{this.getQuestionDate()}</h3>
         <div className='list-header primary-list-header'>
-          <h2>{this.getQuestionText()}</h2>
+          <p className='question-posted-date'>{this.getQuestionDate()}</p>
+          <h2>{this.props.question.question}</h2>
+          <QuestionTime q={this.props.question} />
         </div>
-        <QuestionTime q={this.props.question} />
         <AnswerList
           ref='answerList'
           question={this.props.question} />
