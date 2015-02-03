@@ -96,6 +96,21 @@
 .question-list .row-item.voted {
   background-color: #fffbe5;
 }
+.question-box-featured .row-idx {
+  color: #db143b;
+}
+.question-box-featured .row-item.voted {
+  background-color: #fce8eb;
+}
+.question-box-featured .vote-box {
+  border-left: 3px #db143b solid;
+}
+.question-box-featured .primary-list-header {
+  background-color: #db143b;
+}
+.question-box-featured .answer-text-input-container {
+  border-bottom: 6px solid #db143b;
+}
 .vote-box-inner {
   position: relative;
   top: 50%;

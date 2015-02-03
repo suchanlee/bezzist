@@ -19,7 +19,11 @@ var QuestionBox = React.createClass({
     this.refs.answerList.refs.list.expandRows();
   },
 
-  getQuestionDate: function() {
+  getDateText: function() {
+    // TODO: remove this one-time hack for Shark Tank event
+    if (this.props.question.featured) {
+      return 'FEATURED QUESTION';
+    }
     var today = moment();
     var diffDays = Math.floor(moment.duration(today.diff(this.props.question.published)).asHours() / 24);
     var date;
@@ -48,10 +52,12 @@ var QuestionBox = React.createClass({
   },
 
   render: function() {
+    // TODO: remove this one-time hack for Shark Tank event
+    var boxClass = this.props.question.featured ? 'question-box question-box-featured' : 'question-box';
     return (
-      <div className='question-box'>
+      <div className={boxClass}>
         <div className='list-header primary-list-header'>
-          <p className='question-posted-date'>{this.getQuestionDate()}</p>
+          <p className='question-posted-date'>{this.getDateText()}</p>
           <h2>{this.props.question.question}</h2>
           <QuestionTime q={this.props.question} />
         </div>
