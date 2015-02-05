@@ -112,6 +112,7 @@ class AbstractUserScoredModel(AbstractUserCreatedModel):
             if self._anonymous_user_voted(request):
                 raise PermissionDenied()
             else:
+                self.user.userprofile.increment_score(1)
                 self._process_anonymous_user_vote(request)
         return self._modify_score(self.score+1)
 
@@ -128,6 +129,7 @@ class AbstractUserScoredModel(AbstractUserCreatedModel):
             if not self._anonymous_user_voted(request):
                 raise PermissionDenied()
             else:
+                self.user.userprofile.decrement_score(1)
                 self._process_anonymous_user_unvote(request)
         return self._modify_score(self.score-1)
 
