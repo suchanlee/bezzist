@@ -1,40 +1,52 @@
+/**
+ * AnswerStore
+ *
+ * Keeps a list of Answer objects in a dictionary
+ * whose key is the questionId and value is the list
+ * of answers for the question corresponding to the
+ * key questionId.
+ *
+ * Subscribed to actions from [AnswerViewActionCreator,
+ * AnswerServerActionCreator].
+ */
+
 'use strict';
 
+/*
+ * General library imports
+ */
 var _ = require('underscore');
 var assign = require('object-assign');
 var store = require('store');
-var EventEmitter = require('events').EventEmitter;
 
+/*
+ * Dispatcher import
+ */
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 
+/*
+ * Store imports
+ */
+var BaseStore = require('./BaseStore');
 var UserStore = require('./UserStore');
+
+/*
+ * Constant imports
+ */
 var AnswerConstants = require('../constants/AnswerConstants');
 var BezzistConstants = require('../constants/BezzistConstants');
 
-var CHANGE_EVENT = BezzistConstants.Events.CHANGE;
+
+/*
+ * Field declarations
+ */
 var TMP_ANSWER_ID = -1; // impossible id for real model object
 
-var _answers = {}; // key | value = questionId | list of answers
-
-var AnswerStore = assign({}, EventEmitter.prototype, {
-
-  emitChange: function() {
-    this.emit(CHANGE_EVENT);
-  },
-
-  /**
-   * @param {function} callback
-   */
-  addChangeListener: function(callback) {
-    this.on(CHANGE_EVENT, callback);
-  },
-
-  /**
-   * @param {function} callback
-   */
-  removeChangeListener: function(callback) {
-    this.removeListener(CHANGE_EVENT, callback);
-  },
+/*
+ * AnswerStore object
+ */
+var _answers = {}; // key:value = questionId:list of answers
+var AnswerStore =  _.extend(BaseStore, {
 
   _sortAnswers: function(answers) {
     return _.sortBy(answers, function(answer) {
@@ -93,6 +105,7 @@ var AnswerStore = assign({}, EventEmitter.prototype, {
   },
 
 });
+
 
 AppDispatcher.register(function(payload) {
 
@@ -186,8 +199,10 @@ AppDispatcher.register(function(payload) {
     default:
       // no op
   }
-
-
 });
 
+
+/*
+ * Module export declaration
+ */
 module.exports = AnswerStore;

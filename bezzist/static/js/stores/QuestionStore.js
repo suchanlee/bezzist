@@ -1,46 +1,60 @@
+/**
+ * QuestionStore
+ *
+ * Keeps a list of Question objects in a dictionary
+ * whose key is the questionId and value is the question
+ * object.
+ *
+ * Questions are tracked in two different lists
+ * _activeQuestionIds and _inactiveQuestion ids, which
+ * contain the ids of active and inactive questions,
+ * respectively. Featured question is also tracked by
+ * _featuredQuestionId.
+ *
+ * Subscribed to actions from [QuestionViewActionCreator,
+ * QuestionServerActionCreator].
+ */
+
 'use strict';
 
+/*
+ * General library imports
+ */
 var _ = require('underscore');
-var assign = require('object-assign');
 var store = require('store');
 var moment = require('moment');
-var EventEmitter = require('events').EventEmitter;
 
+/*
+ * Dispatcher import
+ */
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 
-var AnswerViewActionCreators = require('../actions/AnswerViewActionCreators');
-
+/*
+ * Store imports
+ */
+var BaseStore = require('./BaseStore');
 var UserStore = require('./UserStore');
+
+/*
+ * Constant imports
+ */
 var QuestionConstants = require('../constants/QuestionConstants');
 var BezzistConstants = require('../constants/BezzistConstants');
 
-var CHANGE_EVENT = BezzistConstants.Events.CHANGE;
+/*
+ * Field declarations
+ */
 var TMP_QUESTION_ID = -1;
 
+/*
+ * Question store object
+ * and question tracking lists.
+ */
 var _questions = {};
 var _activeQuestionIds = [];
 var _inactiveQuestionIds = [];
 var _featuredQuestionId = null;
-
-var QuestionStore = assign({}, EventEmitter.prototype, {
-
-  emitChange: function() {
-    this.emit(CHANGE_EVENT);
-  },
-
-  /**
-   * @param {function} callback
-   */
-  addChangeListener: function(callback) {
-    this.on(CHANGE_EVENT, callback);
-  },
-
-  /**
-   * @param {function} callback
-   */
-  removeChangeListener: function(callback) {
-    this.removeListener(CHANGE_EVENT, callback);
-  },
+var QuestionStore = _.extend(BaseStore, {
 
   init: function(questions) {
     _.map(questions, function(question) {
@@ -231,4 +245,7 @@ AppDispatcher.register(function(payload) {
 
 });
 
+/*
+ * Module export declaration
+ */
 module.exports = QuestionStore;
