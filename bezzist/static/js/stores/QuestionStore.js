@@ -25,6 +25,11 @@ var store = require('store');
 var moment = require('moment');
 
 /*
+ * Local library imports
+ */
+var Utils = require('../lib/Utils');
+
+/*
  * Dispatcher import
  */
 var AppDispatcher = require('../dispatcher/AppDispatcher');
@@ -53,7 +58,7 @@ var TMP_QUESTION_ID = -1;
 var _questions = {};
 var _activeQuestionIds = [];
 var _inactiveQuestionIds = [];
-var _featuredQuestionId = null;
+var _featuredQuestionId = undefined;
 var QuestionStore = _.extend(BaseStore, {
 
   init: function(questions) {
@@ -74,24 +79,14 @@ var QuestionStore = _.extend(BaseStore, {
   },
 
   _createQuestion: function(question) {
+    //TODO: this should just instantiate a Question
+    // object and store it. Also, name is confusing.
     question.created = moment(question.created);
     question.modified = moment(question.modified);
     if (question.published) {
       question.published = moment(question.published);
     }
     return question
-  },
-
-  _sortQuestionsByScore: function(questionList) {
-    return _.sortBy(questionList, function(question) {
-      return -1 * question.score;
-    });
-  },
-
-  _sortQuestionsByPublished: function(questionList) {
-    return _.sortBy(questionList, function(question) {
-      return -1 * question.published;
-    });
   },
 
   addQuestion: function(question) {
@@ -113,10 +108,7 @@ var QuestionStore = _.extend(BaseStore, {
     var oldQuestion;
     if (_questions[TMP_QUESTION_ID]) {
       oldQuestion = _questions[newQuestion.id] = _questions[TMP_QUESTION_ID];
-      delete _questions[TMP_QUESTION_ID];
-      var idx = _inactiveQuestionIds.indexOf(TMP_QUESTION_ID);
-      _inactiveQuestionIds.splice(idx, 1);
-      _inactiveQuestionIds.push(newQuestion.id);
+      this.removeQuestion(TMP_QUESTION_ID);
     } else {
       oldQuestion = _questions[newQuestion.id];
     }
@@ -130,28 +122,62 @@ var QuestionStore = _.extend(BaseStore, {
     }
   },
 
+  /**
+   * Removes a question from a list
+   * by removing from _questions and
+   * question id tracker lists.
+   *
+   * @param  {number} questionId
+   */
   removeQuestion: function(questionId) {
     delete _questions[questionId];
+    Utils.removeFromList(_activeQuestionIds, questionId);
+    Utils.removeFromList(_inactiveQuestionIds, questionId);
+    if (_featuredQuestionId === questionId) {
+      _featuredQuestionId = undefined;
+    }
   },
 
+  /**
+   * Returns a question object with corresponding
+   * question id.
+   *
+   * @param  {number} questionId
+   * @return {Question}
+   */
   getQuestion: function(questionId) {
     return _questions[questionId];
   },
 
+  /*
+   * Returns featured question question if it
+   * exists. Returns undefined if not.
+   */
   getFeaturedQuestion: function() {
     return _questions[_featuredQuestionId];
   },
 
+  /*
+   * Returns active questions reverse sorted by
+   * published datetime.
+   */
   getActiveQuestions: function() {
-    return this._sortQuestionsByPublished(this._toList(_activeQuestionIds));
+    return Utils.revSortByField(this._toList(_activeQuestionIds), 'published');
   },
 
+  /*
+   * Returns inactive questions reverse sorted
+   * by score.
+   */
   getInactiveQuestions: function() {
-    return this._sortQuestionsByScore(this._toList(_inactiveQuestionIds));
+    return Utils.revSortByField(this._toList(_inactiveQuestionIds), 'score');
   },
 
+  /*
+   * Returns all questions sorted by score.
+   */
   getQuestions: function() {
-    return this._sortQuestionsByScore(this._toList());
+    return Utils.revSortByField(this._toList(), 'score');
   },
 });
 

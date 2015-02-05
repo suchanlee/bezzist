@@ -20,6 +20,11 @@ var assign = require('object-assign');
 var store = require('store');
 
 /*
+ * Local library imports
+ */
+var Utils = require('../lib/Utils');
+
+/*
  * Dispatcher import
  */
 var AppDispatcher = require('../dispatcher/AppDispatcher');
@@ -48,12 +53,6 @@ var TMP_ANSWER_ID = -1; // impossible id for real model object
 var _answers = {}; // key:value = questionId:list of answers
 var AnswerStore =  _.extend(BaseStore, {
 
-  _sortAnswers: function(answers) {
-    return _.sortBy(answers, function(answer) {
-      return -1 * answer.score;
-    });
-  },
-
   addAnswer: function(questionId, answer) {
     if (!(questionId in _answers)) {
       _answers[questionId] = [];
@@ -66,8 +65,7 @@ var AnswerStore =  _.extend(BaseStore, {
       if (_answer.id === -1 || _answer.id === answer.id) {
         var answerKeySet = Object.keys(answer);
         if (Object.keys(_answer).length === answerKeySet.length) {
-          var idx = _answers[questionId].indexOf(_answer);
-          _answers[questionId].splice(idx, 1);
+          Utils.removeFromList(_answers[questionId], _answer)
           _answers[questionId].push(answer);
         } else {
           _.map(answerKeySet, function(key) {
@@ -80,7 +78,7 @@ var AnswerStore =  _.extend(BaseStore, {
 
   removeAnswer: function(questionId, answerId) {
     var answer = this.getAnswerForQuestion(questionId, answerId);
-    _answers[questionId].splice(_answers[questionId].indexOf(answer), 1);
+    Utils.removeFromList(_answers[questionId], answer);
   },
 
   storeAnswers: function(questionId, answers) {
@@ -98,7 +96,7 @@ var AnswerStore =  _.extend(BaseStore, {
 
   getAnswersForQuestion: function(questionId) {
     if (questionId in _answers) {
-      return this._sortAnswers(_answers[questionId]);
+      return Utils.revSortByField(_answers[questionId], 'score');
     } else {
       return [];
     }
