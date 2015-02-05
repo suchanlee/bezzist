@@ -74,9 +74,9 @@ var QuestionStore = assign({}, EventEmitter.prototype, {
     });
   },
 
-  _sortQuestionsByDatetime: function(questionList) {
+  _sortQuestionsByPublished: function(questionList) {
     return _.sortBy(questionList, function(question) {
-      return -1 * question.created;
+      return -1 * question.published;
     });
   },
 
@@ -129,7 +129,7 @@ var QuestionStore = assign({}, EventEmitter.prototype, {
   },
 
   getActiveQuestions: function() {
-    return this._sortQuestionsByDatetime(this._toList(_activeQuestionIds));
+    return this._sortQuestionsByPublished(this._toList(_activeQuestionIds));
   },
 
   getInactiveQuestions: function() {
