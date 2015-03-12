@@ -40,7 +40,7 @@ var QuestionBox = React.createClass({
   },
 
   getForm: function() {
-    if (this.props.question && !this.props.question.finished && !this.props.question.featured) {
+    if (this.props.question && !this.props.question.finished) {
       return (
         <AnswerForm
           question={this.props.question}
