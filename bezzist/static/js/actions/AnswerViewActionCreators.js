@@ -31,4 +31,12 @@ module.exports = {
     AnswerApiUtils.upvoteAnswer(questionId, answerId);
   },
 
+  unvoteAnswer: function(questionId, answerId) {
+    AppDispatcher.handleViewAction({
+      type: ActionTypes.ANSWER_UNVOTE,
+      questionId: questionId,
+      answerId: answerId
+    });
+    AnswerApiUtils.unvoteAnswer(questionId, answerId);
+  },
 };

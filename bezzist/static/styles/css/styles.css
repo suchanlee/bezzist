@@ -1,8 +1,262 @@
 /**
  *
+ * Base LESS file for Bezzist
+ *
+ */
+/**
+ *
  * Collection of global variables to be used in Bezzist
  *
  */
+body {
+  margin: 0 0 0 0;
+  padding-bottom: 100px;
+  font-family: 'brandon-grotesque', 'Helvetica', 'Arial', sans-serif;
+  position: relative;
+  z-index: 1;
+}
+.landing {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0px 15px;
+  padding-top: 85px;
+}
+.hidden {
+  display: none;
+}
+footer {
+  text-align: center;
+}
+footer p {
+  background-color: white;
+  padding: 5px 10px;
+  margin-top: 100px;
+  display: inline-block;
+}
+footer p a {
+  color: black;
+  font-size: 20px;
+}
+.overlay {
+  position: fixed;
+  z-index: 10;
+  background-color: white;
+  zoom: 1;
+  filter: alpha(opacity=98);
+  -webkit-opacity: 0.98;
+  -moz-opacity: 0.98;
+  opacity: 0.98;
+  width: 100%;
+  min-height: 100%;
+  text-align: center;
+}
+.overlay-centered-container {
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  -moz-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  -o-transform: translateX(-50%);
+  transform: translateX(-50%);
+}
+.overlay-hide-button {
+  display: inline-block;
+  margin-top: 20px;
+  font-size: 25px;
+  cursor: pointer;
+}
+.loader-centering-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: inline;
+  width: 10em;
+  height: 10em;
+  margin: auto;
+  text-align: center;
+}
+.loader {
+  font-size: 10px;
+  text-indent: -9999em;
+  display: inline-block;
+  border-top: 1.1em solid rgba(255, 255, 255, 0.2);
+  border-right: 1.1em solid rgba(255, 255, 255, 0.2);
+  border-bottom: 1.1em solid rgba(255, 255, 255, 0.2);
+  border-left: 1.1em solid #ffffff;
+  -webkit-animation: load8 1.1s infinite linear;
+  animation: load8 1.1s infinite linear;
+}
+.loader,
+.loader:after {
+  border-radius: 50%;
+  width: 10em;
+  height: 10em;
+}
+@-webkit-keyframes load8 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes load8 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@media screen and (min-width: 481px) and (max-width: 650px) {
+  .container,
+  footer {
+    padding: 0px 0px;
+  }
+  .landing {
+    padding: 0px 8px;
+    padding-top: 90px;
+  }
+}
+@media screen and (max-width: 480px) {
+  .container,
+  footer {
+    padding: 0px 0px;
+  }
+  .landing {
+    padding: 0px 8px;
+    padding-top: 75px;
+  }
+}
+nav {
+  z-index: 5;
+  position: fixed;
+  background-color: white;
+  border-top: solid 7px #1e90ff;
+  border-bottom: solid 2px #cbcbcb;
+  padding: 7px 0px;
+  width: 100%;
+  color: black;
+  font-size: 17px;
+}
+.nav-container {
+  margin: 0 auto;
+  max-width: 600px;
+}
+.nav-logo-img {
+  height: 33px;
+  vertical-align: middle;
+  cursor: pointer;
+}
+.nav-logo {
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0px 10px;
+  font-size: 18px;
+  vertical-align: middle;
+}
+.nav-login,
+.nav-user {
+  vertical-align: middle;
+  font-size: 15px;
+  margin-left: 15px;
+  float: right;
+  padding-top: 8px;
+}
+.nav-login a,
+.nav-user a {
+  color: black;
+  text-decoration: none;
+}
+.nav-logout {
+  margin-left: 15px;
+}
+@media screen and (min-width: 481px) and (max-width: 650px) {
+  nav {
+    padding: 8px 0px;
+  }
+  .nav-logo-img {
+    height: 32px;
+    margin-left: 10px;
+  }
+  .nav-login,
+  .nav-user {
+    padding-right: 11px;
+    padding-top: 5px;
+  }
+}
+@media screen and (max-width: 480px) {
+  nav {
+    padding: 8px 0px;
+  }
+  .nav-logo-img {
+    height: 30px;
+    margin-left: 10px;
+  }
+  .nav-login,
+  .nav-user {
+    padding-right: 11px;
+    padding-top: 4px;
+  }
+}
+/**
+ *
+ * Alert LESS file for Bezzist
+ *
+ */
+.alert {
+  margin: 0 auto;
+  margin-bottom: 15px;
+  max-width: 600px;
+  color: white;
+  font-size: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  text-align: center;
+}
+.alert p {
+  padding: 0px 60px;
+}
+.alert-danger {
+  background-color: #b22222;
+}
+.alert-warning {
+  background-color: #ffa500;
+}
+.alert-info {
+  background-color: #00bfff;
+}
+.alert-success {
+  background-color: #3cb371;
+}
+.alert-close-icon {
+  margin-top: 10px;
+  margin-bottom: 5px;
+  width: 20px;
+}
+@media screen and (max-width: 480px) {
+  .alert {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    font-size: 18px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  .alert p {
+    padding: 0px 20px;
+  }
+  .alert-close-icon {
+    width: 17px;
+    margin-top: 5px;
+  }
+}
 .list-header {
   padding: 20px 0px;
   margin: 0 auto;
@@ -409,5 +663,93 @@
   }
   .vote-score {
     font-size: 12px;
+  }
+}
+.auth-form {
+  border: 1px solid black;
+  text-align: center;
+  border-top: 10px solid black;
+  padding-right: 60px;
+  padding-bottom: 25px;
+  padding-left: 60px;
+  min-width: 300px;
+}
+.auth-form h2 {
+  margin-bottom: 0px;
+}
+.auth-form p {
+  margin-top: 5px;
+}
+.auth-form input {
+  text-align: center;
+  font-size: 22px;
+  font-family: 'brandon-grotesque', 'Helvetica', 'Arial', sans-serif;
+  outline: none;
+  color: black;
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #cbcbcb;
+  margin-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 7px;
+}
+.auth-form input::-webkit-input-placeholder {
+  color: #cbcbcb;
+}
+.auth-form input:-moz-placeholder {
+  color: #cbcbcb;
+}
+.auth-form input::-moz-placeholder {
+  color: #cbcbcb;
+}
+.auth-form input:-ms-input-placeholder {
+  color: #cbcbcb;
+}
+.auth-form .form-error {
+  color: red;
+  margin: 0 0;
+}
+.auth-form-button {
+  padding: 10px 40px;
+  color: white;
+  text-decoration: none;
+  margin-top: 15px;
+  display: inline-block;
+  font-family: 'brandon-grotesque', 'Helvetica', 'Arial', sans-serif;
+  font-size: 15px;
+  border: none;
+  -webkit-border-radius: 3px;
+  -webkit-background-clip: padding-box;
+  -moz-border-radius: 3px;
+  -moz-background-clip: padding;
+  border-radius: 3px;
+  background-clip: padding-box;
+}
+.auth-form-signup {
+  background-color: #1e90ff;
+  margin-right: 5px;
+}
+.auth-form-submit {
+  background-color: #ffd800;
+  margin-left: 5px;
+}
+@media screen and (max-width: 480px) {
+  .overlay-centered {
+    width: 95%;
+  }
+  .nav-user-point-status {
+    display: none;
+  }
+  .auth-form {
+    width: 100%;
+    min-width: none;
+    padding: 0 0 0 0;
+    border-top: 5px solid black;
+  }
+  .auth-form h2,
+  .auth-form p,
+  .auth-form form {
+    padding-left: 10px;
+    padding-right: 10px;
   }
 }

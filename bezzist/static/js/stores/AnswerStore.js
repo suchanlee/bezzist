@@ -1,46 +1,57 @@
+/**
+ * AnswerStore
+ *
+ * Keeps a list of Answer objects in a dictionary
+ * whose key is the questionId and value is the list
+ * of answers for the question corresponding to the
+ * key questionId.
+ *
+ * Subscribed to actions from [AnswerViewActionCreator,
+ * AnswerServerActionCreator].
+ */
+
 'use strict';
 
+/*
+ * General library imports
+ */
 var _ = require('underscore');
 var assign = require('object-assign');
 var store = require('store');
-var EventEmitter = require('events').EventEmitter;
 
+/*
+ * Local library imports
+ */
+var Utils = require('../lib/Utils');
+
+/*
+ * Dispatcher import
+ */
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 
+/*
+ * Store imports
+ */
+var BaseStore = require('./BaseStore');
 var UserStore = require('./UserStore');
+
+/*
+ * Constant imports
+ */
 var AnswerConstants = require('../constants/AnswerConstants');
 var BezzistConstants = require('../constants/BezzistConstants');
 
-var CHANGE_EVENT = BezzistConstants.Events.CHANGE;
+
+/*
+ * Field declarations
+ */
 var TMP_ANSWER_ID = -1; // impossible id for real model object
 
-var _answers = {}; // key | value = questionId | list of answers
-
-var AnswerStore = assign({}, EventEmitter.prototype, {
-
-  emitChange: function() {
-    this.emit(CHANGE_EVENT);
-  },
-
-  /**
-   * @param {function} callback
-   */
-  addChangeListener: function(callback) {
-    this.on(CHANGE_EVENT, callback);
-  },
-
-  /**
-   * @param {function} callback
-   */
-  removeChangeListener: function(callback) {
-    this.removeListener(CHANGE_EVENT, callback);
-  },
-
-  _sortAnswers: function(answers) {
-    return _.sortBy(answers, function(answer) {
-      return -1 * answer.score;
-    });
-  },
+/*
+ * AnswerStore object
+ */
+var _answers = {}; // key:value = questionId:list of answers
+var AnswerStore =  _.extend(BaseStore, {
 
   addAnswer: function(questionId, answer) {
     if (!(questionId in _answers)) {
@@ -54,8 +65,7 @@ var AnswerStore = assign({}, EventEmitter.prototype, {
       if (_answer.id === -1 || _answer.id === answer.id) {
         var answerKeySet = Object.keys(answer);
         if (Object.keys(_answer).length === answerKeySet.length) {
-          var idx = _answers[questionId].indexOf(_answer);
-          _answers[questionId].splice(idx, 1);
+          Utils.removeFromList(_answers[questionId], _answer)
           _answers[questionId].push(answer);
         } else {
           _.map(answerKeySet, function(key) {
@@ -68,7 +78,7 @@ var AnswerStore = assign({}, EventEmitter.prototype, {
 
   removeAnswer: function(questionId, answerId) {
     var answer = this.getAnswerForQuestion(questionId, answerId);
-    _answers[questionId].splice(_answers[questionId].indexOf(answer), 1);
+    Utils.removeFromList(_answers[questionId], answer);
   },
 
   storeAnswers: function(questionId, answers) {
@@ -86,13 +96,14 @@ var AnswerStore = assign({}, EventEmitter.prototype, {
 
   getAnswersForQuestion: function(questionId) {
     if (questionId in _answers) {
-      return this._sortAnswers(_answers[questionId]);
+      return Utils.revSortByField(_answers[questionId], 'score');
     } else {
       return [];
     }
   },
 
 });
+
 
 AppDispatcher.register(function(payload) {
 
@@ -128,6 +139,9 @@ AppDispatcher.register(function(payload) {
       break;
 
     case ActionTypes.ANSWER_UPVOTE:
+      //TODO: all the upvote/unvote things need to be
+      // refactored out into the model, when it's made for answers and questions.
+      // currently, this has too much logic it should not.
       AnswerStore.getAnswerForQuestion(action.questionId, action.answerId).score += 1;
       if (!UserStore.isAuthenticated()) {
         var update = {};
@@ -151,6 +165,30 @@ AppDispatcher.register(function(payload) {
       AnswerStore.emitChange();
       break;
 
+    case ActionTypes.ANSWER_UNVOTE:
+      AnswerStore.getAnswerForQuestion(action.questionId, action.answerId).score -= 1;
+      if (!UserStore.isAuthenticated()) {
+        var votedAnswers = store.get(Stores.BEZZIST_ANSWERS);
+        delete votedAnswers[action.answerId];
+        store.set(Stores.BEZZIST_ANSWERS, votedAnswers);
+      }
+      UserStore.removeAnswerLiked(action.answerId);
+      AnswerStore.emitChange();
+      break;
+
+    case ActionTypes.ANSWER_UNVOTE_FAILED:
+      AnswerStore.getAnswerForQuestion(action.questionId, action.answerId).score += 1;
+      if (action.status !== Status.FORBIDDEN) {
+        if (!UserStore.isAuthenticated()) {
+          var update = {};
+          update[action.answerId] = true;
+          store.set(Stores.BEZZIST_ANSWERS, _.extend(store.get(Stores.BEZZIST_ANSWERS), update));
+        }
+        UserStore.addAnswerLiked(action.answerId);
+      }
+      AnswerStore.emitChange();
+      break;
+
     case ActionTypes.RECEIVE_ANSWERS_FOR_QUESTION:
       AnswerStore.storeAnswers(action.questionId, action.answers);
       AnswerStore.emitChange();
@@ -159,8 +197,10 @@ AppDispatcher.register(function(payload) {
     default:
       // no op
   }
-
-
 });
 
+
+/*
+ * Module export declaration
+ */
 module.exports = AnswerStore;

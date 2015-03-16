@@ -1,44 +1,56 @@
+/**
+ * UserStore
+ *
+ * Keeps a user object and objects for keeping track of
+ * liked questions and answers.
+ *
+ * Subscribed to actions from [UserServerActionCreators,
+ * UserViewActionCreators].
+ */
+
 'use strict';
 
-var assign = require('object-assign');
-var EventEmitter = require('events').EventEmitter;
+/*
+ * General library imports
+ */
+var _ = require('underscore');
 
-var AppDispatcher = require('../dispatcher/AppDispatcher');
+/*
+ * Local library imports
+ */
 var Utils = require('../lib/Utils');
 
+/*
+ * Dispatcher import
+ */
+var AppDispatcher = require('../dispatcher/AppDispatcher');
+
+/*
+ * Store imports
+ */
+var BaseStore = require('./BaseStore');
+
+/*
+ * Constant imports
+ */
 var UserConstants = require('../constants/UserConstants');
 var BezzistConstants = require('../constants/BezzistConstants');
 
-var CHANGE_EVENT = BezzistConstants.Events.CHANGE;
-
+/*
+ * UserStore object
+ * and user tracking objects.
+ */
 var _user = null;
+var _point_status = null;
 var _liked_question_ids = {};
 var _liked_answer_ids = {};
-
-var UserStore = assign({}, EventEmitter.prototype, {
-
-  emitChange: function() {
-    this.emit(CHANGE_EVENT);
-  },
-
-  /**
-   * @param {function} callback
-   */
-  addChangeListener: function(callback) {
-    this.on(CHANGE_EVENT, callback);
-  },
-
-  /**
-   * @param {function} callback
-   */
-  removeChangeListener: function(callback) {
-    this.removeListener(CHANGE_EVENT, callback);
-  },
+var UserStore = _.extend(BaseStore, {
 
   setUser: function(user) {
     _user = user;
     _liked_question_ids = Utils.listToSet(user.liked_question_ids);
     _liked_answer_ids = Utils.listToSet(user.liked_answer_ids);
+    this._setPointStatus(user.score);
   },
 
   getUser: function() {
@@ -73,6 +85,32 @@ var UserStore = assign({}, EventEmitter.prototype, {
     delete _liked_answer_ids[answerId];
   },
 
+  _setPointStatus: function(points) {
+    var ranks = _.map(Object.keys(UserConstants.Points), function(rank) { return parseInt(rank) });
+    for (var i=0; i < ranks.length; i++) {
+      if (ranks[i] === _user.score) {
+        _point_status = UserConstants.Points[ranks[i]];
+        return;
+      } else if (ranks[i] > _user.score) {
+        _point_status = UserConstants.Points[ranks[i-1]];
+        return;
+      }
+    }
+  },
+
+  getPointStatus: function() {
+    return _point_status;
+  },
+
+  incrementPoints: function(increment) {
+    _user.score += increment;
+    this._setPointStatus(_user.score);
+  },
+
+  decrementPoints: function(decrement) {
+    _user.score -= decrement;
+    this._setPointStatus(_user.score);
+  }
 });
 
 AppDispatcher.register(function(payload) {
@@ -92,14 +130,19 @@ AppDispatcher.register(function(payload) {
       UserStore.emitChange();
       break;
 
-    case ActionTypes.RECEIVE_NON_USER:
+    case ActionTypes.INCREMENT_USER_POINTS:
+      UserStore.incrementPoints(action.increment);
+      UserStore.emitChange();
+      break;
+
+    case ActionTypes.DECREMENT_USER_POINTS:
+      UserStore.decrementPoints(action.decrement);
+      UserStore.emitChange();
       break;
 
     default:
       // no op
   }
-
-
 });
 
 module.exports = UserStore;

@@ -7,6 +7,7 @@ var _ = require('underscore');
 var store = require('store');
 
 var QuestionStore = require('../../stores/QuestionStore');
+var UserStore = require('../../stores/UserStore');
 var QuestionBox = require('./QuestionBox.react');
 
 
@@ -24,10 +25,12 @@ var Questions = React.createClass({
 
   componentDidMount: function() {
     QuestionStore.addChangeListener(this._onChange);
+    UserStore.addChangeListener(this._onChange);
   },
 
   componentWillUnmount: function() {
     QuestionStore.removeChangeListener(this._onChange);
+    UserStore.removeChangeListener(this._onChange);
   },
 
   _onChange: function() {

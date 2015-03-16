@@ -51,8 +51,11 @@
   padding: 10px 40px;
   color: white;
   text-decoration: none;
-  margin-top: 10px;
+  margin-top: 15px;
   display: inline-block;
+  font-family: 'brandon-grotesque', 'Helvetica', 'Arial', sans-serif;
+  font-size: 15px;
+  border: none;
   -webkit-border-radius: 3px;
   -webkit-background-clip: padding-box;
   -moz-border-radius: 3px;
@@ -67,4 +70,24 @@
 .auth-form-submit {
   background-color: #ffd800;
   margin-left: 5px;
+}
+@media screen and (max-width: 480px) {
+  .overlay-centered {
+    width: 95%;
+  }
+  .nav-user-point-status {
+    display: none;
+  }
+  .auth-form {
+    width: 100%;
+    min-width: none;
+    padding: 0 0 0 0;
+    border-top: 5px solid black;
+  }
+  .auth-form h2,
+  .auth-form p,
+  .auth-form form {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
 }
