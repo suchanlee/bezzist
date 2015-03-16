@@ -11,8 +11,8 @@
  * respectively. Featured question is also tracked by
  * _featuredQuestionId.
  *
- * Subscribed to actions from [QuestionViewActionCreator,
- * QuestionServerActionCreator].
+ * Subscribed to actions from [QuestionViewActionCreators,
+ * QuestionServerActionCreators].
  */
 
 'use strict';
@@ -52,8 +52,8 @@ var BezzistConstants = require('../constants/BezzistConstants');
 var TMP_QUESTION_ID = -1;
 
 /*
- * Question store object
- * and question tracking lists.
+ * QuestionStore object
+ * and question tracking objects.
  */
 var _questions = {};
 var _activeQuestionIds = [];
