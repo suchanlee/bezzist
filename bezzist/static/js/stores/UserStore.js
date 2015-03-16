@@ -1,41 +1,50 @@
+/**
+ * UserStore
+ *
+ * Keeps a user object and objects for keeping track of
+ * liked questions and answers.
+ *
+ * Subscribed to actions from [UserServerActionCreators,
+ * UserViewActionCreators].
+ */
+
 'use strict';
 
-var assign = require('object-assign');
+/*
+ * General library imports
+ */
 var _ = require('underscore');
-var EventEmitter = require('events').EventEmitter;
 
-var AppDispatcher = require('../dispatcher/AppDispatcher');
+/*
+ * Local library imports
+ */
 var Utils = require('../lib/Utils');
 
+/*
+ * Dispatcher import
+ */
+var AppDispatcher = require('../dispatcher/AppDispatcher');
+
+/*
+ * Store imports
+ */
+var BaseStore = require('./BaseStore');
+
+/*
+ * Constant imports
+ */
 var UserConstants = require('../constants/UserConstants');
 var BezzistConstants = require('../constants/BezzistConstants');
 
-var CHANGE_EVENT = BezzistConstants.Events.CHANGE;
-
+/*
+ * UserStore object
+ * and user tracking objects.
+ */
 var _user = null;
 var _point_status = null;
 var _liked_question_ids = {};
 var _liked_answer_ids = {};
-
-var UserStore = assign({}, EventEmitter.prototype, {
-
-  emitChange: function() {
-    this.emit(CHANGE_EVENT);
-  },
-
-  /**
-   * @param {function} callback
-   */
-  addChangeListener: function(callback) {
-    this.on(CHANGE_EVENT, callback);
-  },
-
-  /**
-   * @param {function} callback
-   */
-  removeChangeListener: function(callback) {
-    this.removeListener(CHANGE_EVENT, callback);
-  },
+var UserStore = _.extend(BaseStore, {
 
   setUser: function(user) {
     _user = user;
@@ -102,7 +111,6 @@ var UserStore = assign({}, EventEmitter.prototype, {
     _user.score -= decrement;
     this._setPointStatus(_user.score);
   }
-
 });
 
 AppDispatcher.register(function(payload) {
@@ -135,8 +143,6 @@ AppDispatcher.register(function(payload) {
     default:
       // no op
   }
-
-
 });
 
 module.exports = UserStore;
