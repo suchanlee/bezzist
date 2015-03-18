@@ -101,7 +101,9 @@ class AbstractUserScoredModel(AbstractUserCreatedModel):
         user has voted for an item.
         '''
         if request.user.is_authenticated():
-            if request.user in self.liked.all():
+            if request.user.userprofile.superuser:
+                request.user.userprofile.increment_score(1)
+            elif request.user in self.liked.all():
                 raise PermissionDenied()
             else:
                 self.liked.add(request.user)
@@ -112,7 +114,6 @@ class AbstractUserScoredModel(AbstractUserCreatedModel):
             if self._anonymous_user_voted(request):
                 raise PermissionDenied()
             else:
-                self.user.userprofile.increment_score(1)
                 self._process_anonymous_user_vote(request)
         return self._modify_score(self.score+1)
 
@@ -129,7 +130,6 @@ class AbstractUserScoredModel(AbstractUserCreatedModel):
             if not self._anonymous_user_voted(request):
                 raise PermissionDenied()
             else:
-                self.user.userprofile.decrement_score(1)
                 self._process_anonymous_user_unvote(request)
         return self._modify_score(self.score-1)
 
