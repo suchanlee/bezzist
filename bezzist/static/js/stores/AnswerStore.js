@@ -148,7 +148,9 @@ AppDispatcher.register(function(payload) {
         update[action.answerId] = true;
         store.set(Stores.BEZZIST_ANSWERS, _.extend(store.get(Stores.BEZZIST_ANSWERS), update));
       }
-      UserStore.addAnswerLiked(action.answerId);
+      if (!UserStore.isSuperuser()) {
+        UserStore.addAnswerLiked(action.answerId);
+      }
       AnswerStore.emitChange();
       break;
 
