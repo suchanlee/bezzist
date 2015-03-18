@@ -61,6 +61,10 @@ var UserStore = _.extend(BaseStore, {
     return _user != null;
   },
 
+  isSuperuser: function() {
+    return _user.superuser;
+  },
+
   addQuestionLiked: function(questionId) {
     _liked_question_ids[questionId] = true;
   },
