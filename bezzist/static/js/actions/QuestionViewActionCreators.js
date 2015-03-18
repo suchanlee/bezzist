@@ -14,6 +14,14 @@ module.exports = {
     QuestionApiUtils.upvoteQuestion(questionId);
   },
 
+  unvoteQuestion: function(questionId) {
+    AppDispatcher.handleViewAction({
+      type: ActionTypes.QUESTION_UNVOTE,
+      questionId: questionId
+    });
+    QuestionApiUtils.unvoteQuestion(questionId);
+  },
+
   createQuestion: function(question) {
     AppDispatcher.handleViewAction({
       type: ActionTypes.QUESTION_CREATE,

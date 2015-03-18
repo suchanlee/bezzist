@@ -51,14 +51,15 @@ var Nav = React.createClass({
     if (this.state.user) {
       return (
         <span className='nav-user'>
-          <span>NEW BEE: {this.state.user.score} points</span>
+          <span className='nav-user-point-status'>{UserStore.getPointStatus()}: </span>
+          <span>{this.state.user.score} points</span>
           <a className='nav-logout' href='/profiles/logout'>Log out</a>
         </span>
       );
     } else {
       return (
         <span className='nav-login'>
-          <a href='javascript:void(0)' onClick={this.handleLoginClick}>Log in</a>
+          <a href='javascript:void(0)' onClick={this.handleLoginClick}>Log In</a>
         </span>
       );
     }

@@ -27,7 +27,8 @@ class QuestionResource(AbstractBezzistResource):
         'finished': 'finished',
         'posted_by': 'user.username',
         'created': 'created',
-        'modified': 'modified'
+        'modified': 'modified',
+        'published': 'published_datetime'
     })
 
     def __init__(self, *args, **kwargs):
@@ -103,12 +104,24 @@ class QuestionResource(AbstractBezzistResource):
         )
 
 
-class QuestionScoreRpcResource(View):
+class IncrementScoreRpcResource(View):
 
     # POST /api/questions/<pk>/incrementScore
     def post(self, request, pk):
         question = get_object_or_404(Question, pk=pk)
         question.increment_score(request)
+        return JsonResponse({
+            'id': question.id,
+            'question': question.question,
+            'score': question.score
+        })
+
+class DecrementScoreRpcResource(View):
+
+    # POST /api/questions/<pk>/incrementScore
+    def post(self, request, pk):
+        question = get_object_or_404(Question, pk=pk)
+        question.decrement_score(request)
         return JsonResponse({
             'id': question.id,
             'question': question.question,

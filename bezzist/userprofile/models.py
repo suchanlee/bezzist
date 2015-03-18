@@ -31,6 +31,11 @@ class UserConfirmation(AbstractTimeStampedModel):
             [self.user.email])
 
     def confirm_user(self):
+        '''
+        Confirms a user, authenticates and logges her in,
+        and then send out an email to that user notifying
+        her of the confirmation.
+        '''
         self.user.is_active = True
         self.user.save()
         Mailer.send_html_mail(
@@ -45,7 +50,8 @@ class UserProfile(AbstractTimeStampedModel, MappableModel):
 
     user = models.OneToOneField(User, primary_key=True)
     score = models.IntegerField(default=0)
-    followed_questions = models.ManyToManyField(Question, related_name='follwed_users')
+    superuser = models.BooleanField(default=False)
+    followed_questions = models.ManyToManyField(Question, blank=True, related_name='followed_users')
 
     class Meta:
         ordering = ['user']
@@ -55,6 +61,10 @@ class UserProfile(AbstractTimeStampedModel, MappableModel):
 
     def increment_score(self, increment):
         self.score += increment
+        self.save()
+
+    def decrement_score(self, decrement):
+        self.score -= decrement
         self.save()
 
     def liked_questions(self):

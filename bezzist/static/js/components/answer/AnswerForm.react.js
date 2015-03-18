@@ -24,7 +24,7 @@ var AnswerForm = React.createClass({
         formError={this.getFormError()}
         createRow={this.createAnswer}
         expandRows={this.props.expandRows}
-        placeholder='add new answer'
+        placeholder='Add New Answer'
         answerForm={true} />
     );
   }

@@ -19,8 +19,24 @@ var QuestionBox = React.createClass({
     this.refs.answerList.refs.list.expandRows();
   },
 
-  getQuestionText: function() {
-    return this.props.question ? this.props.question.question : '';
+  getDateText: function() {
+    // TODO: remove this one-time hack for Shark Tank event
+    if (this.props.question.featured) {
+      return 'FEATURED QUESTION';
+    }
+    var today = moment();
+    var diffDays = Math.floor(moment.duration(today.diff(this.props.question.published)).asHours() / 24);
+    var date;
+    if (diffDays == 0) {
+      date = "TODAY'S QUESTION";
+    } else if (diffDays == 1) {
+      date = "YESTERDAY'S QUESTION";
+    } else if (diffDays < 7) {
+      date = "FROM " + this.props.question.published.format('dddd').toUpperCase();
+    } else {
+      date = "FROM " + this.props.question.published.format('MMMM D').toUpperCase();
+    }
+    return date;
   },
 
   getForm: function() {
@@ -36,13 +52,15 @@ var QuestionBox = React.createClass({
   },
 
   render: function() {
+    // TODO: remove this one-time hack for Shark Tank event
+    var boxClass = this.props.question.featured ? 'question-box question-box-featured' : 'question-box';
     return (
-      <div className='question-box'>
-        <h3 className='question-posted-date'>{this.props.question.created.format('MMM D, YYYY')}</h3>
+      <div className={boxClass}>
         <div className='list-header primary-list-header'>
-          <h2>{this.getQuestionText()}</h2>
+          <p className='question-posted-date'>{this.getDateText()}</p>
+          <h2>{this.props.question.question}</h2>
+          <QuestionTime q={this.props.question} />
         </div>
-        <QuestionTime q={this.props.question} />
         <AnswerList
           ref='answerList'
           question={this.props.question} />

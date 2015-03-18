@@ -20,4 +20,18 @@ module.exports = {
     });
   },
 
+  incrementPoints: function(increment) {
+    AppDispatcher.handleServerAction({
+      type: ActionTypes.INCREMENT_USER_POINTS,
+      increment: increment
+    });
+  },
+
+  decrementPoints: function(decrement) {
+    AppDispatcher.handleServerAction({
+      type: ActionTypes.DECREMENT_USER_POINTS,
+      decrement: decrement
+    });
+  },
+
 };

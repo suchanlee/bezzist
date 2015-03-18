@@ -13,7 +13,13 @@ var UserStore = require('../../stores/UserStore');
 
 var AnswerRow = React.createClass({
   vote: function() {
-    return AnswerViewActionCreators.upvoteAnswer(this.props.question.id, this.props.answer.id);
+    AnswerViewActionCreators.upvoteAnswer(this.props.question.id, this.props.answer.id);
+  },
+
+  unvote: function() {
+    if (!this.props.question.finished) {
+      AnswerViewActionCreators.unvoteAnswer(this.props.question.id, this.props.answer.id);
+    }
   },
 
   hasVoted: function() {
@@ -30,6 +36,7 @@ var AnswerRow = React.createClass({
     return (
       <Row
         vote={this.vote}
+        unvote={this.unvote}
         id={this.props.answer.id}
         content={this.props.answer.answer}
         score={this.props.answer.score}

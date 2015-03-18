@@ -9,6 +9,8 @@ var Row = React.createClass({
   handleVoteClick: function(e) {
     if (!this.props.hasVoted()) {
       this.props.vote();
+    } else {
+      this.props.unvote();
     }
     e.stopPropagation();
     e.preventDefault();
