@@ -50,7 +50,8 @@ class UserProfile(AbstractTimeStampedModel, MappableModel):
 
     user = models.OneToOneField(User, primary_key=True)
     score = models.IntegerField(default=0)
-    followed_questions = models.ManyToManyField(Question, related_name='follwed_users')
+    superuser = models.BooleanField(default=False)
+    followed_questions = models.ManyToManyField(Question, related_name='followed_users')
 
     class Meta:
         ordering = ['user']
