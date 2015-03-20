@@ -7,7 +7,7 @@ module.exports = {
 
   receiveQuestion: function(question) {
     AppDispatcher.handleServerAction({
-      type: ActionTypes.RECEIVE_QUESTION,
+      type: ActionTypes.QUESTION_RECEIVE,
       question: question
     });
   },
