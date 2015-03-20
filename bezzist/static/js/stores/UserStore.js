@@ -62,7 +62,11 @@ var UserStore = _.extend(BaseStore, {
   },
 
   isSuperuser: function() {
-    return _user.superuser;
+    if (this.isAuthenticated()) {
+      return _user.superuser;
+    } else {
+      return false;
+    }
   },
 
   addQuestionLiked: function(questionId) {
