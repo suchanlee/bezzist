@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 from threading import Lock
 
 from django.db.models import Q
@@ -77,7 +78,9 @@ class AnswerResource(AbstractBezzistResource):
 class ActiveAndFeaturedAnswerRpcResource(View):
 
     def get(self, request):
-        questions = Question.objects.filter(Q(active=True) | Q(featured=True))
+        time_threshold = datetime.now() - timedelta(weeks=1)
+        questions = Question.objects.filter(published_datetime__gt=time_threshold)
+        questions.filter(Q(active=True) | Q(featured=True))
         answers = []
         for question in questions:
             answers.append({

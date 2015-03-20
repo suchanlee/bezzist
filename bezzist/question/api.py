@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 from threading import Lock
 
 from django.conf.urls import patterns, url
@@ -42,7 +43,8 @@ class QuestionResource(AbstractBezzistResource):
     # GET /api/v1/questions/
     def list(self):
         query_filters = self.request.GET
-        questions = Question.objects.all()
+        time_threshold = datetime.now() - timedelta(weeks=1)
+        questions = Question.objects.filter(published_datetime__gt=time_threshold)
         if query_filters.get('active') == 'true':
             questions = questions.filter(active=True)
         elif query_filters.get('active') == 'false':
