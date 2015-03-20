@@ -4,7 +4,6 @@
 var React = require('react');
 var $ = require('jquery');
 var _ = require('underscore');
-var store = require('store');
 
 var QuestionStore = require('../../stores/QuestionStore');
 var UserStore = require('../../stores/UserStore');

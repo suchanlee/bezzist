@@ -6,6 +6,7 @@ module.exports = {
 
   ActionTypes: keyMirror({
     QUESTION_CREATE: null,
+    QUESTION_RECEIVE: null,
     QUESTION_UPDATE: null,
     QUESTION_UPVOTE: null,
     QUESTION_UNVOTE: null,
