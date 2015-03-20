@@ -3,8 +3,8 @@
 var React = require('react');
 var Router = require('director').Router;
 
-var LandingView = React.createFactory(require('../views/LandingView.react'));
-var QuestionDetailView = React.createFactory(require('../views/QuestionDetailView.react'));
+var LandingView = require('../views/LandingView.react');
+var QuestionDetailView = require('../views/QuestionDetailView.react');
 
 var curView = null;
 var rootNode = document.getElementById('app');
@@ -16,13 +16,12 @@ var setView = function(view) {
   React.render(curView, rootNode);
 };
 
-
 var router = new Router({
   '/': function() {
-    setView(new LandingView());
+    setView(React.createFactory(LandingView)());
   },
   '/questions/:questionId': function(qId) {
-    setView(new QuestionDetailView({
+    setView(React.createFactory(QuestionDetailView)({
       qId: qId
     }));
   }

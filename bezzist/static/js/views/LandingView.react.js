@@ -16,10 +16,6 @@ var React = require('react'),
     Nav = require('../components/base/Nav.react');
 
 
-QuestionApiUtils.getAllQuestions(); // initialize questions
-AnswerApiUtils.getActiveAndFeaturedAnswers(); //initialize answers
-UserApiUtils.getUser();
-
 var maybeInitializeStore = function() {
   if (!store.get('bz-answers')) {
     store.set('bz-answers', {});
@@ -44,6 +40,9 @@ var LandingView = React.createClass({
             "Safari private browsing mode is not supported. " +
             "We are sorry for the inconvenience.");
     }
+    QuestionApiUtils.getAllQuestions(); // initialize questions
+    AnswerApiUtils.getActiveAndFeaturedAnswers(); //initialize answers
+    UserApiUtils.getUser();
   },
 
   notifyLoaded: function() {
