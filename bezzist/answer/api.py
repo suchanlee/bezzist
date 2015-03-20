@@ -34,7 +34,7 @@ class AnswerResource(AbstractBezzistResource):
 
     def create(self):
         question = get_object_or_404(Question, id=self.data.get('qId'))
-        if not question.finished:
+        if not question.finished or not question.locked:
             answer = Answer.objects.create(
                 user=self.request.user,
                 answer=self.data.get('answer')
