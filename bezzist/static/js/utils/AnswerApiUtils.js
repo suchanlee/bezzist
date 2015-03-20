@@ -5,6 +5,8 @@ var $ = require('jquery');
 var docCookies = require('../lib/cookies');
 var Fingerprint = require('fingerprintjs');
 
+var UserStore = require('../stores/UserStore');
+
 var AnswerServerActionCreators = require('../actions/AnswerServerActionCreators');
 var UserServerActionCreators = require('../actions/UserServerActionCreators');
 var PointsPerAction = require('../constants/UserConstants').PointsPerAction;
@@ -21,7 +23,7 @@ module.exports = {
   },
 
   getAnswersForQuestion: function(questionId) {
-    var promise = $.getJSON('/api/v1/question/' + questionId + '/answers');
+    var promise = $.getJSON('/api/v1/questions/' + questionId + '/answers');
     promise.done(function(answers) {
       AnswerServerActionCreators.receiveAnswersForQuestion(questionId, answers.answers);
     });
@@ -50,7 +52,9 @@ module.exports = {
       },
     });
     promise.done(function() {
-      UserServerActionCreators.incrementPoints(PointsPerAction.VOTE);
+      if (UserStore.isAuthenticated()) {
+        UserServerActionCreators.incrementPoints(PointsPerAction.VOTE);
+      }
     });
     promise.fail(function(err) {
       AnswerServerActionCreators.upvoteFailedForAnswer(questionId, answerId, err.status);
@@ -67,7 +71,9 @@ module.exports = {
       },
     });
     promise.done(function() {
-      UserServerActionCreators.decrementPoints(PointsPerAction.VOTE);
+      if (UserStore.isAuthenticated()) {
+        UserServerActionCreators.decrementPoints(PointsPerAction.VOTE);
+      }
     });
     promise.fail(function(err) {
       AnswerServerActionCreators.unvoteFailedForAnswer(questionId, answerId, err.status);
