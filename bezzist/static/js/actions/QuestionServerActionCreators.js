@@ -5,6 +5,13 @@ var ActionTypes = require('../constants/QuestionConstants').ActionTypes;
 
 module.exports = {
 
+  receiveQuestion: function(question) {
+    AppDispatcher.handleServerAction({
+      type: ActionTypes.RECEIVE_QUESTION,
+      question: question
+    });
+  },
+
   receiveAllQuestions: function(questions) {
     AppDispatcher.handleServerAction({
       type: ActionTypes.RECEIVE_ALL_QUESTIONS,

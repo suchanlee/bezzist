@@ -85,7 +85,7 @@ class QuestionResource(AbstractBezzistResource):
         else:
             raise Unauthorized()
 
-    # GET /api/questions/<pk>/answer
+    # GET /api/questions/<pk>/answers
     @skip_prepare
     def answers(self, pk):
         question = get_object_or_404(Question, pk=pk)

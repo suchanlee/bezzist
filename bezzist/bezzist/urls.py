@@ -9,6 +9,7 @@ from userprofile.views import ConfirmationView, ConfirmationFailView, LogoutView
 urlpatterns = patterns(
     '',
     url(r'^$', LandingView.as_view(), name='landing_view'),
+    url(r'^questions/(?P<qId>\d+)$', LandingView.as_view(), name='question_detail_view'),
     url(r'^profiles/logout$', LogoutView.as_view(), name='confirmation_view'),
     url(r'^profiles/activate/(?P<code>\d+)$', ConfirmationView.as_view(), name='confirmation_view'),
     url(r'^profiles/activate/fail$', ConfirmationFailView.as_view(), name='confirmation_fail_view'),

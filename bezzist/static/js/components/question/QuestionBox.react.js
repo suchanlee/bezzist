@@ -6,6 +6,7 @@ var $ = require('jquery');
 var _ = require('underscore');
 var store = require('store');
 var moment = require('moment');
+var router = require('director').Router();
 
 var QuestionStore = require('../../stores/QuestionStore');
 var QuestionTime = require('./QuestionTime.react');
@@ -51,6 +52,17 @@ var QuestionBox = React.createClass({
     }
   },
 
+  titleClickHandler: function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    this.setRoute();
+  },
+
+  setRoute: function() {
+    var detailViewUri = '/questions/' + this.props.question.id;
+    router.setRoute(detailViewUri);
+  },
+
   render: function() {
     // TODO: remove this one-time hack for Shark Tank event
     var boxClass = this.props.question.featured ? 'question-box question-box-featured' : 'question-box';
@@ -58,7 +70,7 @@ var QuestionBox = React.createClass({
       <div className={boxClass}>
         <div className='list-header primary-list-header'>
           <p className='question-posted-date'>{this.getDateText()}</p>
-          <h2>{this.props.question.question}</h2>
+          <h2 onClick={this.titleClickHandler}>{this.props.question.question}</h2>
           <QuestionTime q={this.props.question} />
         </div>
         <AnswerList

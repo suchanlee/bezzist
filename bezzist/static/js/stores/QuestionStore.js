@@ -189,6 +189,11 @@ AppDispatcher.register(function(payload) {
 
   switch(action.type) {
 
+    case ActionTypes.QUESTION_RECEIVE:
+      QuestionStore.addQuestion(action.question);
+      QuestionStore.emitChange();
+      break;
+
     case ActionTypes.QUESTION_UPVOTE:
       //TODO: remove all this logic out to model when it's made.
       QuestionStore.getQuestion(action.questionId).score += 1;

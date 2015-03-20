@@ -10,6 +10,8 @@ var React = require('react'),
     OVERLAY_EVENT = require('../../constants/BezzistConstants').Events.OVERLAY_EVENT,
     EventMixin = require('../../mixins/EventMixin.react');
 
+var router = require('director').Router();
+
 
 var Nav = React.createClass({
   mixins: [EventMixin],
@@ -30,7 +32,7 @@ var Nav = React.createClass({
   },
 
   handleLogoClick: function() {
-    $('html, body').animate({ scrollTop: 0 }, 1000);
+    router.setRoute('/');
   },
 
   _displayLoginForm: function(cb) {
