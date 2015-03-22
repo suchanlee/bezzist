@@ -23,6 +23,7 @@
     "jest-cli": "~0.1.17",
     "reactify": "^0.15.2",
     "uglify-js": "~2.4.15",
+    "watch-less": "0.0.4",
     "watchify": "^2.1.1"
   },
   "scripts": {
