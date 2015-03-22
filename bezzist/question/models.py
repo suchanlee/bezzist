@@ -16,6 +16,7 @@ class Question(AbstractUserScoredModel):
     featured = models.BooleanField(default=False)
     active = models.BooleanField(default=False)
     finished = models.BooleanField(default=False)
+    locked = models.BooleanField(default=False)
 
     class Meta:
         ordering = ['-score', 'created']

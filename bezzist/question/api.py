@@ -26,6 +26,7 @@ class QuestionResource(AbstractBezzistResource):
         'active': 'active',
         'featured': 'featured',
         'finished': 'finished',
+        'locked': 'locked',
         'posted_by': 'user.username',
         'created': 'created',
         'modified': 'modified',
