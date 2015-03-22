@@ -1,10 +1,10 @@
 'use strict';
 
-var keyMirror = require('keyMirror');
+var keymirror = require('keymirror');
 
 module.exports = {
 
-  ActionTypes: keyMirror({
+  ActionTypes: keymirror({
     ANSWER_CREATE: null,
     ANSWER_UPDATE: null,
     ANSWER_UPVOTE: null,

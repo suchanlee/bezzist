@@ -1,6 +1,6 @@
 'use strict';
 
-var keyMirror = require('keyMirror');
+var keymirror = require('keymirror');
 
 module.exports = {
 
@@ -26,7 +26,7 @@ module.exports = {
     VOTE: 1
   },
 
-  ActionTypes: keyMirror({
+  ActionTypes: keymirror({
     RECEIVE_USER: null,
     RECEIVE_NON_USER: null,
     CREATE_USER: null,

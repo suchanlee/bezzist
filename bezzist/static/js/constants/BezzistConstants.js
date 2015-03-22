@@ -1,6 +1,6 @@
 'use strict';
 
-var keyMirror = require('keyMirror');
+var keymirror = require('keymirror');
 
 module.exports = {
 
@@ -21,12 +21,12 @@ module.exports = {
     BEZZIST_ALERTS: 'bz-alerts'
   },
 
-  Events: keyMirror({
+  Events: keymirror({
     CHANGE: null,
     OVERLAY_EVENT: null,
   }),
 
-  PayloadSources: keyMirror({
+  PayloadSources: keymirror({
     SERVER_ACTION: null,
     VIEW_ACTION: null
   })
