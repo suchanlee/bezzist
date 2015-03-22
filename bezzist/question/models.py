@@ -28,3 +28,13 @@ class Question(AbstractUserScoredModel):
         if not self.published_datetime and self.active:
             self.published_datetime = timezone.now()
         super(Question, self).save(*args, **kwargs)
+
+    def publish(self):
+        if not self.active:
+            self.active = True
+            self.save()
+
+    def finish(self):
+        if not self.finished:
+            self.finished = True
+            self.save()
