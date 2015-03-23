@@ -59,10 +59,7 @@ var AnswerStore =  _.extend(_.clone(BaseStore), {
     if (!(questionId in _answers)) {
       _answers[questionId] = [];
     }
-    if (answer.id in _answerIds) {
-      // this.updateAnswer(questionId, answer);
-      console.log('answer already in!');
-    } else {
+    if (!(answer.id in _answerIds)) {
       _answers[questionId].push(answer);
       _answerIds[answer.id] = true;
     }
@@ -70,8 +67,8 @@ var AnswerStore =  _.extend(_.clone(BaseStore), {
 
   updateAnswer: function(questionId, answer) {
     _.map(_answers[questionId], function(_answer) {
-      if (_answer.id === -1 || _answer.id === answer.id) {
-        delete _answerIds[-1];
+      if (_answer.id === TMP_ANSWER_ID || _answer.id === answer.id) {
+        delete _answerIds[TMP_ANSWER_ID];
         var answerKeySet = Object.keys(answer);
         if (Object.keys(_answer).length === answerKeySet.length) {
           Utils.removeFromList(_answers[questionId], _answer)
