@@ -53,7 +53,6 @@ var BaseStore = assign({}, EventEmitter.prototype, {
    */
   addChangeListener: function(callback) {
     this.on(this._changeEvent, callback);
-    console.log(this._changeEvent);
   },
 
   /**
