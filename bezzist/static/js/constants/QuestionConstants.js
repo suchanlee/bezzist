@@ -13,7 +13,8 @@ module.exports = {
     QUESTION_CREATE_FAILED: null,
     QUESTION_UPVOTE_FAILED: null,
     QUESTION_UNVOTE_FAILED: null,
-    RECEIVE_QUESTIONS: null
+    RECEIVE_QUESTIONS: null,
+    RECEIVE_PAGED_QUESTIONS: null
   })
 
 };

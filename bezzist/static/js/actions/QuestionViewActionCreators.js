@@ -6,6 +6,13 @@ var QuestionApiUtils = require('../utils/QuestionApiUtils');
 
 module.exports = {
 
+  getPagedQuestions: function(page) {
+    QuestionApiUtils.getPagedQuestions({
+      active: true,
+      page: page
+    })
+  },
+
   upvoteQuestion: function(questionId) {
     AppDispatcher.handleViewAction({
       type: ActionTypes.QUESTION_UPVOTE,

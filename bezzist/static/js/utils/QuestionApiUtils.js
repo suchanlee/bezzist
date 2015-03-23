@@ -19,11 +19,24 @@ module.exports = {
     });
   },
 
+  getPagedQuestions: function(query) {
+    // will increment page count in QuestionStore everytime this is called
+    var encodedQuery = query ? '?' + $.param(query) : '';
+    var promise = $.getJSON('/api/v1/questions/' + encodedQuery);
+    promise.done(function(payload) {
+      QuestionServerActionCreators.receivePagedQuestions(
+        payload.questions,
+        payload.per_page,
+        payload.count,
+        payload.num_pages);
+    });
+  },
+
   getQuestions: function(query) {
     var encodedQuery = query ? '?' + $.param(query) : '';
     var promise = $.getJSON('/api/v1/questions/' + encodedQuery);
-    promise.done(function(questions) {
-      QuestionServerActionCreators.receiveQuestions(questions.questions);
+    promise.done(function(payload) {
+      QuestionServerActionCreators.receiveQuestions(payload.questions);
     });
   },
 

@@ -1,4 +1,3 @@
-from datetime import datetime, timedelta
 from threading import Lock
 
 from django.conf import settings
@@ -48,7 +47,7 @@ class QuestionResource(AbstractBezzistResource):
             'questions': data,
             'per_page' : self.paginator.per_page,
             'count'    : self.paginator.count,
-            'num_page' : self.paginator.num_pages,
+            'num_pages': self.paginator.num_pages,
         }
 
     # GET /api/v1/questions/
@@ -70,7 +69,7 @@ class QuestionResource(AbstractBezzistResource):
         elif query_filters.get('active') == 'false':
             questions = Question.objects.filter(active=False).order_by('-score')
         elif query_filters.get('featured') == 'true':
-            questions = Question.objects.filter(Q(active=True)&Q(featured=True))
+            questions = Question.objects.filter(Q(active=True)&Q(featured=True))[:1]
         else:
             questions = Question.objects.all()
         self.paginator = Paginator(questions, len(questions))

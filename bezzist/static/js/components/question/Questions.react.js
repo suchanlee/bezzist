@@ -5,6 +5,7 @@ var React = require('react');
 var $ = require('jquery');
 var _ = require('underscore');
 
+var QuestionViewActionCreators = require('../../actions/QuestionViewActionCreators');
 var QuestionStore = require('../../stores/QuestionStore');
 var UserStore = require('../../stores/UserStore');
 var QuestionBox = require('./QuestionBox.react');
@@ -30,6 +31,12 @@ var Questions = React.createClass({
     QuestionStore.removeChangeListener(this._onChange);
   },
 
+  handleMoreQuestionsClick: function(e) {
+    QuestionViewActionCreators.getPagedQuestions(QuestionStore.page);
+    e.preventDefault();
+    e.stopPropagation();
+  },
+
   _onChange: function() {
     this.setState(getStateFromStores());
   },
@@ -49,6 +56,7 @@ var Questions = React.createClass({
     return (
       <div className='questions'>
         {questions}
+        <button onClick={this.handleMoreQuestionsClick}>More questions</button>
       </div>
     );
   },

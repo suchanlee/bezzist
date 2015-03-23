@@ -62,6 +62,10 @@ var _featuredQuestionId = undefined;
 
 var QuestionStore = _.extend(_.clone(BaseStore), {
 
+  hasNext: true,
+
+  page: 1,
+
   addQuestions: function(questions) {
     _.map(questions, function(question) {
       this.addQuestion(question);
@@ -249,6 +253,15 @@ AppDispatcher.register(function(payload) {
 
     case ActionTypes.RECEIVE_QUESTIONS:
       QuestionStore.addQuestions(action.questions);
+      QuestionStore.emitChange();
+      break;
+
+    case ActionTypes.RECEIVE_PAGED_QUESTIONS:
+      QuestionStore.addQuestions(action.questions);
+      QuestionStore.page += 1;
+      if (action.numPages <= QuestionStore.page) {
+        QuestionStore.hasNext = false;
+      }
       QuestionStore.emitChange();
       break;
 

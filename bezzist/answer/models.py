@@ -14,4 +14,11 @@ class Answer(AbstractUserScoredModel, MappableModel):
         return self.answer
 
     def objectify(self):
-        return self.shallow_mappify()
+        return {
+            'created': self.created,
+            'modified': self.modified,
+            'id': self.id,
+            'score': self.score,
+            'answer': self.answer,
+            'user': self.user.id
+        }
