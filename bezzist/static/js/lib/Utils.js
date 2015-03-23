@@ -64,18 +64,19 @@ module.exports = {
   },
 
   /**
-   * Sorts a given list by a specified field in the
+   * Sorts a given list by a specified key, where
+   * the comparing value of the key is a number, in the
    * object in list. User can specify whether to
    * reverse sort the list by passing in boolean
-   * reverse object. The field in object must not be
+   * reverse object. The key in object must not be
    * nested.
    *
    * @param  {Array} list
-   * @param  {string} field
+   * @param  {string} key
    * @param  {boolean} reverse
    * @return {Array}
    */
-  sortByField: function(list, field, reverse) {
+  sortByField: function(list, key, reverse) {
     if (!list || list.length === 0) {
       return [];
     }
@@ -84,22 +85,23 @@ module.exports = {
     if (reverse) {
       dir = -1;
     }
-    return _.sortBy(list, function(o) {
-      return dir * o[field];
+
+    return list.sort(function(a, b) {
+      return dir * (a - b);
     });
   },
 
   /**
-   * Reverse Sorts a given list by a specified field in the
-   * object in list. The field in object must not be
+   * Reverse Sorts a given list by a specified key in the
+   * object in list. The key in object must not be
    * nested.
    *
    * @param  {Array} list
-   * @param  {string} field
+   * @param  {string} key
    * @return {Array}
    */
-  revSortByField: function(list, field) {
-    return this.sortByField(list, field, true);
+  revSortByField: function(list, key) {
+    return this.sortByField(list, key, true);
   },
 
   /**
