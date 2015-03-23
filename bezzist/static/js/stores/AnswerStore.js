@@ -71,6 +71,7 @@ var AnswerStore =  _.extend(_.clone(BaseStore), {
   updateAnswer: function(questionId, answer) {
     _.map(_answers[questionId], function(_answer) {
       if (_answer.id === -1 || _answer.id === answer.id) {
+        delete _answerIds[-1];
         var answerKeySet = Object.keys(answer);
         if (Object.keys(_answer).length === answerKeySet.length) {
           Utils.removeFromList(_answers[questionId], _answer)
