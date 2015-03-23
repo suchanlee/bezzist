@@ -10,7 +10,7 @@
 /*
  * Events-related imports
  */
-var EventEmitter = require('events').EventEmitter;
+var EventEmitter = require('eventemitter3');
 var assign = require('object-assign');
 
 /*
