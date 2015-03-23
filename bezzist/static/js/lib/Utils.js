@@ -87,7 +87,12 @@ module.exports = {
     }
 
     return list.sort(function(a, b) {
-      return dir * (a[key] - b[key]);
+      var comp = a[key] - b[key];
+      if (comp === 0) {
+        return a.created.unix() - b.created.unix();
+      } else {
+        return dir * comp;
+      }
     });
   },
 
