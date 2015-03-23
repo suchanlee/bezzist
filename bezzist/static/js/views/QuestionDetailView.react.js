@@ -14,6 +14,7 @@ var UserStore = require('../stores/UserStore');
  */
 var QuestionApiUtils = require('../utils/QuestionApiUtils');
 var AnswerApiUtils = require('../utils/AnswerApiUtils');
+var UserApiUtils = require('../utils/UserApiUtils');
 
 /*
  * React components
@@ -35,6 +36,7 @@ var QuestionDetailView = React.createClass({
     UserStore.addChangeListener(this._onChange);
     QuestionApiUtils.getQuestion(this.props.qId);
     AnswerApiUtils.getAnswersForQuestion(this.props.qId);
+    UserApiUtils.getUser();
   },
 
   componentWillUnmount: function() {
