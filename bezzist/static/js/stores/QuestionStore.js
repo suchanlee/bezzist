@@ -62,7 +62,7 @@ var _featuredQuestionId = undefined;
 
 var QuestionStore = _.extend(_.clone(BaseStore), {
 
-  init: function(questions) {
+  addQuestions: function(questions) {
     _.map(questions, function(question) {
       this.addQuestion(question);
     }.bind(this));
@@ -247,8 +247,8 @@ AppDispatcher.register(function(payload) {
       QuestionStore.emitChange();
       break;
 
-    case ActionTypes.RECEIVE_ALL_QUESTIONS:
-      QuestionStore.init(action.questions);
+    case ActionTypes.RECEIVE_QUESTIONS:
+      QuestionStore.addQuestions(action.questions);
       QuestionStore.emitChange();
       break;
 

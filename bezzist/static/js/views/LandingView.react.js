@@ -22,8 +22,10 @@ var LandingView = React.createClass({
   },
 
   componentDidMount: function() {
-    QuestionApiUtils.getAllQuestions(); // initialize questions
-    AnswerApiUtils.getActiveAndFeaturedAnswers(); //initialize answers
+    QuestionApiUtils.getQuestions({ active: false }); // initialize questions
+    QuestionApiUtils.getQuestions({ active: true });
+    QuestionApiUtils.getQuestions({ featured: true });
+    // AnswerApiUtils.getActiveAndFeaturedAnswers(); //initialize answers
     UserApiUtils.getUser();
   },
 

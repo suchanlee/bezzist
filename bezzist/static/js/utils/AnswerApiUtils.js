@@ -23,7 +23,7 @@ module.exports = {
   },
 
   getAnswersForQuestion: function(questionId) {
-    var promise = $.getJSON('/api/v1/questions/' + questionId + '/answers');
+    var promise = $.getJSON('/api/v1/answers/?qid=' + questionId);
     promise.done(function(answers) {
       AnswerServerActionCreators.receiveAnswersForQuestion(questionId, answers.answers);
     });

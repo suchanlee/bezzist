@@ -19,10 +19,11 @@ module.exports = {
     });
   },
 
-  getAllQuestions: function() {
-    var promise = $.getJSON('/api/v1/questions/');
+  getQuestions: function(query) {
+    var encodedQuery = query ? '?' + $.param(query) : '';
+    var promise = $.getJSON('/api/v1/questions/' + encodedQuery);
     promise.done(function(questions) {
-      QuestionServerActionCreators.receiveAllQuestions(questions.questions);
+      QuestionServerActionCreators.receiveQuestions(questions.questions);
     });
   },
 

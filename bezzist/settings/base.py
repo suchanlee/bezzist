@@ -96,3 +96,5 @@ CRONJOBS = [
     ('0 12 * * *', 'question.cron.finish_questions'),
 ]
 
+QUESTION_PAGE_SIZE = 7
+

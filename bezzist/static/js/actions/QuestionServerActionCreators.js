@@ -3,6 +3,8 @@
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var ActionTypes = require('../constants/QuestionConstants').ActionTypes;
 
+var AnswerApiUtils = require('../utils/AnswerApiUtils');
+
 module.exports = {
 
   receiveQuestion: function(question) {
@@ -10,13 +12,21 @@ module.exports = {
       type: ActionTypes.QUESTION_RECEIVE,
       question: question
     });
+    if (question.active) {
+      AnswerApiUtils.getAnswersForQuestion(question.id);
+    }
   },
 
-  receiveAllQuestions: function(questions) {
+  receiveQuestions: function(questions) {
     AppDispatcher.handleServerAction({
-      type: ActionTypes.RECEIVE_ALL_QUESTIONS,
+      type: ActionTypes.RECEIVE_QUESTIONS,
       questions: questions
     });
+    for (var i = 0; i < questions.length; i++) {
+      if (questions[i].active) {
+        AnswerApiUtils.getAnswersForQuestion(questions[i].id);
+      }
+    }
   },
 
   upvoteFailedForQuestion: function(questionId, status) {

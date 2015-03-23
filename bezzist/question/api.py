@@ -1,7 +1,10 @@
 from datetime import datetime, timedelta
 from threading import Lock
 
+from django.conf import settings
 from django.conf.urls import patterns, url
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.views.generic import View
@@ -20,16 +23,15 @@ class QuestionResource(AbstractBezzistResource):
     resource_lock = Lock()
 
     preparer = FieldsPreparer(fields={
-        'id': 'id',
-        'question': 'question',
-        'score': 'score',
-        'active': 'active',
-        'featured': 'featured',
-        'finished': 'finished',
-        'locked': 'locked',
-        'posted_by': 'user.username',
-        'created': 'created',
-        'modified': 'modified',
+        'id'       : 'id',
+        'question' : 'question',
+        'score'    : 'score',
+        'active'   : 'active',
+        'featured' : 'featured',
+        'finished' : 'finished',
+        'locked'   : 'locked',
+        'created'  : 'created',
+        'modified' : 'modified',
         'published': 'published_datetime'
     })
 
@@ -41,16 +43,38 @@ class QuestionResource(AbstractBezzistResource):
             }
         })
 
+    def wrap_list_response(self, data):
+        return {
+            'questions': data,
+            'per_page' : self.paginator.per_page,
+            'count'    : self.paginator.count,
+            'num_page' : self.paginator.num_pages,
+        }
+
     # GET /api/v1/questions/
     def list(self):
         query_filters = self.request.GET
-        time_threshold = datetime.now() - timedelta(weeks=1)
-        questions = Question.objects.filter(published_datetime__gt=time_threshold)
         if query_filters.get('active') == 'true':
-            questions = questions.filter(active=True)
+            questions = Question.objects.filter(active=True).order_by('-published_datetime')
+            self.paginator = Paginator(questions, settings.QUESTION_PAGE_SIZE)
+            if 'page' in query_filters:
+                try:
+                    questions = self.paginator.page(int(query_filters.get('page')))
+                except PageNotAnInteger:
+                    questions = self.paginator.page(1)
+                except EmptyPage:
+                    questions = self.paginator.page(self.paginator.num_pages)
+            else:
+                questions = self.paginator.page(1)
+            return questions
         elif query_filters.get('active') == 'false':
-            questions = questions.filter(active=False)
-        return questions  # for now returns all
+            questions = Question.objects.filter(active=False).order_by('-score')
+        elif query_filters.get('featured') == 'true':
+            questions = Question.objects.filter(Q(active=True)&Q(featured=True))
+        else:
+            questions = Question.objects.all()
+        self.paginator = Paginator(questions, len(questions))
+        return questions
 
     # GET /api/v1/questions/<pk>
     def detail(self, pk):

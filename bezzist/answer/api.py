@@ -1,4 +1,3 @@
-from datetime import datetime, timedelta
 from threading import Lock
 
 from django.db.models import Q
@@ -27,8 +26,23 @@ class AnswerResource(AbstractBezzistResource):
         'last_modified': 'modified'
     })
 
+    def wrap_list_response(self, data):
+        return {
+            'qid': self.questionId,
+            'answers'   : data
+        }
+
     def list(self):
-        return Answer.objects.all()
+        query_filters = self.request.GET
+        if 'qid' in query_filters:
+            questionId = query_filters.get('qid')
+            self.questionId = questionId
+            question = Question.objects.get(id=questionId)
+            answers = question.answers.order_by('-score')
+        else:
+            self.questionId = None
+            answers = Answer.objects.all()
+        return answers
 
     def detail(self, pk):
         return get_object_or_404(Answer, pk=pk)
@@ -78,14 +92,14 @@ class AnswerResource(AbstractBezzistResource):
 class ActiveAndFeaturedAnswerRpcResource(View):
 
     def get(self, request):
-        time_threshold = datetime.now() - timedelta(weeks=1)
-        questions = Question.objects.filter(published_datetime__gt=time_threshold)
-        questions.filter(Q(active=True) | Q(featured=True))
+        # time_threshold = datetime.now() - timedelta(weeks=1)
+        # questions = Question.objects.filter(published_datetime__gt=time_threshold)
+        questions = Question.objects.filter(Q(active=True) | Q(featured=True))
         answers = []
         for question in questions:
             answers.append({
                 'questionId': question.id,
-                'answers': map(lambda a: a.shallow_mappify(exception_fields=['liked_browsers']), question.answers.all())
+                'answers': map(lambda a: a.objectify(), question.answers.all())
             })
         return JsonResponse(answers, safe=False)
 
