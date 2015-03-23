@@ -48,10 +48,12 @@ var _liked_answer_ids = {};
 var UserStore = _.extend(_.clone(BaseStore), {
 
   setUser: function(user) {
-    _user = user;
-    _liked_question_ids = Utils.listToSet(user.liked_question_ids);
-    _liked_answer_ids = Utils.listToSet(user.liked_answer_ids);
-    this._setPointStatus(user.score);
+    if (!_user) {
+      _user = user;
+      _liked_question_ids = Utils.listToSet(user.liked_question_ids);
+      _liked_answer_ids = Utils.listToSet(user.liked_answer_ids);
+      this._setPointStatus(user.score);
+    }
   },
 
   getUser: function() {
