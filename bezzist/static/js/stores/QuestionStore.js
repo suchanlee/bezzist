@@ -59,7 +59,8 @@ var _questions = {};
 var _activeQuestionIds = [];
 var _inactiveQuestionIds = [];
 var _featuredQuestionId = undefined;
-var QuestionStore = _.extend(BaseStore, {
+
+var QuestionStore = _.extend(_.clone(BaseStore), {
 
   init: function(questions) {
     _.map(questions, function(question) {
@@ -180,6 +181,8 @@ var QuestionStore = _.extend(BaseStore, {
     return Utils.revSortByField(this._toList(), 'score');
   },
 });
+
+QuestionStore.setChangeEvent(BezzistConstants.Events.QUESTION_CHANGE);
 
 AppDispatcher.register(function(payload) {
   var ActionTypes = QuestionConstants.ActionTypes;

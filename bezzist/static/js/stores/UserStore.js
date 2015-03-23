@@ -44,7 +44,8 @@ var _user = null;
 var _point_status = null;
 var _liked_question_ids = {};
 var _liked_answer_ids = {};
-var UserStore = _.extend(BaseStore, {
+
+var UserStore = _.extend(_.clone(BaseStore), {
 
   setUser: function(user) {
     _user = user;
@@ -120,6 +121,8 @@ var UserStore = _.extend(BaseStore, {
     this._setPointStatus(_user.score);
   }
 });
+
+UserStore.setChangeEvent(BezzistConstants.Events.USER_CHANGE);
 
 AppDispatcher.register(function(payload) {
 

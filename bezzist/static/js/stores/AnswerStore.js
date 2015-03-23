@@ -51,7 +51,8 @@ var TMP_ANSWER_ID = -1; // impossible id for real model object
  * AnswerStore object
  */
 var _answers = {}; // key:value = questionId:list of answers
-var AnswerStore =  _.extend(BaseStore, {
+
+var AnswerStore =  _.extend(_.clone(BaseStore), {
 
   addAnswer: function(questionId, answer) {
     if (!(questionId in _answers)) {
@@ -104,6 +105,7 @@ var AnswerStore =  _.extend(BaseStore, {
 
 });
 
+AnswerStore.setChangeEvent(BezzistConstants.Events.ANSWER_CHANGE);
 
 AppDispatcher.register(function(payload) {
 
@@ -200,7 +202,6 @@ AppDispatcher.register(function(payload) {
       // no op
   }
 });
-
 
 /*
  * Module export declaration

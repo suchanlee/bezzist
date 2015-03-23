@@ -23,6 +23,9 @@ module.exports = {
 
   Events: keymirror({
     CHANGE: null,
+    USER_CHANGE: null,
+    QUESTION_CHANGE: null,
+    ANSWER_CHANGE: null,
     OVERLAY_EVENT: null,
   }),
 
