@@ -87,7 +87,7 @@ module.exports = {
     }
 
     return list.sort(function(a, b) {
-      return dir * (a - b);
+      return dir * (a[key] - b[key]);
     });
   },
 
