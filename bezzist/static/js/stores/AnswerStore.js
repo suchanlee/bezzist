@@ -18,6 +18,7 @@
 var _ = require('underscore');
 var assign = require('object-assign');
 var store = require('store');
+var moment = require('moment');
 
 /*
  * Local library imports
@@ -55,12 +56,18 @@ var _answerIds = {}; // set of currently loaded ids
 
 var AnswerStore =  _.extend(_.clone(BaseStore), {
 
+  _createAnswer: function(answer) {
+    answer.created = moment(answer.created);
+    answer.modified = moment(answer.modified);
+    return answer;
+  },
+
   addAnswer: function(questionId, answer) {
     if (!(questionId in _answers)) {
       _answers[questionId] = [];
     }
     if (!(answer.id in _answerIds)) {
-      _answers[questionId].push(answer);
+      _answers[questionId].push(this._createAnswer(answer));
       _answerIds[answer.id] = true;
     }
   },
@@ -68,18 +75,10 @@ var AnswerStore =  _.extend(_.clone(BaseStore), {
   updateAnswer: function(questionId, answer) {
     _.map(_answers[questionId], function(_answer) {
       if (_answer.id === TMP_ANSWER_ID || _answer.id === answer.id) {
-        delete _answerIds[TMP_ANSWER_ID];
-        var answerKeySet = Object.keys(answer);
-        if (Object.keys(_answer).length === answerKeySet.length) {
-          Utils.removeFromList(_answers[questionId], _answer)
-          _answers[questionId].push(answer);
-        } else {
-          _.map(answerKeySet, function(key) {
-            _answer[key] = answer[key];
-          });
-        }
+        this.removeAnswer(questionId, _answer.id);
+        this.addAnswer(questionId, answer);
       }
-    });
+    }.bind(this));
   },
 
   removeAnswer: function(questionId, answerId) {
