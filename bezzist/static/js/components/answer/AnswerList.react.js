@@ -20,6 +20,19 @@ var AnswerList = React.createClass({
     AnswerStore.removeChangeListener(this._onChange);
   },
 
+  shouldComponentUpdate: function(nextProps, nextState) {
+    if (nextState.answers.length !== this.state.answers.length) {
+      return true;
+    } else {
+      for (var i = 0; i < this.state.answers.length; i++) {
+        if (nextState.answers[i] !== this.state.answers[i]) {
+          return true;
+        }
+      }
+    }
+    return false;
+  },
+
   _onChange: function() {
     this.setState(this._getStateFromStores());
   },

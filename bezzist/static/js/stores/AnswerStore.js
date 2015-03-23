@@ -105,7 +105,7 @@ var AnswerStore =  _.extend(_.clone(BaseStore), {
   getAnswersForQuestion: function(questionId) {
     if (questionId in _answers) {
       _answers[questionId] = Utils.revSortByField(_answers[questionId], 'score');
-      return _answers[questionId];
+      return _.map(_answers[questionId], _.clone);
     } else {
       return [];
     }
