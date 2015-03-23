@@ -56,8 +56,8 @@ var TMP_QUESTION_ID = -1;
  * and question tracking objects.
  */
 var _questions = {};
-var _activeQuestionIds = [];
-var _inactiveQuestionIds = [];
+var _activeQuestionIds = {};
+var _inactiveQuestionIds = {};
 var _featuredQuestionId = undefined;
 
 var QuestionStore = _.extend(_.clone(BaseStore), {
@@ -71,7 +71,7 @@ var QuestionStore = _.extend(_.clone(BaseStore), {
   _toList: function(questionIds) {
     var questionList = []
     if (!questionIds) {
-      questionIds = _questionList.keySet();
+      questionIds = _.keys(_questions);
     }
     _.map(questionIds, function(id) {
       questionList.push(_questions[id]);
@@ -92,13 +92,13 @@ var QuestionStore = _.extend(_.clone(BaseStore), {
 
   addQuestion: function(question) {
     question = this._createQuestion(question);
-    _questions[question.id] = question;
+    _questions[question.id] = question; // more recent objects are favored
     if (question.featured) {
       _featuredQuestionId = question.id;
     } else if (question.active) {
-      _activeQuestionIds.push(question.id);
+      _activeQuestionIds[question.id] = true;
     } else {
-      _inactiveQuestionIds.push(question.id);
+      _inactiveQuestionIds[question.id] = true;
     }
   },
 
@@ -132,8 +132,8 @@ var QuestionStore = _.extend(_.clone(BaseStore), {
    */
   removeQuestion: function(questionId) {
     delete _questions[questionId];
-    Utils.removeFromList(_activeQuestionIds, questionId);
-    Utils.removeFromList(_inactiveQuestionIds, questionId);
+    delete _activeQuestionIds[questionId];
+    delete _inactiveQuestionIds[questionId];
     if (_featuredQuestionId === questionId) {
       _featuredQuestionId = undefined;
     }
@@ -163,7 +163,7 @@ var QuestionStore = _.extend(_.clone(BaseStore), {
    * published datetime.
    */
   getActiveQuestions: function() {
-    return Utils.revSortByField(this._toList(_activeQuestionIds), 'published');
+    return Utils.revSortByField(this._toList(_.keys(_activeQuestionIds)), 'published');
   },
 
   /*
@@ -171,7 +171,7 @@ var QuestionStore = _.extend(_.clone(BaseStore), {
    * by score.
    */
   getInactiveQuestions: function() {
-    return Utils.revSortByField(this._toList(_inactiveQuestionIds), 'score');
+    return Utils.revSortByField(this._toList(_.keys(_inactiveQuestionIds)), 'score');
   },
 
   /*

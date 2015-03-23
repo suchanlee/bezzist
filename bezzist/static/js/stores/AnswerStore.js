@@ -51,6 +51,7 @@ var TMP_ANSWER_ID = -1; // impossible id for real model object
  * AnswerStore object
  */
 var _answers = {}; // key:value = questionId:list of answers
+var _answerIds = {}; // set of currently loaded ids
 
 var AnswerStore =  _.extend(_.clone(BaseStore), {
 
@@ -58,7 +59,13 @@ var AnswerStore =  _.extend(_.clone(BaseStore), {
     if (!(questionId in _answers)) {
       _answers[questionId] = [];
     }
-    _answers[questionId].push(answer);
+    if (answer.id in _answerIds) {
+      // this.updateAnswer(questionId, answer);
+      console.log('answer already in!');
+    } else {
+      _answers[questionId].push(answer);
+      _answerIds[answer.id] = true;
+    }
   },
 
   updateAnswer: function(questionId, answer) {
@@ -80,10 +87,13 @@ var AnswerStore =  _.extend(_.clone(BaseStore), {
   removeAnswer: function(questionId, answerId) {
     var answer = this.getAnswerForQuestion(questionId, answerId);
     Utils.removeFromList(_answers[questionId], answer);
+    delete _answerIds[answerId];
   },
 
   storeAnswers: function(questionId, answers) {
-    _answers[questionId] = answers;
+    for (var i = 0; i < answers.length; i++) {
+      this.addAnswer(questionId, answers[i]);
+    }
   },
 
   getAnswerForQuestion: function(questionId, answerId) {
@@ -97,7 +107,8 @@ var AnswerStore =  _.extend(_.clone(BaseStore), {
 
   getAnswersForQuestion: function(questionId) {
     if (questionId in _answers) {
-      return Utils.revSortByField(_answers[questionId], 'score');
+      _answers[questionId] = Utils.revSortByField(_answers[questionId], 'score');
+      return _answers[questionId];
     } else {
       return [];
     }
