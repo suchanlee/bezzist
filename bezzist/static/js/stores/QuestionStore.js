@@ -259,7 +259,7 @@ AppDispatcher.register(function(payload) {
     case ActionTypes.RECEIVE_PAGED_QUESTIONS:
       QuestionStore.addQuestions(action.questions);
       QuestionStore.page += 1;
-      if (action.numPages <= QuestionStore.page) {
+      if (action.numPages < QuestionStore.page) {
         QuestionStore.hasNext = false;
       }
       QuestionStore.emitChange();

@@ -53,12 +53,18 @@ var Questions = React.createClass({
                         question={question}
                         key={question.id} />);
     });
-    return (
-      <div className='questions'>
-        {questions}
+    var showMore = null;
+    if (QuestionStore.hasNext) {
+      showMore = (
         <div className='questions-show-more'>
           <a onClick={this.handleMoreQuestionsClick}>See More Questions!</a>
         </div>
+      );
+    }
+    return (
+      <div className='questions'>
+        {questions}
+        {showMore}
       </div>
     );
   },
