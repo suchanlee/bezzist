@@ -45,9 +45,9 @@ var LandingView = React.createClass({
           <div className={className}>
             <UpcomingBox />
             <Questions notifyLoaded={this.notifyLoaded} />
-            <Footer />
           </div>
         </div>
+        <Footer />
       </div>
     );
   }
