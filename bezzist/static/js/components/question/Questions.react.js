@@ -56,7 +56,9 @@ var Questions = React.createClass({
     return (
       <div className='questions'>
         {questions}
-        <button onClick={this.handleMoreQuestionsClick}>More questions</button>
+        <div className='questions-show-more'>
+          <a onClick={this.handleMoreQuestionsClick}>See More Questions!</a>
+        </div>
       </div>
     );
   },
