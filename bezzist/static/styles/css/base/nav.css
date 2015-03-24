@@ -30,6 +30,10 @@ nav {
   font-size: 18px;
   vertical-align: middle;
 }
+.nav-logo a {
+  color: black;
+  text-decoration: none;
+}
 .nav-login,
 .nav-user {
   vertical-align: middle;

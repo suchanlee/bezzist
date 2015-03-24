@@ -10,7 +10,6 @@ var React = require('react'),
     AlertContainer = require('../components/alert/AlertContainer.react'),
     Questions = require('../components/question/Questions.react'),
     UpcomingBox = require('../components/answer/UpcomingBox.react'),
-    Footer = require('../components/base/Footer.react'),
     Overlay = require('../components/base/Overlay.react'),
     Nav = require('../components/base/Nav.react');
 
@@ -45,7 +44,6 @@ var LandingView = React.createClass({
           <div className={className}>
             <UpcomingBox />
             <Questions notifyLoaded={this.notifyLoaded} />
-            <Footer />
           </div>
         </div>
       </div>
