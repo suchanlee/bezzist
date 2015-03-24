@@ -19,7 +19,6 @@ var UserApiUtils = require('../utils/UserApiUtils');
 /*
  * React components
  */
-var Footer = require('../components/base/Footer.react');
 var Overlay = require('../components/base/Overlay.react');
 var Nav = require('../components/base/Nav.react');
 var QuestionBox = require('../components/question/QuestionBox.react');

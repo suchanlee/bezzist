@@ -1,5 +1,6 @@
 'use strict';
 
+var $ = require('jquery');
 var React = require('react');
 var Router = require('director').Router;
 
@@ -14,6 +15,7 @@ var setView = function(view) {
   }
   curView = view;
   React.render(curView, rootNode);
+  $('html, body').animate({ scrollTop: 0 }, 300);
 };
 
 var router = new Router({

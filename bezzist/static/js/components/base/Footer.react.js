@@ -9,9 +9,9 @@ var Footer = React.createClass({
       <footer>
         <div>
           <ul className='footer-list'>
-            <li className='footer-list-item'><a href='#'>ABOUT BEZZIST</a></li>
-            <li className='footer-list-item'><a href='#'>RULES</a></li>
-            <li className='footer-list-item'><a href='#'>TERMS OF SERVICE</a></li>
+            <li className='footer-list-item'><a href='/about'>ABOUT BEZZIST</a></li>
+            <li className='footer-list-item'><a href='/rules'>RULES</a></li>
+            <li className='footer-list-item'><a href='/terms'>TERMS OF SERVICE</a></li>
           </ul>
         </div>
         <p className='footer-copyright'>&copy; 2015 Bezzist</p>

@@ -14,11 +14,20 @@ body {
   position: relative;
   z-index: 1;
 }
-.landing {
-  max-width: 960px;
+.landing,
+.static-page {
+  max-width: 600px;
   margin: 0 auto;
   padding: 0px 15px;
   padding-top: 85px;
+}
+.static-page p,
+.static-page ol,
+.static-page ul {
+  font-size: 1.2em;
+}
+.strong {
+  font-weight: 500;
 }
 .hidden {
   display: none;
@@ -26,13 +35,13 @@ body {
 footer {
   border-top: 6px solid #cbcbcb;
   text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
   margin-top: 80px;
 }
 .footer-list {
   padding-left: 0px;
   text-align: center;
-  width: 90%;
-  margin: 0 auto;
   margin-top: 22px;
   margin-bottom: 22px;
   font-weight: 500;

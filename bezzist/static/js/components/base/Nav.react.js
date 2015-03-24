@@ -32,7 +32,11 @@ var Nav = React.createClass({
   },
 
   handleLogoClick: function() {
-    router.setRoute('/');
+    if (window.location.pathname === '/') {
+      $('html, body').animate({ scrollTop: 0 }, 300);
+    } else {
+      router.setRoute('/');
+    }
   },
 
   _displayLoginForm: function(cb) {

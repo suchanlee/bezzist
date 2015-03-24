@@ -14,11 +14,21 @@ body {
   z-index: @zBase;
 }
 
-.landing {
-  max-width: @containerWidth;
+.landing, .static-page {
+  max-width: @pageMaxWidth;
   margin: 0 auto;
   padding: 0px @containerSidePadding;
   padding-top: @navTopPadding;
+}
+
+.static-page {
+  p, ol, ul {
+    font-size: 1.2em;
+  }
+}
+
+.strong {
+  font-weight: 500;
 }
 
 .hidden {
@@ -28,14 +38,14 @@ body {
 footer {
   border-top: 6px solid @grey;
   text-align: center;
+  max-width: @pageMaxWidth;
+  margin: 0 auto;
   margin-top: 80px;
 }
 
 .footer-list {
   padding-left: 0px;
   text-align: center;
-  width: 90%;
-  margin: 0 auto;
   margin-top: 22px;
   margin-bottom: 22px;
   font-weight: 500;

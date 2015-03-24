@@ -50,9 +50,6 @@
         <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
     <div class='container' id='app'>
-      <div class='loader-centering-container'>
-        <div class='loader'>Loading...</div>
-      </div>
       {% block content %}
       {% endblock %}
     </div>
@@ -64,6 +61,17 @@
     {% else %}
     <script src='{% static "js/bundle.min.js" %}'></script>
     {% endif %}
+
+    <footer>
+      <div>
+        <ul class='footer-list'>
+          <li class='footer-list-item'><a href='/about'>ABOUT BEZZIST</a></li>
+          <li class='footer-list-item'><a href='/rules'>RULES</a></li>
+          <li class='footer-list-item'><a href='/terms'>TERMS OF SERVICE</a></li>
+        </ul>
+      </div>
+      <p class='footer-copyright'>&copy; 2015 Bezzist</p>
+    </footer>
 
     <!-- google analytics -->
     <script>
