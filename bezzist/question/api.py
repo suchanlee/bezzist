@@ -54,7 +54,7 @@ class QuestionResource(AbstractBezzistResource):
     def list(self):
         query_filters = self.request.GET
         if query_filters.get('active') == 'true':
-            questions = Question.objects.filter(active=True).order_by('-published_datetime')
+            questions = Question.objects.filter(Q(active=True)&Q(featured=False)).order_by('-published_datetime')
             self.paginator = Paginator(questions, settings.QUESTION_PAGE_SIZE)
             if 'page' in query_filters:
                 try:
@@ -69,7 +69,7 @@ class QuestionResource(AbstractBezzistResource):
         elif query_filters.get('active') == 'false':
             questions = Question.objects.filter(active=False).order_by('-score')
         elif query_filters.get('featured') == 'true':
-            questions = Question.objects.filter(Q(active=True)&Q(featured=True))[:1]
+            questions = Question.objects.filter(Q(active=True)&Q(featured=True)).order_by('-published_datetime')[:1]
         else:
             questions = Question.objects.all()
         self.paginator = Paginator(questions, len(questions))
