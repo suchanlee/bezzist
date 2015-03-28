@@ -110,14 +110,14 @@ module.exports = {
   },
 
   /**
-   * Removes an object from list, if it is in list.
+   * Removes an item from list, if it is in list.
    *
    * @param  {list} list
-   * @param  {object} object
+   * @param  {item} item
    * @return {list} list
    */
-  removeFromList: function(list, object) {
-    var idx = list.indexOf(object);
+  removeFromList: function(list, item) {
+    var idx = list.indexOf(item);
     if (idx > -1) {
       list.splice(idx, 1);
     }
