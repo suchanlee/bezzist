@@ -118,7 +118,7 @@ module.exports = {
    */
   removeFromList: function(list, object) {
     var idx = list.indexOf(object);
-    if (idx > 0) {
+    if (idx > -1) {
       list.splice(idx, 1);
     }
     return list;
