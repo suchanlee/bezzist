@@ -7,7 +7,9 @@ var Utils = require('../../lib/Utils');
 
 var Row = React.createClass({
   shouldComponentUpdate: function(nextProps, nextState) {
-    if (this.props.score !== nextProps.score) {
+    console.log('This props score: ' + this.props.score);
+    console.log('Next props score: ' + nextProps.score);
+    if ((this.props.idx !== nextProps.idx) || (this.props.score !== nextProps.score)) {
       return true;
     }
     return false;
