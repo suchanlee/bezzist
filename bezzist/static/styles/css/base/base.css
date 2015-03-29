@@ -38,6 +38,7 @@ footer {
   max-width: 600px;
   margin: 0 auto;
   margin-top: 80px;
+  font-size: 0.8em;
 }
 .footer-list {
   padding-left: 0px;
@@ -48,8 +49,8 @@ footer {
 }
 .footer-list-item {
   display: inline-block;
-  margin-left: 13px;
-  margin-right: 13px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 .footer-list-item a {
   color: #747474;
