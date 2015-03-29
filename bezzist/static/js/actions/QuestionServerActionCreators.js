@@ -42,7 +42,7 @@ module.exports = {
     _receiveAnswersForQuestions(questions);
   },
 
-  upvoteFailedForQuestion: function(questionId, status) {
+  upvoteQuestionFailed: function(questionId, status) {
     AppDispatcher.handleServerAction({
       questionId: questionId,
       type      : ActionTypes.QUESTION_UPVOTE_FAILED,
@@ -50,7 +50,7 @@ module.exports = {
     });
   },
 
-  unvoteFailedForQuestion: function(questionId, status) {
+  unvoteQuestionFailed: function(questionId, status) {
     AppDispatcher.handleServerAction({
       questionId: questionId,
       type      : ActionTypes.QUESTION_UNVOTE_FAILED,

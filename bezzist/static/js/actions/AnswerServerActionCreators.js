@@ -28,7 +28,7 @@ module.exports = {
     });
   },
 
-  upvoteFailedForAnswer: function(questionId, answerId, status) {
+  upvoteAnswerFailed: function(questionId, answerId, status) {
     AppDispatcher.handleServerAction({
       type: ActionTypes.ANSWER_UPVOTE_FAILED,
       questionId: questionId,
@@ -37,7 +37,7 @@ module.exports = {
     });
   },
 
-  unvoteFailedForAnswer: function(questionId, answerId, status) {
+  unvoteAnswerFailed: function(questionId, answerId, status) {
     AppDispatcher.handleServerAction({
       type: ActionTypes.ANSWER_UNVOTE_FAILED,
       questionId: questionId,

@@ -1,9 +1,9 @@
 from django.db import models
 
-from base.models import AbstractUserScoredModel, MappableModel
+from base.models import AbstractUserScoredModel
 
 
-class Answer(AbstractUserScoredModel, MappableModel):
+class Answer(AbstractUserScoredModel):
 
     answer = models.CharField(max_length=300)
 
@@ -12,13 +12,3 @@ class Answer(AbstractUserScoredModel, MappableModel):
 
     def __unicode__(self):
         return self.answer
-
-    def objectify(self):
-        return {
-            'created': self.created,
-            'modified': self.modified,
-            'id': self.id,
-            'score': self.score,
-            'answer': self.answer,
-            'user': self.user.id
-        }

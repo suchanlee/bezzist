@@ -69,7 +69,7 @@ module.exports = {
       }
     });
     promise.fail(function(err) {
-      QuestionServerActionCreators.upvoteFailedForQuestion(questionId, err.status);
+      QuestionServerActionCreators.upvoteQuestionFailed(questionId, err.status);
     });
   },
 
@@ -88,7 +88,7 @@ module.exports = {
       }
     });
     promise.fail(function(err) {
-      QuestionServerActionCreators.unvoteFailedForQuestion(questionId, err.status);
+      QuestionServerActionCreators.unvoteQuestionFailed(questionId, err.status);
     });
   }
 

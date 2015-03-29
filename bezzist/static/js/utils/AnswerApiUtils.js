@@ -57,7 +57,7 @@ module.exports = {
       }
     });
     promise.fail(function(err) {
-      AnswerServerActionCreators.upvoteFailedForAnswer(questionId, answerId, err.status);
+      AnswerServerActionCreators.upvoteAnswerFailed(questionId, answerId, err.status);
     });
   },
 
@@ -76,7 +76,7 @@ module.exports = {
       }
     });
     promise.fail(function(err) {
-      AnswerServerActionCreators.unvoteFailedForAnswer(questionId, answerId, err.status);
+      AnswerServerActionCreators.unvoteAnswerFailed(questionId, answerId, err.status);
     });
   },
 
