@@ -64,7 +64,7 @@ var QuestionStore = _.extend(_.clone(BaseStore), {
 
   hasNext: true,
 
-  page: 1,
+  page: 0,
 
   addQuestions: function(questions) {
     _.map(questions, function(question) {

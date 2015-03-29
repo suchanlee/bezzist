@@ -27,6 +27,7 @@ module.exports = {
     QUESTION_CHANGE: null,
     ANSWER_CHANGE: null,
     OVERLAY_EVENT: null,
+    SPINNER_EVENT: null,
   }),
 
   PayloadSources: keymirror({

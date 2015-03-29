@@ -60,7 +60,7 @@ var BaseStore = assign({}, EventEmitter.prototype, {
    */
   removeChangeListener: function(callback) {
     this.removeListener(this._changeEvent, callback);
-  },
+  }
 
 });
 
