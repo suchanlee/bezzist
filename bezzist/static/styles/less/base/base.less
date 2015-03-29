@@ -36,7 +36,6 @@ body {
 }
 
 footer {
-  border-top: 6px solid @grey;
   text-align: center;
   max-width: @pageMaxWidth;
   margin: 0 auto;
@@ -47,9 +46,10 @@ footer {
 .footer-list {
   padding-left: 0px;
   text-align: center;
-  margin-top: 22px;
+  padding-top: 22px;
   margin-bottom: 22px;
   font-weight: 500;
+  border-top: 6px solid @grey;
 }
 
 .footer-list-item {
@@ -155,22 +155,28 @@ footer {
 // end loader css
 // responsiveness
 @media screen and (min-width: 481px) and (max-width: 650px) {
-  .container, footer {
+  .container {
     padding: 0px 0px;
   }
   .landing {
     padding: 0px 8px;
     padding-top: 90px;
   }
+  footer {
+    padding: 0px 8px;
+  }
 }
 
 // responsiveness
 @media screen and (max-width: 480px) {
-  .container, footer {
+  .container {
     padding: 0px 0px;
   }
   .landing {
     padding: 0px 8px;
     padding-top: 75px;
+  }
+  footer {
+    padding: 0px 8px;
   }
 }
