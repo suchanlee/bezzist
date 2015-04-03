@@ -3,12 +3,16 @@ from django.conf.urls import patterns, include, url
 from django.conf.urls.static import static
 from django.contrib import admin
 
-from .views import LandingView
+from .views import LandingView, AboutView, RulesView, TermsView
 from userprofile.views import ConfirmationView, ConfirmationFailView, LogoutView
 
 urlpatterns = patterns(
     '',
     url(r'^$', LandingView.as_view(), name='landing_view'),
+    url(r'^questions/(?P<qId>\d+)$', LandingView.as_view(), name='question_detail_view'),
+    url(r'^about$', AboutView.as_view(), name='about_view'),
+    url(r'^rules$', RulesView.as_view(), name='rules_view'),
+    url(r'^terms$', TermsView.as_view(), name='terms_view'),
     url(r'^profiles/logout$', LogoutView.as_view(), name='confirmation_view'),
     url(r'^profiles/activate/(?P<code>\d+)$', ConfirmationView.as_view(), name='confirmation_view'),
     url(r'^profiles/activate/fail$', ConfirmationFailView.as_view(), name='confirmation_fail_view'),

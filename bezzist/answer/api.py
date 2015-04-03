@@ -1,6 +1,5 @@
 from threading import Lock
 
-from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.views.generic import View
@@ -26,15 +25,30 @@ class AnswerResource(AbstractBezzistResource):
         'last_modified': 'modified'
     })
 
+    def wrap_list_response(self, data):
+        return {
+            'qid': self.questionId,
+            'answers'   : data
+        }
+
     def list(self):
-        return Answer.objects.all()
+        query_filters = self.request.GET
+        if 'qid' in query_filters:
+            questionId = query_filters.get('qid')
+            self.questionId = questionId
+            question = Question.objects.get(id=questionId)
+            answers = question.answers.order_by('-score')
+        else:
+            self.questionId = None
+            answers = Answer.objects.all()
+        return answers
 
     def detail(self, pk):
         return get_object_or_404(Answer, pk=pk)
 
     def create(self):
         question = get_object_or_404(Question, id=self.data.get('qId'))
-        if not question.finished:
+        if not question.finished or not question.locked:
             answer = Answer.objects.create(
                 user=self.request.user,
                 answer=self.data.get('answer')
@@ -74,25 +88,25 @@ class AnswerResource(AbstractBezzistResource):
         else:
             raise Unauthorized()
 
-class ActiveAndFeaturedAnswerRpcResource(View):
 
-    def get(self, request):
-        questions = Question.objects.filter(Q(active=True) | Q(featured=True))
-        answers = []
-        for question in questions:
-            answers.append({
-                'questionId': question.id,
-                'answers': map(lambda a: a.shallow_mappify(exception_fields=['liked_browsers']), question.answers.all())
-            })
-        return JsonResponse(answers, safe=False)
-
-
-class AnswerScoreRpcResource(View):
+class IncrementScoreRpcResource(View):
 
     # POST /api/answers/<pk>/incrementScore
     def post(self, request, pk):
         answer = get_object_or_404(Answer, pk=pk)
         answer.increment_score(request)
+        return JsonResponse({
+            'id': answer.id,
+            'question': answer.answer,
+            'score': answer.score
+        })
+
+class DecrementScoreRpcResource(View):
+
+    # POST /api/answers/<pk>/incrementScore
+    def post(self, request, pk):
+        answer = get_object_or_404(Answer, pk=pk)
+        answer.decrement_score(request)
         return JsonResponse({
             'id': answer.id,
             'question': answer.answer,

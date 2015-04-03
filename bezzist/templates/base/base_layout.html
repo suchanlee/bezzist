@@ -2,6 +2,10 @@
 
 <html>
   <head>
+    <!-- favicon! -->
+    <link rel="shortcut icon" type="image/png" href='{% static "imgs/icons/favicon.ico" %}'>
+    <!-- end favicon! -->
+
     <!-- Meta -->
     <meta name='viewport' content='width=device-width initial-scale=1, maximum-scale=1'>
     <meta charset="utf-8">
@@ -9,6 +13,7 @@
     <meta property='og:title' content='Bezzist'>
     <meta property='og:site_name' content='Bezzist'>
     <meta property='og:url' content='http://bezzist.com'>
+    <meta property='og:image' content='{% static "imgs/logo/bezlogobig.png" %}'>
     <meta property='og:description' content='Bezzist is a platform that collects and ranks the opinions of the community into comprehensive top 5 lists to showcase exactly what you want to know.'>
     <!-- End meta -->
 
@@ -18,11 +23,15 @@
     <!-- End Typekit -->
 
     <!-- Styles -->
-    <link rel='stylesheet' type='text/css' href='{% static "styles/css/base/base.css" %}'>
-    <link rel='stylesheet' type='text/css' href='{% static "styles/css/question/question.css" %}'>
-    <link rel='stylesheet' type='text/css' href='{% static "styles/css/alert/alert.css" %}'>
-    <link rel='stylesheet' type='text/css' href='{% static "styles/css/user/user.css" %}'>
-    <link rel='stylesheet' type='text/css' href='{% static "styles/css/base/nav.css" %}'>
+    {% if DEBUG %}
+      <link rel='stylesheet' type='text/css' href='{% static "styles/css/base/base.css" %}'>
+      <link rel='stylesheet' type='text/css' href='{% static "styles/css/question/question.css" %}'>
+      <link rel='stylesheet' type='text/css' href='{% static "styles/css/alert/alert.css" %}'>
+      <link rel='stylesheet' type='text/css' href='{% static "styles/css/user/user.css" %}'>
+      <link rel='stylesheet' type='text/css' href='{% static "styles/css/base/nav.css" %}'>
+    {% else %}
+      <link rel="stylesheet" type="text/css" href='{% static "styles/css/styles.css" %}'>
+    {% endif %}
     {% if flavour == 'full' %}
     <link rel="stylesheet" type='text/css' href='{% static "styles/css/question/desktop.css" %}'>
     {% endif %}
@@ -41,9 +50,6 @@
         <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
     <div class='container' id='app'>
-      <div class='loader-centering-container'>
-        <div class='loader'>Loading...</div>
-      </div>
       {% block content %}
       {% endblock %}
     </div>
@@ -55,6 +61,15 @@
     {% else %}
     <script src='{% static "js/bundle.min.js" %}'></script>
     {% endif %}
+
+    <footer>
+      <ul class='footer-list'>
+        <li class='footer-list-item'><a href='/about'>ABOUT BEZZIST</a></li>
+        <li class='footer-list-item'><a href='/rules'>RULES</a></li>
+        <li class='footer-list-item'><a href='/terms'>TERMS OF SERVICE</a></li>
+      </ul>
+      <p class='footer-copyright'>&copy; 2015 Bezzist</p>
+    </footer>
 
     <!-- google analytics -->
     <script>

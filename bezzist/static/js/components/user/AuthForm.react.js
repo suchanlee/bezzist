@@ -24,7 +24,7 @@ var AuthForm = React.createClass({
   },
 
   _getTransformButtonText: function() {
-    return this.state.signup ? 'LOG IN?' : 'SIGN UP?';
+    return this.state.signup ? 'LOG IN' : 'SIGN UP';
   },
 
   _isInputValid: function() {
@@ -52,7 +52,8 @@ var AuthForm = React.createClass({
     if (this.state.signup) {
       return 'Sign up with your @cornell.edu email';
     } else {
-      return 'Log in with your @cornell.edu email';
+      return 'Anyone can submit a vote, but to ask a question or submit a new answer you must be signed in. ' +
+        'Log in with your @cornell.edu email';
     }
   },
 
@@ -61,12 +62,10 @@ var AuthForm = React.createClass({
   },
 
   createSuccessCb: function() {
-    // this.emit(OVERLAY_EVENT, { hidden: true });
     location.reload();
   },
 
   loginSuccessCb: function() {
-    // this.emit(OVERLAY_EVENT, { hidden: true });
     location.reload();
   },
 
@@ -83,7 +82,7 @@ var AuthForm = React.createClass({
   },
 
   handleKeyUp: function(e) {
-    //TODO implement me
+    //TODO implement me -- close overlay on ESC press
   },
 
   handleSubmit: function(e) {
@@ -131,9 +130,9 @@ var AuthForm = React.createClass({
             type='password'
             onChange={this.handleInputChange}
             placeholder='confirm password' />
+          <a className='auth-form-button auth-form-signup' href='#' onClick={this.handleFormTransformClick}>{this._getTransformButtonText()}</a>
+          <button type='submit' className='auth-form-button auth-form-submit' href='#' onClick={this.handleSubmit}>SUBMIT</button>
         </form>
-        <a className='auth-form-button auth-form-signup' href='#' onClick={this.handleFormTransformClick}>{this._getTransformButtonText()}</a>
-        <a className='auth-form-button auth-form-submit' href='#' onClick={this.handleSubmit}>SUBMIT</a>
       </div>
     )
   }

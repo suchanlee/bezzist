@@ -6,9 +6,18 @@ var _ = require('underscore');
 var Utils = require('../../lib/Utils');
 
 var Row = React.createClass({
+  shouldComponentUpdate: function(nextProps, nextState) {
+    if ((this.props.idx !== nextProps.idx) || (this.props.score !== nextProps.score)) {
+      return true;
+    }
+    return false;
+  },
+
   handleVoteClick: function(e) {
     if (!this.props.hasVoted()) {
       this.props.vote();
+    } else {
+      this.props.unvote();
     }
     e.stopPropagation();
     e.preventDefault();

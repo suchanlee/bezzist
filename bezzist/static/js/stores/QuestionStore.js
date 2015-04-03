@@ -1,48 +1,72 @@
+/**
+ * QuestionStore
+ *
+ * Keeps a list of Question objects in a dictionary
+ * whose key is the questionId and value is the question
+ * object.
+ *
+ * Questions are tracked in two different lists
+ * _activeQuestionIds and _inactiveQuestion ids, which
+ * contain the ids of active and inactive questions,
+ * respectively. Featured question is also tracked by
+ * _featuredQuestionId.
+ *
+ * Subscribed to actions from [QuestionViewActionCreators,
+ * QuestionServerActionCreators].
+ */
+
 'use strict';
 
+/*
+ * General library imports
+ */
 var _ = require('underscore');
-var assign = require('object-assign');
 var store = require('store');
 var moment = require('moment');
-var EventEmitter = require('events').EventEmitter;
 
+/*
+ * Local library imports
+ */
+var Utils = require('../lib/Utils');
+
+/*
+ * Dispatcher import
+ */
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 
-var AnswerViewActionCreators = require('../actions/AnswerViewActionCreators');
-
+/*
+ * Store imports
+ */
+var BaseStore = require('./BaseStore');
 var UserStore = require('./UserStore');
+
+/*
+ * Constant imports
+ */
 var QuestionConstants = require('../constants/QuestionConstants');
 var BezzistConstants = require('../constants/BezzistConstants');
 
-var CHANGE_EVENT = BezzistConstants.Events.CHANGE;
+/*
+ * Field declarations
+ */
 var TMP_QUESTION_ID = -1;
 
+/*
+ * QuestionStore object
+ * and question tracking objects.
+ */
 var _questions = {};
-var _activeQuestionIds = [];
-var _inactiveQuestionIds = [];
-var _featuredQuestionId = null;
+var _activeQuestionIds = {};
+var _inactiveQuestionIds = {};
+var _featuredQuestionId = undefined;
 
-var QuestionStore = assign({}, EventEmitter.prototype, {
+var QuestionStore = _.extend(_.clone(BaseStore), {
 
-  emitChange: function() {
-    this.emit(CHANGE_EVENT);
-  },
+  hasNext: true,
 
-  /**
-   * @param {function} callback
-   */
-  addChangeListener: function(callback) {
-    this.on(CHANGE_EVENT, callback);
-  },
+  page: 0,
 
-  /**
-   * @param {function} callback
-   */
-  removeChangeListener: function(callback) {
-    this.removeListener(CHANGE_EVENT, callback);
-  },
-
-  init: function(questions) {
+  addQuestions: function(questions) {
     _.map(questions, function(question) {
       this.addQuestion(question);
     }.bind(this));
@@ -51,7 +75,7 @@ var QuestionStore = assign({}, EventEmitter.prototype, {
   _toList: function(questionIds) {
     var questionList = []
     if (!questionIds) {
-      questionIds = _questionList.keySet();
+      questionIds = _.keys(_questions);
     }
     _.map(questionIds, function(id) {
       questionList.push(_questions[id]);
@@ -60,32 +84,25 @@ var QuestionStore = assign({}, EventEmitter.prototype, {
   },
 
   _createQuestion: function(question) {
+    //TODO: this should just instantiate a Question
+    // object and store it. Also, name is confusing.
     question.created = moment(question.created);
     question.modified = moment(question.modified);
+    if (question.published) {
+      question.published = moment(question.published);
+    }
     return question
-  },
-
-  _sortQuestionsByScore: function(questionList) {
-    return _.sortBy(questionList, function(question) {
-      return -1 * question.score;
-    });
-  },
-
-  _sortQuestionsByDatetime: function(questionList) {
-    return _.sortBy(questionList, function(question) {
-      return -1 * question.created;
-    });
   },
 
   addQuestion: function(question) {
     question = this._createQuestion(question);
-    _questions[question.id] = question;
+    _questions[question.id] = question; // more recent objects are favored
     if (question.featured) {
       _featuredQuestionId = question.id;
     } else if (question.active) {
-      _activeQuestionIds.push(question.id);
+      _activeQuestionIds[question.id] = true;
     } else {
-      _inactiveQuestionIds.push(question.id);
+      _inactiveQuestionIds[question.id] = true;
     }
   },
 
@@ -96,10 +113,7 @@ var QuestionStore = assign({}, EventEmitter.prototype, {
     var oldQuestion;
     if (_questions[TMP_QUESTION_ID]) {
       oldQuestion = _questions[newQuestion.id] = _questions[TMP_QUESTION_ID];
-      delete _questions[TMP_QUESTION_ID];
-      var idx = _inactiveQuestionIds.indexOf(TMP_QUESTION_ID);
-      _inactiveQuestionIds.splice(idx, 1);
-      _inactiveQuestionIds.push(newQuestion.id);
+      this.removeQuestion(TMP_QUESTION_ID);
     } else {
       oldQuestion = _questions[newQuestion.id];
     }
@@ -113,30 +127,66 @@ var QuestionStore = assign({}, EventEmitter.prototype, {
     }
   },
 
+  /**
+   * Removes a question from a list
+   * by removing from _questions and
+   * question id tracker lists.
+   *
+   * @param  {number} questionId
+   */
   removeQuestion: function(questionId) {
     delete _questions[questionId];
+    delete _activeQuestionIds[questionId];
+    delete _inactiveQuestionIds[questionId];
+    if (_featuredQuestionId === questionId) {
+      _featuredQuestionId = undefined;
+    }
   },
 
+  /**
+   * Returns a question object with corresponding
+   * question id.
+   *
+   * @param  {number} questionId
+   * @return {Question}
+   */
   getQuestion: function(questionId) {
     return _questions[questionId];
   },
 
+  /*
+   * Returns featured question question if it
+   * exists. Returns undefined if not.
+   */
   getFeaturedQuestion: function() {
     return _questions[_featuredQuestionId];
   },
 
+  /*
+   * Returns active questions reverse sorted by
+   * published datetime.
+   */
   getActiveQuestions: function() {
-    return this._sortQuestionsByDatetime(this._toList(_activeQuestionIds));
+    return Utils.revSortByField(this._toList(_.keys(_activeQuestionIds)), 'published');
   },
 
+  /*
+   * Returns inactive questions reverse sorted
+   * by score.
+   */
   getInactiveQuestions: function() {
-    return this._sortQuestionsByScore(this._toList(_inactiveQuestionIds));
+    return Utils.revSortByField(this._toList(_.keys(_inactiveQuestionIds)), 'score');
   },
 
+  /*
+   * Returns all questions sorted by score.
+   */
   getQuestions: function() {
-    return this._sortQuestionsByScore(this._toList());
+    return Utils.revSortByField(this._toList(), 'score');
   },
 });
+
+QuestionStore.setChangeEvent(BezzistConstants.Events.QUESTION_CHANGE);
 
 AppDispatcher.register(function(payload) {
   var ActionTypes = QuestionConstants.ActionTypes;
@@ -146,7 +196,13 @@ AppDispatcher.register(function(payload) {
 
   switch(action.type) {
 
+    case ActionTypes.QUESTION_RECEIVE:
+      QuestionStore.addQuestion(action.question);
+      QuestionStore.emitChange();
+      break;
+
     case ActionTypes.QUESTION_UPVOTE:
+      //TODO: remove all this logic out to model when it's made.
       QuestionStore.getQuestion(action.questionId).score += 1;
       if (!UserStore.isAuthenticated()) {
         var update = {};
@@ -170,8 +226,42 @@ AppDispatcher.register(function(payload) {
       QuestionStore.emitChange();
       break;
 
-    case ActionTypes.RECEIVE_ALL_QUESTIONS:
-      QuestionStore.init(action.questions);
+
+    case ActionTypes.QUESTION_UNVOTE:
+      QuestionStore.getQuestion(action.questionId).score -= 1;
+      if (!UserStore.isAuthenticated()) {
+        var votedQuestions = store.get(Stores.BEZZIST_QUESTIONS);
+        delete votedQuestions[action.questionId];
+        store.set(Stores.BEZZIST_QUESTIONS, votedQuestions);
+      }
+      UserStore.removeQuestionLiked(action.questionId);
+      QuestionStore.emitChange();
+      break;
+
+    case ActionTypes.QUESTION_UNVOTE_FAILED:
+      QuestionStore.getQuestion(action.questionId).score += 1;
+      if (action.status !== Status.FORBIDDEN) {
+        if (!UserStore.isAuthenticated()) {
+          var update = {};
+          update[action.questionId] = true;
+          store.set(Stores.BEZZIST_QUESTIONS, _.extend(store.get(Stores.BEZZIST_QUESTIONS), update));
+        }
+        UserStore.addQuestionLiked(action.questionId);
+      }
+      QuestionStore.emitChange();
+      break;
+
+    case ActionTypes.RECEIVE_QUESTIONS:
+      QuestionStore.addQuestions(action.questions);
+      QuestionStore.emitChange();
+      break;
+
+    case ActionTypes.RECEIVE_PAGED_QUESTIONS:
+      QuestionStore.addQuestions(action.questions);
+      QuestionStore.page += 1;
+      if (action.numPages < QuestionStore.page) {
+        QuestionStore.hasNext = false;
+      }
       QuestionStore.emitChange();
       break;
 
@@ -202,4 +292,7 @@ AppDispatcher.register(function(payload) {
 
 });
 
+/*
+ * Module export declaration
+ */
 module.exports = QuestionStore;

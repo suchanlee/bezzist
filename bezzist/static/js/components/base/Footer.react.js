@@ -7,7 +7,12 @@ var Footer = React.createClass({
   render: function() {
     return (
       <footer>
-        <p><a href="mailto:hello@bezzist.com">send feedback to hello[@]bezzist.com</a></p>
+        <ul className='footer-list'>
+          <li className='footer-list-item'><a href='/about'>ABOUT BEZZIST</a></li>
+          <li className='footer-list-item'><a href='/rules'>RULES</a></li>
+          <li className='footer-list-item'><a href='/terms'>TERMS OF SERVICE</a></li>
+        </ul>
+        <p className='footer-copyright'>&copy; 2015 Bezzist</p>
       </footer>
     );
   }

@@ -40,8 +40,11 @@
   padding: 10px 40px;
   color: white;
   text-decoration: none;
-  margin-top: 10px;
+  margin-top: 15px;
   display: inline-block;
+  font-family: @sans-serif;
+  font-size: 15px;
+  border: none;
   .border-radius(3px);
 }
 
@@ -53,4 +56,24 @@
 .auth-form-submit {
   background-color: @yellow;
   margin-left: 5px;
+}
+
+// responsiveness
+@media screen and (max-width: 480px) {
+  .overlay-centered {
+    width: 95%;
+  }
+  .nav-user-point-status {
+    display: none;
+  }
+  .auth-form {
+    width: 100%;
+    min-width: none;
+    padding: 0 0 0 0;
+    border-top: 5px solid black;
+    h2, p, form {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+  }
 }

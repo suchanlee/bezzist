@@ -6,6 +6,8 @@ from django.views.generic import View
 
 from .models import UserProfile, UserConfirmation
 
+# TODO(suchanl): proper authentication REST stype?
+#
 
 class UserCreateRpcResource(View):
 

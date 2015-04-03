@@ -19,6 +19,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_mobile',
+    'django_crontab',
     'base',
     'question',
     'answer',
@@ -89,4 +90,11 @@ STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 
 APPEND_SLASH = False
+
+CRONJOBS = [
+    ('0 12 * * *', 'question.cron.publish_top_question'),
+    ('0 12 * * *', 'question.cron.finish_questions'),
+]
+
+QUESTION_PAGE_SIZE = 7
 

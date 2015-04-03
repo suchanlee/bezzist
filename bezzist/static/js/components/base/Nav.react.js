@@ -10,6 +10,8 @@ var React = require('react'),
     OVERLAY_EVENT = require('../../constants/BezzistConstants').Events.OVERLAY_EVENT,
     EventMixin = require('../../mixins/EventMixin.react');
 
+var router = require('director').Router();
+
 
 var Nav = React.createClass({
   mixins: [EventMixin],
@@ -30,7 +32,11 @@ var Nav = React.createClass({
   },
 
   handleLogoClick: function() {
-    $('html, body').animate({ scrollTop: 0 }, 1000);
+    if (window.location.pathname === '/') {
+      $('html, body').animate({ scrollTop: 0 }, 300);
+    } else {
+      router.setRoute('/');
+    }
   },
 
   _displayLoginForm: function(cb) {
@@ -51,14 +57,15 @@ var Nav = React.createClass({
     if (this.state.user) {
       return (
         <span className='nav-user'>
-          <span>NEW BEE: {this.state.user.score} points</span>
+          <span className='nav-user-point-status'>{UserStore.getPointStatus()}: </span>
+          <span>{this.state.user.score} points</span>
           <a className='nav-logout' href='/profiles/logout'>Log out</a>
         </span>
       );
     } else {
       return (
         <span className='nav-login'>
-          <a href='javascript:void(0)' onClick={this.handleLoginClick}>Log in</a>
+          <a href='javascript:void(0)' onClick={this.handleLoginClick}>Log In</a>
         </span>
       );
     }

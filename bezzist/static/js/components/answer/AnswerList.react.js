@@ -12,23 +12,35 @@ var AnswerList = React.createClass({
     return this._getStateFromStores();
   },
 
-  _onChange: function() {
-    this.setState(this._getStateFromStores());
-  },
-
-  _getStateFromStores: function() {
-    var questionId = this.props.question ? this.props.question.id : -1;
-    return {
-      answers: AnswerStore.getAnswersForQuestion(questionId)
-    };
-  },
-
   componentDidMount: function() {
     AnswerStore.addChangeListener(this._onChange);
   },
 
   componentWillUnmount: function() {
     AnswerStore.removeChangeListener(this._onChange);
+  },
+
+  shouldComponentUpdate: function(nextProps, nextState) {
+    if (nextState.answers.length !== this.state.answers.length) {
+      return true;
+    } else {
+      for (var i = 0; i < this.state.answers.length; i++) {
+        if (nextState.answers[i] !== this.state.answers[i]) {
+          return true;
+        }
+      }
+    }
+    return false;
+  },
+
+  _onChange: function() {
+    this.setState(this._getStateFromStores());
+  },
+
+  _getStateFromStores: function() {
+    return {
+      answers: AnswerStore.getAnswersForQuestion(this.props.question.id)
+    };
   },
 
   _getRows: function() {

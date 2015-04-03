@@ -5,6 +5,7 @@
   "main": "js/app.js",
   "dependencies": {
     "director": "^1.2.7",
+    "eventemitter3": "^0.1.6",
     "fingerprintjs": "^0.5.3",
     "flux": "^2.0.0",
     "jquery": "^2.1.3",
@@ -23,6 +24,7 @@
     "jest-cli": "~0.1.17",
     "reactify": "^0.15.2",
     "uglify-js": "~2.4.15",
+    "watch-less": "0.0.4",
     "watchify": "^2.1.1"
   },
   "scripts": {

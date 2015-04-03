@@ -10,8 +10,7 @@
  */
 .alert {
   margin: 0 auto;
-  margin-top: 30px;
-  margin-bottom: 30px;
+  margin-bottom: 15px;
   max-width: 600px;
   color: white;
   font-size: 20px;

@@ -1,8 +1,11 @@
 'use strict';
 
+var $ = require('jquery');
 var React = require('react');
 var Router = require('director').Router;
-var LandingView = React.createFactory(require('../views/LandingView.react'));
+
+var LandingView = require('../views/LandingView.react');
+var QuestionDetailView = require('../views/QuestionDetailView.react');
 
 var curView = null;
 var rootNode = document.getElementById('app');
@@ -12,12 +15,17 @@ var setView = function(view) {
   }
   curView = view;
   React.render(curView, rootNode);
+  $('html, body').animate({ scrollTop: 0 }, 300);
 };
-
 
 var router = new Router({
   '/': function() {
-    setView(new LandingView());
+    setView(React.createFactory(LandingView)());
+  },
+  '/questions/:questionId': function(qId) {
+    setView(React.createFactory(QuestionDetailView)({
+      qId: qId
+    }));
   }
 });
 
