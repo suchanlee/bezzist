@@ -84,4 +84,53 @@ For Flux, I recommend that you watch the videos [here](https://egghead.io/series
 
 ### Setting Up Dev Environment
 
+For this section, I will assume that you are running on LINUX, OSX, or putty.
+
+First, **download, install, and start Postgres**. It can be downloaded from the
+[Postgres official website](http://www.postgresql.org). If you have a Mac, I
+highly suggest the [postgres.app application](http://www.postgresql.org/download/macosx/)
+-- it's super easy to set up. Follow the instructions on the website to
+install and start Postgres.
+
+Second, **install [Virtualenv](http://virtualenv.readthedocs.org/)**, if you don't
+already have it. Why it's always a good idea to have an isolated environment
+is outlined in that web page.
+
+Third, once Virtualenv is installed, **create a virtual environment** in the directory
+where you want to keep Bezzist.
+```
+$ virtualenv bezzist
+```
+
+Fourth, navigate to the newly created virtual environment ``bezzist`` and activate
+your virtual environment. Once that's done, **clone the Bezzist repository**.
+```
+$ cd bezzist && source bin/activate
+$ git clone git@github.com:bezzist/bezzist.git
+```
+
+Fifth, navigate to the cloned repository directory. You now need to **download all
+Python dependencies** that Bezzist uses. These are all stored in ``requirements.txt``.
+They can easily be downloaded by running the command:
+```
+$ pip install -r requirements.txt
+```
+
+Sixth, navigate to the ``static`` directory which should be located in
+``<bezzist_root_dir>/bezzist/bezzist/static``. You will now **download
+all Javascript dependencies**. *Make sure that you have NPM and Node.js
+installed*. If you don't, you can find out how to install it in the [official
+Node.js website](https://nodejs.org/).
+
+
+
+
+
+
+
+
+
+
+
+
 
