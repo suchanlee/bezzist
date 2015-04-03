@@ -12,17 +12,21 @@ Bezzist is powered by several technologies.
 
 API Server:
 - Python
-- Django
-- Restless
-- Gunicorn
+- [Django](https://www.djangoproject.com/) (and many libraries)
+- [Restless](http://restless.readthedocs.org/en/latest/)
+- [Gunicorn](http://gunicorn.org/)
+
+Message Queue
+- [RabbitMQ](https://www.rabbitmq.com/)
+- [Celery](http://www.celeryproject.org/)
 
 Database:
-- Postgres
+- [Postgres](http://www.postgresql.org/)
 - Psycopg2 (Python-to-Postgres ORM)
 
 Frontend:
-- React
-- Flux
+- [React](http://facebook.github.io/react/)
+- [Flux](http://facebook.github.io/flux/)
 - Browserify + UglifyJS2
 - Node + NPM
 
