@@ -122,15 +122,30 @@ all Javascript dependencies**. *Make sure that you have NPM and Node.js
 installed*. If you don't, you can find out how to install it in the [official
 Node.js website](https://nodejs.org/).
 
+Seventh, in that directory, run
+```
+$ npm start
+```.
+This should compile the static files and start a watch process which
+will watch the Javascript and CSS files and re-compile them if they are changed.
+You can turn this process off with ``ctrl + c`` after the Javascript file builds
+if you are not developing on the front end.
 
+Eighth, **create a database**. You can create a database with the following
+command (replace user and port as needed -- this should work for OSX):
+```
+$ createdb -U postgres -h localhost -p 5432 bezzist
+```
 
+Ninth, **set up local settings**. Go to the ``settings/`` directory and
+copy over ``local.py.template`` to ``local.py``. If you used the above
+command to create your database, you should not need to change
+anything in the file. But if you used a different user or have Postgres
+running on a different port, open up ``local.py`` and edit the ``DATABASES``
+field accordingly.
 
-
-
-
-
-
-
-
-
-
+FINALLY, **start the Django server**. Go to the directory where ``manage.py``
+file is and run
+```
+$ python manage.py runserver <PORT NUMBER>
+```
