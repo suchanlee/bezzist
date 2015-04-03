@@ -52,6 +52,35 @@ and sends it back to the front end, which then uses that to render everything.
 We use Postgres because it's well maintained, stable and mature, and does everything
 that we need fast, reliably, and well.
 
+### How does the front end work?
+
+Right now is an exciting time for front end development, where a lot of the logic
+is now moving to the front end and there are now more things possible in the
+front end than ever before.
+
+The front end is more than just some HTML and CSS. In Bezzist, almost all of the
+front end is actually Javascript. The front end server will send requests to the 
+backend API server for information on questions and answers, and the API server
+replies with JSON-serialized responses. The front end server, upon receiving the
+response, will use that data to render the elements that are displayed to the user.
+
+We use the [React](http://facebook.github.io/react/) front end framework and the
+[Flux](http://facebook.github.io/flux/) architecture, the former an open source
+library and the latter an architectural paradigm.
+
+If you are not familiar with React, I suggest that you take half an hour to go
+through their [tutorial](http://facebook.github.io/react/docs/tutorial.html)
+and try using it.
+
+Some benefits of using React:
+- It is a well-maintained library with a growing community around it
+- It allows different parts of the application to be a separate "component",
+  where both the rendering elements and the logic can be defined in one place
+- It allows developers to *not* spend a ton of effort making sure that data
+  and rendered elements are in sync. React takes care of this automatically.
+- It is performant.
+
+For Flux, I recommend that you watch the videos [here](https://egghead.io/series/react-flux-architecture).
 
 ### Setting Up Dev Environment
 
