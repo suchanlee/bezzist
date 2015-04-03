@@ -122,10 +122,11 @@ all Javascript dependencies**. *Make sure that you have NPM and Node.js
 installed*. If you don't, you can find out how to install it in the [official
 Node.js website](https://nodejs.org/).
 
-Seventh, in that directory, run
+Seventh, in that directory, run:
 ```
 $ npm start
-```.
+```
+
 This should compile the static files and start a watch process which
 will watch the Javascript and CSS files and re-compile them if they are changed.
 You can turn this process off with ``ctrl + c`` after the Javascript file builds
