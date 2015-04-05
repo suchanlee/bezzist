@@ -124,6 +124,7 @@ Node.js website](https://nodejs.org/).
 
 Seventh, in that directory, run:
 ```
+$ npm install
 $ npm start
 ```
 
