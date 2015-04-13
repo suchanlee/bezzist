@@ -15,8 +15,11 @@ class Question(AbstractUserScoredModel):
     published_datetime = models.DateTimeField(blank=True, null=True)
     featured = models.BooleanField(default=False)
     active = models.BooleanField(default=False)
-    finished = models.BooleanField(default=False)
     locked = models.BooleanField(default=False)
+
+    # deprecated field, still here to not remove existing field values
+    # and in case we may need it later. Does not do anything.
+    finished = models.BooleanField(default=False)
 
     class Meta:
         ordering = ['-score', 'created']

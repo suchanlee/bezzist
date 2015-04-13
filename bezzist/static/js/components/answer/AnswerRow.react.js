@@ -17,15 +17,10 @@ var AnswerRow = React.createClass({
   },
 
   unvote: function() {
-    if (!this.props.question.finished) {
-      AnswerViewActionCreators.unvoteAnswer(this.props.question.id, this.props.answer.id);
-    }
+    AnswerViewActionCreators.unvoteAnswer(this.props.question.id, this.props.answer.id);
   },
 
   hasVoted: function() {
-    if (this.props.question.finished) {
-      return true;
-    }
     if (!UserStore.isAuthenticated() && store.get(Stores.BEZZIST_ANSWERS).hasOwnProperty(this.props.answer.id)) {
       return true;
     }
