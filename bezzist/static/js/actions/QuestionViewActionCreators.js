@@ -6,6 +6,10 @@ var QuestionApiUtils = require('../utils/QuestionApiUtils');
 
 module.exports = {
 
+  getQuestion: function(id) {
+    QuestionApiUtils.getQuestion(id);
+  },
+
   getQuestions: function(args) {
     QuestionApiUtils.getQuestions(args);
   },
