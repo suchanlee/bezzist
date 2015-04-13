@@ -6,11 +6,15 @@ var QuestionApiUtils = require('../utils/QuestionApiUtils');
 
 module.exports = {
 
+  getQuestions: function(args) {
+    QuestionApiUtils.getQuestions(args);
+  },
+
   getPagedQuestions: function(page) {
     QuestionApiUtils.getPagedQuestions({
       active: true,
       page: page
-    })
+    });
   },
 
   upvoteQuestion: function(questionId) {
