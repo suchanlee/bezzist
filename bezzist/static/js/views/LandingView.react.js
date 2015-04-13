@@ -3,6 +3,8 @@
 
 var React = require('react'),
 
+    BezzistConstants = require('../constants/BezzistConstants'),
+
     QuestionViewActionCreators = require('../actions/QuestionViewActionCreators'),
     UserApiUtils = require('../utils/UserApiUtils'),
 
@@ -14,8 +16,7 @@ var React = require('react'),
     Overlay = require('../components/base/Overlay.react'),
     Nav = require('../components/base/Nav.react');
 
-var POLLING_TIMEOUT_MILLIS = 60 * 1000;
-
+// poll interval object
 var pollInterval;
 
 var LandingView = React.createClass({
@@ -34,12 +35,11 @@ var LandingView = React.createClass({
 
     // initialize polling
     pollInterval = setInterval(function() {
-      console.log('polling');
       QuestionViewActionCreators.getQuestions({ featured: true });
       for (var i = 0; i < QuestionStore.page; i++) {
         QuestionViewActionCreators.getQuestions({ page: i + 1, active: true });
       }
-    }, POLLING_TIMEOUT_MILLIS);
+    }, BezzistConstants.POLLING_TIMEOUT_MILLIS);
   },
 
   componentWillUnmount: function() {
