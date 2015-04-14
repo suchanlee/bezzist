@@ -26,6 +26,7 @@ class AnswerResource(AbstractBezzistResource):
     })
 
     def get_comments(self, data):
+	comments = []
 	return comments
 
     def wrap_list_response(self, data):
