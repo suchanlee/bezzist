@@ -25,6 +25,10 @@ class AnswerResource(AbstractBezzistResource):
         'last_modified': 'modified'
     })
 
+    def get_comments(self, data):
+	comments = []
+	return comments
+
     def wrap_list_response(self, data):
         return {
             'qid': self.questionId,
