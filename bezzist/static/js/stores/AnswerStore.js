@@ -69,6 +69,8 @@ var AnswerStore =  _.extend(_.clone(BaseStore), {
     if (!(answer.id in _answerIds)) {
       _answers[questionId].push(this._createAnswer(answer));
       _answerIds[answer.id] = true;
+    } else {
+      this.updateAnswer(questionId, answer);
     }
   },
 
