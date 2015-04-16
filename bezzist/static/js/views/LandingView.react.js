@@ -39,7 +39,7 @@ var LandingView = React.createClass({
       for (var i = 0; i < QuestionStore.page; i++) {
         QuestionViewActionCreators.getQuestions({ page: i + 1, active: true });
       }
-    }, BezzistConstants.POLLING_TIMEOUT_MILLIS);
+    }, BezzistConstants.Time.POLLING_TIMEOUT_MILLIS);
   },
 
   componentWillUnmount: function() {

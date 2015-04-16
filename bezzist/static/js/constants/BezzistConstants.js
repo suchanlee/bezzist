@@ -4,7 +4,10 @@ var keymirror = require('keymirror');
 
 module.exports = {
 
-  POLLING_TIMEOUT_MILLIS: 60 * 1000,
+  Time: {
+    POLLING_TIMEOUT_MILLIS: 30 * 1000,
+    DETAIL_POLLING_TIMEOUT_MILLIS: 10 * 1000
+  },
 
   Regex: {
     EMAIL: /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
