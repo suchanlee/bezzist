@@ -53,7 +53,7 @@ var QuestionDetailView = React.createClass({
     // initialize polling
     pollInterval = setInterval(function() {
       QuestionViewActionCreators.getQuestion(this.props.qId);
-    }.bind(this), BezzistConstants.POLLING_TIMEOUT_MILLIS);
+    }.bind(this), BezzistConstants.Time.DETAIL_POLLING_TIMEOUT_MILLIS);
   },
 
   componentWillUnmount: function() {
