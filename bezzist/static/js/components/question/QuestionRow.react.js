@@ -16,18 +16,18 @@ var Row = require('../base/Row.react');
 
 var QuestionRow = React.createClass({
   vote: function() {
-    QuestionViewActionCreators.upvoteQuestion(this.props.question.id);
+    QuestionViewActionCreators.upvoteQuestion(this.props.question.getId());
   },
 
   unvote: function() {
-    QuestionViewActionCreators.unvoteQuestion(this.props.question.id);
+    QuestionViewActionCreators.unvoteQuestion(this.props.question.getId());
   },
 
   hasVoted: function() {
-    if (!UserStore.isAuthenticated() && store.get(Stores.BEZZIST_QUESTIONS).hasOwnProperty(this.props.question.id)) {
+    if (!UserStore.isAuthenticated() && store.get(Stores.BEZZIST_QUESTIONS).hasOwnProperty(this.props.question.getId())) {
       return true;
     }
-    return UserStore.containsQuestionLiked(this.props.question.id);
+    return UserStore.containsQuestionLiked(this.props.question.getId());
   },
 
   render: function() {
@@ -35,9 +35,9 @@ var QuestionRow = React.createClass({
       <Row
         vote={this.vote}
         unvote={this.unvote}
-        id={this.props.question.id}
-        content={this.props.question.question}
-        score={this.props.question.score}
+        id={this.props.question.getId()}
+        content={this.props.question.getQuestion()}
+        score={this.props.question.getScore()}
         idx={this.props.idx}
         hasVoted={this.hasVoted} />
     );

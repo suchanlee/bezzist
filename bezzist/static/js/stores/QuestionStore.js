@@ -41,15 +41,17 @@ var BaseStore = require('./BaseStore');
 var UserStore = require('./UserStore');
 
 /*
+ * Model imports
+ */
+var Question = require('../models/Question');
+var Questions = require('../models/Questions');
+
+/*
  * Constant imports
  */
 var QuestionConstants = require('../constants/QuestionConstants');
 var BezzistConstants = require('../constants/BezzistConstants');
-
-/*
- * Field declarations
- */
-var TMP_QUESTION_ID = -1;
+var TMP_QUESTION_ID = QuestionConstants.TMP_QUESTION_ID;
 
 /*
  * QuestionStore object
@@ -83,26 +85,15 @@ var QuestionStore = _.extend(_.clone(BaseStore), {
     return questionList;
   },
 
-  _createQuestion: function(question) {
-    //TODO: this should just instantiate a Question
-    // object and store it. Also, name is confusing.
-    question.created = moment(question.created);
-    question.modified = moment(question.modified);
-    if (question.published) {
-      question.published = moment(question.published);
-    }
-    return question
-  },
-
   addQuestion: function(question) {
-    question = this._createQuestion(question);
-    _questions[question.id] = question; // more recent objects are favored
-    if (question.featured) {
-      _featuredQuestionId = question.id;
-    } else if (question.active) {
-      _activeQuestionIds[question.id] = true;
+    var question = Questions.create(question);
+    _questions[question.getId()] = question; // more recent objects are favored
+    if (question.isFeatured()) {
+      _featuredQuestionId = question.getId();
+    } else if (question.isActive()) {
+      _activeQuestionIds[question.getId()] = true;
     } else {
-      _inactiveQuestionIds[question.id] = true;
+      _inactiveQuestionIds[question.getId()] = true;
     }
   },
 
@@ -111,15 +102,16 @@ var QuestionStore = _.extend(_.clone(BaseStore), {
     // in to a more digestible format
     // it's gross right now
     var oldQuestion;
+    newQuestion = Questions.create(newQuestion);
     if (_questions[TMP_QUESTION_ID]) {
-      oldQuestion = _questions[newQuestion.id] = _questions[TMP_QUESTION_ID];
+      oldQuestion = _questions[newQuestion.getId()] = _questions[TMP_QUESTION_ID];
       this.removeQuestion(TMP_QUESTION_ID);
     } else {
-      oldQuestion = _questions[newQuestion.id];
+      oldQuestion = _questions[newQuestion.getId()];
     }
     var questionKeySet = Object.keys(newQuestion);
     if (Object.keys(oldQuestion).length === questionKeySet.length) {
-      _questions[newQuestion.id] = newQuestion;
+      _questions[newQuestion.getId()] = newQuestion;
     } else {
       _.map(questionKeySet, function(key) {
         oldQuestion[key] = newQuestion[key];
@@ -167,7 +159,7 @@ var QuestionStore = _.extend(_.clone(BaseStore), {
    * published datetime.
    */
   getActiveQuestions: function() {
-    return Utils.revSortByField(this._toList(_.keys(_activeQuestionIds)), 'published');
+    return Utils.revSortByField(this._toList(_.keys(_activeQuestionIds)), 'getPublished');
   },
 
   /*
@@ -175,14 +167,14 @@ var QuestionStore = _.extend(_.clone(BaseStore), {
    * by score.
    */
   getInactiveQuestions: function() {
-    return Utils.revSortByField(this._toList(_.keys(_inactiveQuestionIds)), 'score');
+    return Utils.revSortByField(this._toList(_.keys(_inactiveQuestionIds)), 'getScore');
   },
 
   /*
    * Returns all questions sorted by score.
    */
   getQuestions: function() {
-    return Utils.revSortByField(this._toList(), 'score');
+    return Utils.revSortByField(this._toList(), 'getScore');
   },
 });
 
@@ -190,8 +182,6 @@ QuestionStore.setChangeEvent(BezzistConstants.Events.QUESTION_CHANGE);
 
 AppDispatcher.register(function(payload) {
   var ActionTypes = QuestionConstants.ActionTypes;
-  var Stores = BezzistConstants.Stores;
-  var Status = BezzistConstants.Status;
   var action = payload.action;
 
   switch(action.type) {
@@ -202,52 +192,23 @@ AppDispatcher.register(function(payload) {
       break;
 
     case ActionTypes.QUESTION_UPVOTE:
-      //TODO: remove all this logic out to model when it's made.
-      QuestionStore.getQuestion(action.questionId).score += 1;
-      if (!UserStore.isAuthenticated()) {
-        var update = {};
-        update[action.questionId] = true;
-        store.set(Stores.BEZZIST_QUESTIONS, _.extend(store.get(Stores.BEZZIST_QUESTIONS), update));
-      }
-      UserStore.addQuestionLiked(action.questionId);
+      QuestionStore.getQuestion(action.questionId).incrementScore();
       QuestionStore.emitChange();
       break;
 
     case ActionTypes.QUESTION_UPVOTE_FAILED:
-      QuestionStore.getQuestion(action.questionId).score -= 1;
-      if (action.status !== Status.FORBIDDEN) {
-        if (!UserStore.isAuthenticated()) {
-          var votedQuestions = store.get(Stores.BEZZIST_QUESTIONS);
-          delete votedQuestions[action.questionId];
-          store.set(Stores.BEZZIST_QUESTIONS, votedQuestions);
-        }
-        UserStore.removeQuestionLiked(action.questionId);
-      }
+      QuestionStore.getQuestion(action.questionId).decrementScore(action.status);
       QuestionStore.emitChange();
       break;
 
 
     case ActionTypes.QUESTION_UNVOTE:
-      QuestionStore.getQuestion(action.questionId).score -= 1;
-      if (!UserStore.isAuthenticated()) {
-        var votedQuestions = store.get(Stores.BEZZIST_QUESTIONS);
-        delete votedQuestions[action.questionId];
-        store.set(Stores.BEZZIST_QUESTIONS, votedQuestions);
-      }
-      UserStore.removeQuestionLiked(action.questionId);
+      QuestionStore.getQuestion(action.questionId).decrementScore();
       QuestionStore.emitChange();
       break;
 
     case ActionTypes.QUESTION_UNVOTE_FAILED:
-      QuestionStore.getQuestion(action.questionId).score += 1;
-      if (action.status !== Status.FORBIDDEN) {
-        if (!UserStore.isAuthenticated()) {
-          var update = {};
-          update[action.questionId] = true;
-          store.set(Stores.BEZZIST_QUESTIONS, _.extend(store.get(Stores.BEZZIST_QUESTIONS), update));
-        }
-        UserStore.addQuestionLiked(action.questionId);
-      }
+      QuestionStore.getQuestion(action.questionId).incrementScore(action.status);
       QuestionStore.emitChange();
       break;
 
@@ -266,13 +227,7 @@ AppDispatcher.register(function(payload) {
       break;
 
     case ActionTypes.QUESTION_CREATE:
-      QuestionStore.addQuestion({
-        id: TMP_QUESTION_ID,
-        question: action.question,
-        score: 0,
-        created: new Date(),
-        modified: new Date()
-      });
+      QuestionStore.addQuestion(Questions.createTemp(action.question));
       QuestionStore.emitChange();
       break;
 

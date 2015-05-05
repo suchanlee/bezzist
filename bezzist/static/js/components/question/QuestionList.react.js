@@ -40,7 +40,7 @@ var QuestionList = React.createClass({
   _getRows: function() {
     return _.map(this.state.questions, function(question, idx) {
       return <QuestionRow
-              key={question.id}
+              key={question.getId()}
               question={question}
               idx={idx+1}
               updateQuestion={this.props.updateQuestion} />;
