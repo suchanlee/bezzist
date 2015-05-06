@@ -101,7 +101,7 @@ class IncrementScoreRpcResource(View):
         answer.increment_score(request)
         return JsonResponse({
             'id': answer.id,
-            'question': answer.answer,
+            'answer': answer.answer,
             'score': answer.score
         })
 
@@ -113,6 +113,6 @@ class DecrementScoreRpcResource(View):
         answer.decrement_score(request)
         return JsonResponse({
             'id': answer.id,
-            'question': answer.answer,
+            'answer': answer.answer,
             'score': answer.score
         })
