@@ -24,7 +24,6 @@ class AnswerResource(AbstractBezzistResource):
         'created': 'created',
         'last_modified': 'modified'
     })
-
     
     def wrap_list_response(self, data):
         return {
@@ -33,12 +32,12 @@ class AnswerResource(AbstractBezzistResource):
         }
 
     def list(self):
-        query_filters = self.request.GET 
-        if 'qid' in query_filters: 
+        query_filters = self.request.GET
+        if 'qid' in query_filters:
             questionId = query_filters.get('qid')
             self.questionId = questionId
             question = Question.objects.get(id=questionId)
-            answers = question.answers.all().order_by('-score') #should be different
+            answers = question.answers.all().order_by('-score')
         else:
             self.questionId = None
             answers = Answer.objects.all()
@@ -48,16 +47,15 @@ class AnswerResource(AbstractBezzistResource):
         return get_object_or_404(Answer, pk=pk)
 
     def create(self):
-        relevantQuestion = get_object_or_404(Question, id=self.data.get('qId')) 
-        if not relevantQuestion.finished or not relevantQuestion.locked:
+        question = get_object_or_404(Question, id=self.data.get('qId')) 
+        if not question.finished or not question.locked:
             answer = Answer.objects.create(
                 user=self.request.user,
                 answer=self.data.get('answer'),
-                question = relevantQuestion
-                #need to instantiate the question as well
+                question=question
             )
-            relevantQuestion.answers.add(answer)
-            self.request.user.userprofile.increment_score(10)
+            question.answers.add(answer)
+            self.question.user.userprofile.increment_score(10)
         else:
             raise HttpError(msg='Answers cannot be added to a closed question.')
         return answer
@@ -67,7 +65,6 @@ class AnswerResource(AbstractBezzistResource):
         self.resource_lock.acquire()
         answer = get_object_or_404(Answer, pk=pk)
         if answer.is_owner(self.request.user):
-            #question = answer.question.all().get()  # question must exist for answer to exist
             question = answer.question
             if not question.finished:
                 answer.answer = self.data.get('answer').strip()
