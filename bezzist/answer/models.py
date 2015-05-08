@@ -6,8 +6,7 @@ from base.models import AbstractUserScoredModel
 class Answer(AbstractUserScoredModel):
 
     answer = models.CharField(max_length=300)
-    question = models.ForeignKey(Question, blank = True, null=True, related_name = 'answers')
-
+    questionTemp = models.ForeignKey(Question, blank=True, null=True, related_name='answers')
 
     class Meta:
         ordering = ['-score', 'created']
