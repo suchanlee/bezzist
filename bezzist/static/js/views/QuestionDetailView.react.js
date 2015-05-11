@@ -4,10 +4,20 @@
 var React = require('react');
 
 /*
+ * Constants
+ */
+var BezzistConstants = require('../constants/BezzistConstants');
+
+/*
  * Stores
  */
 var QuestionStore = require('../stores/QuestionStore');
 var UserStore = require('../stores/UserStore');
+
+/*
+ * Actions
+ */
+var QuestionViewActionCreators = require('../actions/QuestionViewActionCreators');
 
 /*
  * ApiUtils
@@ -24,6 +34,9 @@ var Nav = require('../components/base/Nav.react');
 var QuestionBox = require('../components/question/QuestionBox.react');
 var AlertContainer = require('../components/alert/AlertContainer.react');
 
+// poll interval object
+var pollInterval;
+
 var QuestionDetailView = React.createClass({
 
   getInitialState: function() {
@@ -36,11 +49,17 @@ var QuestionDetailView = React.createClass({
     QuestionApiUtils.getQuestion(this.props.qId);
     AnswerApiUtils.getAnswersForQuestion(this.props.qId);
     UserApiUtils.getUser();
+
+    // initialize polling
+    pollInterval = setInterval(function() {
+      QuestionViewActionCreators.getQuestion(this.props.qId);
+    }.bind(this), BezzistConstants.Time.DETAIL_POLLING_TIMEOUT_MILLIS);
   },
 
   componentWillUnmount: function() {
     QuestionStore.removeChangeListener(this._onChange);
     UserStore.removeChangeListener(this._onChange);
+    clearInterval(pollInterval);
   },
 
   _getStateFromStores: function() {

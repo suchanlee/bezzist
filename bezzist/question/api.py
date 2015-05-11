@@ -72,7 +72,13 @@ class QuestionResource(AbstractBezzistResource):
             questions = Question.objects.filter(Q(active=True)&Q(featured=True)).order_by('-published_datetime')[:1]
         else:
             questions = Question.objects.all()
-        self.paginator = Paginator(questions, len(questions))
+                
+
+        if len(questions) == 0:
+            self.paginator = Paginator(questions, 1) #to avoid dividing by 0
+        else:
+            self.paginator = Paginator(questions, len(questions))
+            
         return questions
 
     # GET /api/v1/questions/<pk>
