@@ -16,6 +16,25 @@
 
 var _ = require('underscore');
 
+var PROFANITY_DICT = {
+  'ass': true,
+  'asshole': true,
+  'jackass': true,
+  'retard': true,
+  'retarded': true,
+  'fuck': true,
+  'fucker': true,
+  'fucked': true,
+  'motherfucker': true,
+  'cockfucker': true,
+  'bitch': true,
+  'biatch': true,
+  'shit': true,
+  'shitty': true,
+  'cunt': true,
+  'whore': true
+};
+
 /**
  * Exports declaration
  */
@@ -29,6 +48,29 @@ module.exports = {
    */
   capitalize: function(phrase) {
     return phrase.charAt(0).toUpperCase() + phrase.slice(1);
+  },
+
+  /**
+   * Sanitizes profanity from an input phrase. It keeps the
+   * first letter of the word and turns the rest into asterisks (*).
+   *
+   * The profanity is found from a small pre-defined dictionary.
+   *
+   * @param  {string} phrase Phrase that needs to be sanitized
+   * @return {string}        Sanitized phrase
+   */
+  sanitizeProfanity: function(phrase) {
+    var words = phrase.split(' ');
+    for (var i = 0; i < words.length; i++) {
+      if (words[i].trim() in PROFANITY_DICT) {
+        var asterisks = '';
+        for (var j = 0; j < words[i].length - 1; j++) {
+          asterisks += '*';
+        }
+        words[i] = words[i][0] + asterisks;
+      }
+    }
+    return words.join(' ');
   },
 
   /**
