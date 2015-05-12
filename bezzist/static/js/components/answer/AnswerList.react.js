@@ -39,7 +39,7 @@ var AnswerList = React.createClass({
 
   _getStateFromStores: function() {
     return {
-      answers: AnswerStore.getAnswersForQuestion(this.props.question.id)
+      answers: AnswerStore.getAnswersForQuestion(this.props.question.getId())
     };
   },
 

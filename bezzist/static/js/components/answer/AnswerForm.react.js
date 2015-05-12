@@ -15,7 +15,7 @@ var AnswerForm = React.createClass({
   },
 
   createAnswer: function(answer) {
-    return AnswerViewActionCreators.createAnswer(this.props.question.id, answer);
+    return AnswerViewActionCreators.createAnswer(this.props.question.getId(), answer);
   },
 
   render: function() {

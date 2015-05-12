@@ -82,12 +82,12 @@ var Questions = React.createClass({
     if (this.state.featuredQuestion) {
       questions.push(<QuestionBox
                         question={this.state.featuredQuestion}
-                        key={this.state.featuredQuestion.id} />);
+                        key={this.state.featuredQuestion.getId()} />);
     }
     _.map(this.state.questions, function(question) {
       questions.push(<QuestionBox
                         question={question}
-                        key={question.id} />);
+                        key={question.getId()} />);
     });
     var showMore = null;
     if (QuestionStore.hasNext) {

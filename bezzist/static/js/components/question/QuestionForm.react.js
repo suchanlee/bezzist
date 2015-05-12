@@ -10,10 +10,6 @@ var Form = require('../base/Form.react');
 var QuestionViewActionCreators = require('../../actions/QuestionViewActionCreators');
 
 var QuestionForm = React.createClass({
-  getFormError: function() {
-    return 'The question field cannot be empty :(';
-  },
-
   createQuestion: function(question) {
     return QuestionViewActionCreators.createQuestion(question);
   },
@@ -21,7 +17,7 @@ var QuestionForm = React.createClass({
   render: function() {
     return (
       <Form
-        formError={this.getFormError()}
+        formError='The question field cannot be empty :('
         createRow={this.createQuestion}
         addRow={this.props.addQuestion}
         expandRows={this.props.expandRows}
