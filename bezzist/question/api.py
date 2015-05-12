@@ -71,11 +71,10 @@ class QuestionResource(AbstractBezzistResource):
         elif query_filters.get('featured') == 'true':
             questions = Question.objects.filter(Q(active=True)&Q(featured=True)).order_by('-published_datetime')[:1]
         else:
-            questions = Question.objects.all()
-                
-
+            questions = Question.objects.all() 
+        #instantiating a self.paginator object prevents wrap_list_response from throwing NPEs
         if len(questions) == 0:
-            self.paginator = Paginator(questions, 1) #to avoid dividing by 0
+            self.paginator = Paginator(questions, 1) #to avoid zero division error
         else:
             self.paginator = Paginator(questions, len(questions))
             
