@@ -97,26 +97,20 @@ var QuestionStore = _.extend(_.clone(BaseStore), {
     }
   },
 
+  addTempQuestion: function(question) {
+    var question = Questions.createTemp(question);
+    _questions[question.getId()] = question;
+    // temp question is always an inactive question
+    _inactiveQuestionIds[question.getId()] = true;
+  },
+
   updateQuestion: function(newQuestion) {
-    // TODO: this needs to be refactored later
-    // in to a more digestible format
-    // it's gross right now
-    var oldQuestion;
-    newQuestion = Questions.create(newQuestion);
     if (_questions[TMP_QUESTION_ID]) {
-      oldQuestion = _questions[newQuestion.getId()] = _questions[TMP_QUESTION_ID];
       this.removeQuestion(TMP_QUESTION_ID);
-    } else {
-      oldQuestion = _questions[newQuestion.getId()];
+    } else if (_questions[newQuestion.id]) {
+      this.removeQuestion(newQuestion.id);
     }
-    var questionKeySet = Object.keys(newQuestion);
-    if (Object.keys(oldQuestion).length === questionKeySet.length) {
-      _questions[newQuestion.getId()] = newQuestion;
-    } else {
-      _.map(questionKeySet, function(key) {
-        oldQuestion[key] = newQuestion[key];
-      });
-    }
+    this.addQuestion(newQuestion)
   },
 
   /**
@@ -227,7 +221,7 @@ AppDispatcher.register(function(payload) {
       break;
 
     case ActionTypes.QUESTION_CREATE:
-      QuestionStore.addQuestion(Questions.createTemp(action.question));
+      QuestionStore.addTempQuestion(action.question);
       QuestionStore.emitChange();
       break;
 
