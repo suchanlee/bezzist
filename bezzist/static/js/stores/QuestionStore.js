@@ -22,7 +22,6 @@
  */
 var _ = require('underscore');
 var store = require('store');
-var moment = require('moment');
 
 /*
  * Local library imports
@@ -38,12 +37,10 @@ var AppDispatcher = require('../dispatcher/AppDispatcher');
  * Store imports
  */
 var BaseStore = require('./BaseStore');
-var UserStore = require('./UserStore');
 
 /*
- * Model imports
+ * Model factory imports
  */
-var Question = require('../models/Question');
 var Questions = require('../models/Questions');
 
 /*
@@ -70,7 +67,7 @@ var QuestionStore = _.extend(_.clone(BaseStore), {
 
   addQuestions: function(questions) {
     _.map(questions, function(question) {
-      this.addQuestion(question);
+      this.addQuestion(Questions.create(question));
     }.bind(this));
   },
 
@@ -86,7 +83,6 @@ var QuestionStore = _.extend(_.clone(BaseStore), {
   },
 
   addQuestion: function(question) {
-    var question = Questions.create(question);
     _questions[question.getId()] = question; // more recent objects are favored
     if (question.isFeatured()) {
       _featuredQuestionId = question.getId();
@@ -97,18 +93,11 @@ var QuestionStore = _.extend(_.clone(BaseStore), {
     }
   },
 
-  addTempQuestion: function(question) {
-    var question = Questions.createTemp(question);
-    _questions[question.getId()] = question;
-    // temp question is always an inactive question
-    _inactiveQuestionIds[question.getId()] = true;
-  },
-
   updateQuestion: function(newQuestion) {
     if (_questions[TMP_QUESTION_ID]) {
       this.removeQuestion(TMP_QUESTION_ID);
-    } else if (_questions[newQuestion.id]) {
-      this.removeQuestion(newQuestion.id);
+    } else if (_questions[newQuestion.getId()]) {
+      this.removeQuestion(newQuestion.getId());
     }
     this.addQuestion(newQuestion)
   },
@@ -181,7 +170,7 @@ AppDispatcher.register(function(payload) {
   switch(action.type) {
 
     case ActionTypes.QUESTION_RECEIVE:
-      QuestionStore.addQuestion(action.question);
+      QuestionStore.addQuestion(Questions.create(action.question));
       QuestionStore.emitChange();
       break;
 
@@ -221,7 +210,7 @@ AppDispatcher.register(function(payload) {
       break;
 
     case ActionTypes.QUESTION_CREATE:
-      QuestionStore.addTempQuestion(action.question);
+      QuestionStore.addQuestion(Questions.createTemp(action.question));
       QuestionStore.emitChange();
       break;
 
@@ -231,14 +220,13 @@ AppDispatcher.register(function(payload) {
       break;
 
     case ActionTypes.QUESTION_UPDATE:
-      QuestionStore.updateQuestion(action.question);
+      QuestionStore.updateQuestion(Questions.create(action.question));
       QuestionStore.emitChange();
       break;
 
     default:
         // no op
   }
-
 });
 
 /*
