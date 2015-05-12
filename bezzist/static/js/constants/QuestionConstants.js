@@ -4,6 +4,8 @@ var keymirror = require('keymirror');
 
 module.exports = {
 
+  TMP_QUESTION_ID: -1,
+
   ActionTypes: keymirror({
     QUESTION_CREATE: null,
     QUESTION_RECEIVE: null,

@@ -21,24 +21,24 @@ var QuestionBox = React.createClass({
 
   getDateText: function() {
     // TODO: remove this one-time hack for Shark Tank event
-    if (this.props.question.featured) {
+    if (this.props.question.isFeatured()) {
       return 'FEATURED QUESTION';
     }
     var today = moment();
-    var diffDays = Math.floor(moment.duration(today.diff(this.props.question.published)).asHours() / 24);
+    var diffDays = Math.floor(moment.duration(today.diff(this.props.question.getPublished())).asHours() / 24);
     var date;
     if (diffDays == 0) {
       date = "TODAY'S QUESTION";
     } else if (diffDays == 1) {
       date = "YESTERDAY'S QUESTION";
     } else {
-      date = this.props.question.published.format("MMMM D YYYY").toUpperCase();
+      date = this.props.question.getPublished().format("MMMM D YYYY").toUpperCase();
     }
     return date;
   },
 
   getForm: function() {
-    if (this.props.question && !this.props.question.locked) {
+    if (this.props.question && !this.props.question.isLocked()) {
       return (
         <AnswerForm
           question={this.props.question}
@@ -56,18 +56,18 @@ var QuestionBox = React.createClass({
   },
 
   setRoute: function() {
-    var detailViewUri = '/questions/' + this.props.question.id;
+    var detailViewUri = '/questions/' + this.props.question.getId();
     router.setRoute(detailViewUri);
   },
 
   render: function() {
     // TODO: remove this one-time hack for Shark Tank event
-    var boxClass = this.props.question.featured ? 'question-box question-box-featured' : 'question-box';
+    var boxClass = this.props.question.isFeatured() ? 'question-box question-box-featured' : 'question-box';
     return (
       <div className={boxClass}>
         <div className='list-header primary-list-header'>
           <p className='question-posted-date'>{this.getDateText()}</p>
-          <h2 onClick={this.titleClickHandler}>{this.props.question.question}</h2>
+          <h2 onClick={this.titleClickHandler}>{this.props.question.getQuestion()}</h2>
           <div className='question-vote-now-container'>
             <p className='question-vote-now'>VOTE NOW</p>
             <img className='vote-pointer' src={'/static/imgs/icons/fingerdown.png'} />

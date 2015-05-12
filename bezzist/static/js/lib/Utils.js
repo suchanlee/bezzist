@@ -87,9 +87,19 @@ module.exports = {
     }
 
     return list.sort(function(a, b) {
-      var comp = a[key] - b[key];
+      var comp;
+      if (_.isFunction(a[key]) && _.isFunction(b[key])) {
+        comp = a[key]() - b[key]();
+      } else {
+        comp = a[key] - b[key];
+      }
       if (comp === 0) {
-        return a.created.unix() - b.created.unix();
+        try {
+          return a.getCreated().unix() - b.getCreated().unix();
+        } catch(e) {
+          // no op -- return as is.
+          return dir * comp;
+        }
       } else {
         return dir * comp;
       }
