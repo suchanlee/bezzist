@@ -32,7 +32,7 @@ var Row = React.createClass({
           <div className='row-content'>
             <span className='row-idx'>{this.props.idx}</span>
             <span className='row-text'>
-              {Utils.capitalize(this.props.content)}
+              {Utils.capitalize(Utils.sanitizeProfanity(this.props.content))}
             </span>
           </div>
           <div className='vote-box'>
