@@ -46,7 +46,7 @@ var AnswerList = React.createClass({
   _getRows: function() {
     return _.map(this.state.answers, function(answer, idx) {
       return <AnswerRow
-              key={answer.id}
+              key={answer.getId()}
               answer={answer}
               idx={idx+1}
               question={this.props.question} />;

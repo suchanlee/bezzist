@@ -16,9 +16,6 @@
  * General library imports
  */
 var _ = require('underscore');
-var assign = require('object-assign');
-var store = require('store');
-var moment = require('moment');
 
 /*
  * Local library imports
@@ -37,6 +34,11 @@ var BaseStore = require('./BaseStore');
 var UserStore = require('./UserStore');
 
 /*
+ * Model factory imports
+ */
+var Answers = require('../models/Answers');
+
+/*
  * Constant imports
  */
 var AnswerConstants = require('../constants/AnswerConstants');
@@ -46,7 +48,7 @@ var BezzistConstants = require('../constants/BezzistConstants');
 /*
  * Field declarations
  */
-var TMP_ANSWER_ID = -1; // impossible id for real model object
+var TMP_ANSWER_ID = AnswerConstants.TMP_ANSWER_ID;
 
 /*
  * AnswerStore object
@@ -56,19 +58,13 @@ var _answerIds = {}; // set of currently loaded ids
 
 var AnswerStore =  _.extend(_.clone(BaseStore), {
 
-  _createAnswer: function(answer) {
-    answer.created = moment(answer.created);
-    answer.modified = moment(answer.modified);
-    return answer;
-  },
-
   addAnswer: function(questionId, answer) {
     if (!(questionId in _answers)) {
       _answers[questionId] = [];
     }
-    if (!(answer.id in _answerIds)) {
-      _answers[questionId].push(this._createAnswer(answer));
-      _answerIds[answer.id] = true;
+    if (!(answer.getId() in _answerIds)) {
+      _answers[questionId].push(answer);
+      _answerIds[answer.getId()] = true;
     } else {
       this.updateAnswer(questionId, answer);
     }
@@ -76,8 +72,8 @@ var AnswerStore =  _.extend(_.clone(BaseStore), {
 
   updateAnswer: function(questionId, answer) {
     _.map(_answers[questionId], function(_answer) {
-      if (_answer.id === TMP_ANSWER_ID || _answer.id === answer.id) {
-        this.removeAnswer(questionId, _answer.id);
+      if (_answer.getId() === TMP_ANSWER_ID || _answer.getId() === answer.getId()) {
+        this.removeAnswer(questionId, _answer.getId());
         this.addAnswer(questionId, answer);
       }
     }.bind(this));
@@ -89,15 +85,15 @@ var AnswerStore =  _.extend(_.clone(BaseStore), {
     delete _answerIds[answerId];
   },
 
-  storeAnswers: function(questionId, answers) {
+  addAnswers: function(questionId, answers) {
     for (var i = 0; i < answers.length; i++) {
-      this.addAnswer(questionId, answers[i]);
+      this.addAnswer(questionId, Answers.create(answers[i]));
     }
   },
 
   getAnswerForQuestion: function(questionId, answerId) {
     for (var i=0; i<_answers[questionId].length; i++) {
-      if (_answers[questionId][i].id === answerId) {
+      if (_answers[questionId][i].getId() === answerId) {
         return _answers[questionId][i];
       }
     }
@@ -106,7 +102,7 @@ var AnswerStore =  _.extend(_.clone(BaseStore), {
 
   getAnswersForQuestion: function(questionId) {
     if (questionId in _answers) {
-      _answers[questionId] = Utils.revSortByField(_answers[questionId], 'score');
+      _answers[questionId] = Utils.revSortByField(_answers[questionId], 'getScore');
       return _.map(_answers[questionId], _.clone);
     } else {
       return [];
@@ -130,13 +126,7 @@ AppDispatcher.register(function(payload) {
       break;
 
     case ActionTypes.ANSWER_CREATE:
-      AnswerStore.addAnswer(action.questionId, {
-        id: TMP_ANSWER_ID,
-        answer: action.answer,
-        score: 0,
-        created: new Date(),
-        modified: new Date()
-      });
+      AnswerStore.addAnswer(action.questionId, Answers.createTemp(action.answer));
       AnswerStore.emitChange();
       break;
 
@@ -146,65 +136,32 @@ AppDispatcher.register(function(payload) {
       break;
 
     case ActionTypes.ANSWER_UPDATE:
-      AnswerStore.updateAnswer(action.questionId, action.answer);
+      AnswerStore.updateAnswer(action.questionId, Answers.create(action.answer));
       AnswerStore.emitChange();
       break;
 
     case ActionTypes.ANSWER_UPVOTE:
-      //TODO: all the upvote/unvote things need to be
-      // refactored out into the model, when it's made for answers and questions.
-      // currently, this has too much logic it should not.
-      AnswerStore.getAnswerForQuestion(action.questionId, action.answerId).score += 1;
-      if (!UserStore.isAuthenticated()) {
-        var update = {};
-        update[action.answerId] = true;
-        store.set(Stores.BEZZIST_ANSWERS, _.extend(store.get(Stores.BEZZIST_ANSWERS), update));
-      }
-      if (!UserStore.isSuperuser()) {
-        UserStore.addAnswerLiked(action.answerId);
-      }
+      AnswerStore.getAnswerForQuestion(action.questionId, action.answerId).incrementScore();
       AnswerStore.emitChange();
       break;
 
     case ActionTypes.ANSWER_UPVOTE_FAILED:
-      AnswerStore.getAnswerForQuestion(action.questionId, action.answerId).score -= 1;
-      if (action.status !== Status.FORBIDDEN) {
-        if (!UserStore.isAuthenticated()) {
-          var votedAnswers = store.get(Stores.BEZZIST_ANSWERS);
-          delete votedAnswers[action.answerId];
-          store.set(Stores.BEZZIST_ANSWERS, votedAnswers);
-        }
-        UserStore.removeAnswerLiked(action.answerId);
-      }
+      AnswerStore.getAnswerForQuestion(action.questionId, action.answerId).decrementScore(action.status);
       AnswerStore.emitChange();
       break;
 
     case ActionTypes.ANSWER_UNVOTE:
-      AnswerStore.getAnswerForQuestion(action.questionId, action.answerId).score -= 1;
-      if (!UserStore.isAuthenticated()) {
-        var votedAnswers = store.get(Stores.BEZZIST_ANSWERS);
-        delete votedAnswers[action.answerId];
-        store.set(Stores.BEZZIST_ANSWERS, votedAnswers);
-      }
-      UserStore.removeAnswerLiked(action.answerId);
+      AnswerStore.getAnswerForQuestion(action.questionId, action.answerId).decrementScore();
       AnswerStore.emitChange();
       break;
 
     case ActionTypes.ANSWER_UNVOTE_FAILED:
-      AnswerStore.getAnswerForQuestion(action.questionId, action.answerId).score += 1;
-      if (action.status !== Status.FORBIDDEN) {
-        if (!UserStore.isAuthenticated()) {
-          var update = {};
-          update[action.answerId] = true;
-          store.set(Stores.BEZZIST_ANSWERS, _.extend(store.get(Stores.BEZZIST_ANSWERS), update));
-        }
-        UserStore.addAnswerLiked(action.answerId);
-      }
+      AnswerStore.getAnswerForQuestion(action.questionId, action.answerId).incrementScore(action.status);
       AnswerStore.emitChange();
       break;
 
     case ActionTypes.RECEIVE_ANSWERS_FOR_QUESTION:
-      AnswerStore.storeAnswers(action.questionId, action.answers);
+      AnswerStore.addAnswers(action.questionId, action.answers);
       AnswerStore.emitChange();
       break;
 

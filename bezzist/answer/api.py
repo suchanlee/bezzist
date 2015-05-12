@@ -28,7 +28,7 @@ class AnswerResource(AbstractBezzistResource):
     def wrap_list_response(self, data):
         return {
             'qid': self.questionId,
-            'answers'   : data
+            'answers': data
         }
 
     def list(self):
