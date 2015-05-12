@@ -62,7 +62,7 @@ module.exports = {
   sanitizeProfanity: function(phrase) {
     var words = phrase.split(' ');
     for (var i = 0; i < words.length; i++) {
-      if (words[i].trim() in PROFANITY_DICT) {
+      if (words[i].trim().toLowerCase() in PROFANITY_DICT) {
         var asterisks = '';
         for (var j = 0; j < words[i].length - 1; j++) {
           asterisks += '*';

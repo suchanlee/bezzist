@@ -44,3 +44,10 @@ describe('sanitizeProfanity', function() {
     expect(Utils.sanitizeProfanity(phrase)).toBe('This is a f***** up s***** r******* phrase!');
   });
 });
+
+describe('sanitizeProfanity', function() {
+  it('sanitize phrase with capitalized profanity', function() {
+    var phrase = 'This is a FUCKeD up phrase!';
+    expect(Utils.sanitizeProfanity(phrase)).toBe('This is a F***** up phrase!');
+  });
+});
