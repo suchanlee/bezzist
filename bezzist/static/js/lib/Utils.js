@@ -90,8 +90,6 @@ module.exports = {
       var comp;
       if (_.isFunction(a[key]) && _.isFunction(b[key])) {
         comp = a[key]() - b[key]();
-        // console.log(a[key]());
-        // console.log(b[key]());
       } else {
         comp = a[key] - b[key];
       }
