@@ -13,18 +13,18 @@ var UserStore = require('../../stores/UserStore');
 
 var AnswerRow = React.createClass({
   vote: function() {
-    AnswerViewActionCreators.upvoteAnswer(this.props.question.getId(), this.props.answer.id);
+    AnswerViewActionCreators.upvoteAnswer(this.props.question.getId(), this.props.answer.getId());
   },
 
   unvote: function() {
-    AnswerViewActionCreators.unvoteAnswer(this.props.question.getId(), this.props.answer.id);
+    AnswerViewActionCreators.unvoteAnswer(this.props.question.getId(), this.props.answer.getId());
   },
 
   hasVoted: function() {
-    if (!UserStore.isAuthenticated() && store.get(Stores.BEZZIST_ANSWERS).hasOwnProperty(this.props.answer.id)) {
+    if (!UserStore.isAuthenticated() && store.get(Stores.BEZZIST_ANSWERS).hasOwnProperty(this.props.answer.getId())) {
       return true;
     }
-    return UserStore.containsAnswerLiked(this.props.answer.id);
+    return UserStore.containsAnswerLiked(this.props.answer.getId());
   },
 
   render: function() {
@@ -32,9 +32,9 @@ var AnswerRow = React.createClass({
       <Row
         vote={this.vote}
         unvote={this.unvote}
-        id={this.props.answer.id}
-        content={this.props.answer.answer}
-        score={this.props.answer.score}
+        id={this.props.answer.getId()}
+        content={this.props.answer.getAnswer()}
+        score={this.props.answer.getScore()}
         idx={this.props.idx}
         hasVoted={this.hasVoted} />
     );
