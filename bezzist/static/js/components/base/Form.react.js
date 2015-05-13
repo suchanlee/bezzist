@@ -51,12 +51,14 @@ var Form = React.createClass({
 
   createRow: function() {
     var promise = this.props.createRow(this.state.value);
+
+    // if user does not submit answer, return.
+    if (!promise) {
+      return;
+    }
+
     promise.done(function(row) {
-      this.setState({
-        formError: '',
-        value: '',
-        numChars: 0,
-      });
+      this.setState(this.getInitialState());
       this._expandAndAnimate();
     }.bind(this));
     promise.fail(function() {

@@ -7,7 +7,6 @@ var InvertedIndex = function() {
   this.ii = {};
 };
 
-
 /**
  * Gets the indexed terms.
  *
@@ -22,8 +21,6 @@ InvertedIndex.prototype.termSet = function() {
  *
  * @param  {int} id       Id of the corpus, by which it the corpus can be referred
  * @param  {string} text  The text to index
- * @param  {object} opt   A javascript object containing the optional parameters
- *                        of the inverted index.
  * @return {boolean}      Returns true if successfully parsed text
  */
 InvertedIndex.prototype.parseText = function(id, text) {
@@ -48,7 +45,7 @@ InvertedIndex.prototype.getTerm = function(term) {
   if (term in this.ii) {
     return this.ii[term];
   }
-  throw new ReferenceError('The term ' + term + ' has not been indexed.');
+  return {};
 };
 
 module.exports = InvertedIndex;

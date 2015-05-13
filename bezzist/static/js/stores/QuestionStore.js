@@ -21,7 +21,6 @@
  * General library imports
  */
 var _ = require('underscore');
-var store = require('store');
 
 /*
  * Local library imports
@@ -37,9 +36,10 @@ var AppDispatcher = require('../dispatcher/AppDispatcher');
  * Store imports
  */
 var BaseStore = require('./BaseStore');
+var InvertedIndexStore = require('./InvertedIndexStore');
 
 /*
- * Model factory imports
+ * Model imports
  */
 var Questions = require('../models/Questions');
 
@@ -86,8 +86,10 @@ var QuestionStore = _.extend(_.clone(BaseStore), {
     _questions[question.getId()] = question; // more recent objects are favored
     if (question.isFeatured()) {
       _featuredQuestionId = question.getId();
+      InvertedIndexStore.addIndex(question.getId());
     } else if (question.isActive()) {
       _activeQuestionIds[question.getId()] = true;
+      InvertedIndexStore.addIndex(question.getId());
     } else {
       _inactiveQuestionIds[question.getId()] = true;
     }

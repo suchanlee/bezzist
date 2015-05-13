@@ -6,6 +6,8 @@ module.exports = {
 
   TMP_ANSWER_ID: -1,
 
+  SIMILARITY_THRESHOLD: 0.75,
+
   ActionTypes: keymirror({
     ANSWER_CREATE: null,
     ANSWER_UPDATE: null,
