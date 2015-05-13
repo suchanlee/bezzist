@@ -1,6 +1,5 @@
 'use strict';
 
-var IndexCell = require('./IndexCell');
 var Tokenizer = require('./Tokenizer');
 
 var InvertedIndex = function() {
