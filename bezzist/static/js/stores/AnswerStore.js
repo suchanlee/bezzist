@@ -31,7 +31,7 @@ var AppDispatcher = require('../dispatcher/AppDispatcher');
  * Store imports
  */
 var BaseStore = require('./BaseStore');
-var UserStore = require('./UserStore');
+var InvertedIndexStore = require('./InvertedIndexStore');
 
 /*
  * Model factory imports
@@ -65,6 +65,8 @@ var AnswerStore =  _.extend(_.clone(BaseStore), {
     if (!(answer.getId() in _answerIds)) {
       _answers[questionId].push(answer);
       _answerIds[answer.getId()] = true;
+      var ii = InvertedIndexStore.getIndex(questionId);
+      ii.parseText(answer.getId(), answer.getAnswer());
     } else {
       this.updateAnswer(questionId, answer);
     }
@@ -92,7 +94,7 @@ var AnswerStore =  _.extend(_.clone(BaseStore), {
   },
 
   getAnswerForQuestion: function(questionId, answerId) {
-    for (var i=0; i<_answers[questionId].length; i++) {
+    for (var i = 0; i < _answers[questionId].length; i++) {
       if (_answers[questionId][i].getId() === answerId) {
         return _answers[questionId][i];
       }
@@ -107,6 +109,16 @@ var AnswerStore =  _.extend(_.clone(BaseStore), {
     } else {
       return [];
     }
+  },
+
+  getAnswerIndex: function(questionId, answerId) {
+    var answers = Utils.revSortByField(_answers[questionId], 'getScore');
+    for (var i = 0; i < answers.length; i++) {
+      if (answers[i].getId() === answerId) {
+        return i + 1; // 1-indexed
+      }
+    }
+    return -1;
   },
 
 });
