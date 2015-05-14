@@ -4,6 +4,7 @@
   "description": "List-style Q&A platform",
   "main": "js/app.js",
   "dependencies": {
+    "autolinker": "^0.17.1",
     "director": "^1.2.7",
     "eventemitter3": "^0.1.6",
     "fingerprintjs": "^0.5.3",
