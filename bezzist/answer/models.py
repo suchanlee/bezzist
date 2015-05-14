@@ -1,5 +1,4 @@
 from django.db import models
-from django.utils.html import escape
 
 from base.models import AbstractUserScoredModel
 
@@ -13,7 +12,3 @@ class Answer(AbstractUserScoredModel):
 
     def __unicode__(self):
         return self.answer
-
-    def save(self, *args, **kwargs):
-        self.answer = escape(self.answer)
-        super(Answer, self).save(*args, **kwargs)
