@@ -7,6 +7,7 @@ from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.views.generic import View
+from django.utils.html import escape
 
 from restless.exceptions import Unauthorized
 from restless.preparers import FieldsPreparer
@@ -71,13 +72,14 @@ class QuestionResource(AbstractBezzistResource):
         elif query_filters.get('featured') == 'true':
             questions = Question.objects.filter(Q(active=True)&Q(featured=True)).order_by('-published_datetime')[:1]
         else:
-            questions = Question.objects.all() 
+            questions = Question.objects.all()
+
         #instantiating a self.paginator object prevents wrap_list_response from throwing NPEs
         if len(questions) == 0:
             self.paginator = Paginator(questions, 1) #to avoid zero division error
         else:
             self.paginator = Paginator(questions, len(questions))
-            
+
         return questions
 
     # GET /api/v1/questions/<pk>
@@ -89,7 +91,7 @@ class QuestionResource(AbstractBezzistResource):
         # Unsanitized inputs
         self.request.user.userprofile.increment_score(10)
         return Question.objects.create(
-            question=self.data.get('question'),
+            question=escape(self.data.get('question')),
             user=self.request.user
         )
 
@@ -99,7 +101,7 @@ class QuestionResource(AbstractBezzistResource):
         self.resource_lock.acquire()
         question = get_object_or_404(Question, pk=pk)
         if question.is_owner(self.request.user):
-            question.question = self.data.get('question').strip()
+            question.question = escape(self.data.get('question').strip())
             question.score = self.data.get('score')
             question.save()
             self.resource_lock.release()

@@ -3,6 +3,7 @@ from threading import Lock
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.views.generic import View
+from django.utils.html import escape
 
 from restless.exceptions import BadRequest, HttpError, Unauthorized
 from restless.preparers import FieldsPreparer
@@ -51,7 +52,7 @@ class AnswerResource(AbstractBezzistResource):
         if not question.finished or not question.locked:
             answer = Answer.objects.create(
                 user=self.request.user,
-                answer=self.data.get('answer')
+                answer=escape(self.data.get('answer'))
             )
             question.answers.add(answer)
             self.request.user.userprofile.increment_score(10)
@@ -66,7 +67,7 @@ class AnswerResource(AbstractBezzistResource):
         if answer.is_owner(self.request.user):
             question = answer.question.all().get()  # question must exist for answer to exist
             if not question.finished:
-                answer.answer = self.data.get('answer').strip()
+                answer.answer = escape(self.data.get('answer').strip())
                 answer.score = self.data.get('score')
                 answer.save()
                 self.resource_lock.release()
