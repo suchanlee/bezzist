@@ -24,7 +24,7 @@ class AnswerResource(AbstractBezzistResource):
         'created': 'created',
         'last_modified': 'modified'
     })
-
+    
     def wrap_list_response(self, data):
         return {
             'qid': self.questionId,
@@ -37,7 +37,7 @@ class AnswerResource(AbstractBezzistResource):
             questionId = query_filters.get('qid')
             self.questionId = questionId
             question = Question.objects.get(id=questionId)
-            answers = question.answers.order_by('-score')
+            answers = question.answers.all().order_by('-score')
         else:
             self.questionId = None
             answers = Answer.objects.all()
@@ -47,14 +47,15 @@ class AnswerResource(AbstractBezzistResource):
         return get_object_or_404(Answer, pk=pk)
 
     def create(self):
-        question = get_object_or_404(Question, id=self.data.get('qId'))
+        question = get_object_or_404(Question, id=self.data.get('qId')) 
         if not question.finished or not question.locked:
             answer = Answer.objects.create(
                 user=self.request.user,
-                answer=self.data.get('answer')
+                answer=self.data.get('answer'),
+                question=question
             )
             question.answers.add(answer)
-            self.request.user.userprofile.increment_score(10)
+            self.question.user.userprofile.increment_score(10)
         else:
             raise HttpError(msg='Answers cannot be added to a closed question.')
         return answer
@@ -64,7 +65,7 @@ class AnswerResource(AbstractBezzistResource):
         self.resource_lock.acquire()
         answer = get_object_or_404(Answer, pk=pk)
         if answer.is_owner(self.request.user):
-            question = answer.question.all().get()  # question must exist for answer to exist
+            question = answer.question
             if not question.finished:
                 answer.answer = self.data.get('answer').strip()
                 answer.score = self.data.get('score')
@@ -97,7 +98,7 @@ class IncrementScoreRpcResource(View):
         answer.increment_score(request)
         return JsonResponse({
             'id': answer.id,
-            'question': answer.answer,
+            'answer': answer.answer,
             'score': answer.score
         })
 
@@ -109,6 +110,6 @@ class DecrementScoreRpcResource(View):
         answer.decrement_score(request)
         return JsonResponse({
             'id': answer.id,
-            'question': answer.answer,
+            'answer': answer.answer,
             'score': answer.score
         })
