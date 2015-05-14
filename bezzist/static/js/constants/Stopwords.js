@@ -1,7 +1,5 @@
 'use strict';
 
-var Immutable = require('immutable');
-
 var stopwords = [
     "a",
     "about",
