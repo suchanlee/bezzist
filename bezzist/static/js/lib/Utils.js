@@ -25,12 +25,14 @@ var PROFANITY_DICT = {
   'fuck': true,
   'fucker': true,
   'fucked': true,
+  'fucking': true,
   'motherfucker': true,
   'cockfucker': true,
   'bitch': true,
   'biatch': true,
   'shit': true,
   'shitty': true,
+  'shitting': true,
   'cunt': true,
   'whore': true
 };
