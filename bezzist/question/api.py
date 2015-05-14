@@ -23,15 +23,16 @@ class QuestionResource(AbstractBezzistResource):
     resource_lock = Lock()
 
     preparer = FieldsPreparer(fields={
-        'id'       : 'id',
-        'question' : 'question',
-        'score'    : 'score',
-        'active'   : 'active',
-        'featured' : 'featured',
-        'finished' : 'finished',
-        'locked'   : 'locked',
-        'created'  : 'created',
-        'modified' : 'modified',
+        'id': 'id',
+        'question': 'question',
+        'score': 'score',
+        'active': 'active',
+        'default_visible_answers': 'default_visible_answers',
+        'featured': 'featured',
+        'finished': 'finished',
+        'locked'  : 'locked',
+        'created' : 'created',
+        'modified': 'modified',
         'published': 'published_datetime'
     })
 

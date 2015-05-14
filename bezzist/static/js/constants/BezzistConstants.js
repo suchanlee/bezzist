@@ -4,6 +4,8 @@ var keymirror = require('keymirror');
 
 module.exports = {
 
+  DEFAULT_VISIBLE_ROWS: 5,
+
   Time: {
     POLLING_TIMEOUT_MILLIS: 30 * 1000,
     DETAIL_POLLING_TIMEOUT_MILLIS: 10 * 1000
