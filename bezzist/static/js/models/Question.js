@@ -24,12 +24,12 @@ var BezzistConstants = require('../constants/BezzistConstants');
 var Stores = BezzistConstants.Stores;
 var Status = BezzistConstants.Status;
 
-var Question = function(id, question, score,
+var Question = function(id, question, score, numVisible,
                         active, featured, locked,
                         created, modified, published) {
 
   // private fields
-  var _id, _question, _score,
+  var _id, _question, _score, _numVisible,
       _active, _featured, _locked,
       _created, _modified, _published;
 
@@ -39,6 +39,7 @@ var Question = function(id, question, score,
   }
   _question = question;
   _score = score === undefined ? 0 : score;
+  _numVisible = numVisible === undefined ? 5 : numVisible;
   _active = active === undefined ? false : active;
   _locked = locked === undefined ? false : locked;
   _featured = featured === undefined ? false : featured;
@@ -48,6 +49,7 @@ var Question = function(id, question, score,
 
   this.getId = function() { return _id; };
   this.getQuestion = function() { return _question; };
+  this.getNumVisible = function() { return _numVisible; };
   this.getScore = function() { return _score; };
   this.isActive = function() { return _active; };
   this.isFeatured = function() { return _featured; };

@@ -5,6 +5,7 @@
 'use strict';
 
 var React = require('react');
+var DEFAULT_VISIBLE_ROWS = require('../../constants/BezzistConstants').DEFAULT_VISIBLE_ROWS;
 
 var List = React.createClass({
   getInitialState: function() {
@@ -20,7 +21,7 @@ var List = React.createClass({
   },
 
   rowIsHidden: function(rowIdx) {
-    if (rowIdx < 5) {
+    if (rowIdx < this._getNumVisibleRows()) {
       return false;
     }
     return !this.state.expanded;
@@ -30,6 +31,13 @@ var List = React.createClass({
     if (!this.state.expanded) {
       this._toggleRows();
     }
+  },
+
+  _getNumVisibleRows: function() {
+    if (this.props.numVisibleRows) {
+      return this.props.numVisibleRows;
+    }
+    return DEFAULT_VISIBLE_ROWS;
   },
 
   _toggleRows: function() {
@@ -48,7 +56,7 @@ var List = React.createClass({
 
   render: function() {
     var showMoreClassName = 'expander-container ';
-    if (this.props.rows.length < 6) {
+    if (this.props.rows.length <= this._getNumVisibleRows()) {
       showMoreClassName += 'hidden';
     }
     var toggleRowsClassName = 'list ';
@@ -59,10 +67,10 @@ var List = React.createClass({
     return (
       <div className={this.props.qList ? 'question-list' : ''}>
         <ul className='list'>
-          {this.props.rows.slice(0, 5)}
+          {this.props.rows.slice(0, this._getNumVisibleRows())}
         </ul>
         <ul className={toggleRowsClassName}>
-          {this.props.rows.slice(5)}
+          {this.props.rows.slice(this._getNumVisibleRows())}
         </ul>
         <div className={showMoreClassName}>
           <p

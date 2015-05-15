@@ -16,6 +16,7 @@ class Question(AbstractUserScoredModel):
     featured = models.BooleanField(default=False)
     active = models.BooleanField(default=False)
     locked = models.BooleanField(default=False)
+    default_visible_answers = models.SmallIntegerField(default=5)
 
     # deprecated field, still here to not remove existing field values
     # and in case we may need it later. Does not do anything.

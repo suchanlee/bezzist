@@ -57,7 +57,8 @@ var AnswerList = React.createClass({
     return (
       <List
         ref='list'
-        rows={this._getRows()} />
+        rows={this._getRows()}
+        numVisibleRows={this.props.question.getNumVisible()} />
     );
   }
 });
