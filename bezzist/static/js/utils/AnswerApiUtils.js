@@ -29,12 +29,13 @@ module.exports = {
     });
   },
 
-  createAnswer: function(questionId, answer) {
-    var data = {qId: questionId, answer: answer};
+  createAnswer: function(questionId, answerContent) {
+    var data = {qId: questionId, answer: answerContent};
     var promise = $.post('/api/v1/answers/', JSON.stringify(data));
     promise.done(function(answer) {
       AnswerServerActionCreators.updateAnswer(questionId, answer);
       UserServerActionCreators.incrementPoints(PointsPerAction.CREATE);
+      // TODO: add to _created_answer_ids
     });
     promise.fail(function() {
       AnswerServerActionCreators.createAnswerFailed(questionId);
@@ -79,5 +80,23 @@ module.exports = {
       AnswerServerActionCreators.unvoteAnswerFailed(questionId, answerId, err.status);
     });
   },
+
+  updateAnswer: function(questionId, answerId, answer) {
+    var data = {qId: questionId, answer: answer};
+    var promise = $.ajax({
+      url: '/api/v1/answers/' + answerId + '/',
+      type: 'PUT',
+      dataType: 'json',
+      data: JSON.stringify({
+        'qId': questionId,
+        'csrfmiddlewaretoken': docCookies.getItem('csrftoken'),
+        'answer': answer
+      })
+    });
+    promise.done(function(answer) {
+      AnswerServerActionCreators.updateAnswer(questionId, answer);
+    });
+    return promise;
+  }
 
 };

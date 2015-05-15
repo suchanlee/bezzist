@@ -101,7 +101,7 @@ class QuestionResource(AbstractBezzistResource):
         # Currently allows editing question and score
         self.resource_lock.acquire()
         question = get_object_or_404(Question, pk=pk)
-        if question.is_owner(self.request.user):
+        if question.is_owner(self.request.user) and question.score is 0:
             question.question = escape(self.data.get('question').strip())
             question.score = self.data.get('score')
             question.save()

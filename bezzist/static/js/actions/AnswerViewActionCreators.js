@@ -39,4 +39,8 @@ module.exports = {
     });
     AnswerApiUtils.unvoteAnswer(questionId, answerId);
   },
+
+  updateAnswer: function(questionId, answerId, answer) {
+    return AnswerApiUtils.updateAnswer(questionId, answerId, answer); // another hack
+  },
 };

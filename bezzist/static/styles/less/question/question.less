@@ -5,7 +5,7 @@
   padding: 15px 0px;
   margin: 0 auto;
   width: 100%;
-  color: white;
+  color: @white;
   h2 {
     font-size: 30px;
     line-height: 37px;
@@ -26,7 +26,7 @@
 
 .secondary-list-header {
   background-color: @yellow;
-  color: black;
+  color: @black;
   cursor: pointer;
   h2 {
     font-size: 23px;
@@ -68,7 +68,7 @@
 
 .row-item.voted {
   background-color: @light-blue;
-  border-bottom: 1px solid white;
+  border-bottom: 1px solid @white;
 }
 
 .row {
@@ -90,26 +90,19 @@
   color: @blue;
 }
 
-.vote-box {
-  position: absolute;
-  right: 0px;
-  top: 0px;
-  height: 100%;
-  width: 60px;
-  text-align: center;
-  cursor: pointer;
-  border-left: 3px @blue solid;
-}
-
 .question-list {
   .row-idx {
-    color: black;
+    color: @black;
   }
   .vote-box {
     border-left: 3px @yellow solid;
   }
   .row-item.voted {
     background-color: @light-yellow;
+  }
+  .edit-box {
+    background-color: @yellow;
+    color: @black;
   }
 }
 .question-box-featured {
@@ -118,6 +111,9 @@
   }
   .row-item.voted {
    background-color: @light-pink;
+  }
+  .edit-box {
+    background-color: @pink;
   }
   .vote-box {
     border-left: 3px @pink solid;
@@ -128,6 +124,18 @@
   .answer-text-input-container {
     border-bottom: 6px solid @pink;
   }
+}
+
+
+.vote-box {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  height: 100%;
+  width: 60px;
+  text-align: center;
+  cursor: pointer;
+  border-left: 3px @blue solid;
 }
 
 .vote-box-inner {
@@ -148,6 +156,29 @@
   font-size: 15px;
 }
 
+.edit-box {
+  position: absolute;
+  right: 60px;
+  top: 0px;
+  height: 100%;
+  width: 60px;
+  text-align: center;
+  cursor: pointer;
+  background-color: @blue;
+  color: @white;
+  font-size: 14px;
+  &:hover {
+    background-color: @dark-blue;
+  }
+}
+
+.edit-box-inner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  .transform(translate(-50%, -50%));
+}
+
 .text-input-container {
   width: 100%;
   margin: 0 auto;
@@ -159,13 +190,18 @@
 .text-input {
   font-size: 25px;
   font-family: @sans-serif;
-  color: black;
+  color: @black;
   outline: none;
   width: 93%;
   border: none;
   background-color: @light-grey;
   .placeholder(@dark-grey);
   .border-radius(0px);
+}
+
+.text-input.row-text-input {
+  width: 78%;
+  padding: 5px 10px;
 }
 
 .answer-text-input-container {
@@ -183,7 +219,7 @@
   position: absolute;
   left: 0px;
   top: -18px;
-  background-color: white;
+  background-color: @white;
   p {
     margin: 0px;
     padding: 0px 5px;

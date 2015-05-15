@@ -6,6 +6,7 @@ from django.db import models
 from base.models import AbstractTimeStampedModel, MappableModel
 from mail.mailer import Mailer
 from question.models import Question
+from answer.models import Answer
 
 
 class UserConfirmation(AbstractTimeStampedModel):
@@ -73,9 +74,17 @@ class UserProfile(AbstractTimeStampedModel, MappableModel):
     def liked_answers(self):
         return map(lambda answer: answer.id, self.user.answer_liked_users.all())
 
+    def created_questions(self):
+        return map(lambda question: question.id, Question.objects.filter(user=self.user))
+
+    def created_answers(self):
+        return map(lambda answer: answer.id, Answer.objects.filter(user=self.user))
+
     def package(self):
         package = self.shallow_mappify()
         package['liked_question_ids'] = self.liked_questions()
         package['liked_answer_ids'] = self.liked_answers()
+        package['created_question_ids'] = self.created_questions()
+        package['created_answer_ids'] = self.created_answers()
         return package
 

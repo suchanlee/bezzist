@@ -44,6 +44,8 @@ var _user = null;
 var _point_status = null;
 var _liked_question_ids = {};
 var _liked_answer_ids = {};
+var _created_question_ids = {};
+var _created_answer_ids = {};
 
 var UserStore = _.extend(_.clone(BaseStore), {
 
@@ -52,6 +54,8 @@ var UserStore = _.extend(_.clone(BaseStore), {
       _user = user;
       _liked_question_ids = Utils.listToSet(user.liked_question_ids);
       _liked_answer_ids = Utils.listToSet(user.liked_answer_ids);
+      _created_question_ids = Utils.listToSet(user.created_question_ids);
+      _created_answer_ids = Utils.listToSet(user.created_answer_ids);
       this._setPointStatus(user.score);
     }
   },
@@ -94,6 +98,14 @@ var UserStore = _.extend(_.clone(BaseStore), {
 
   removeAnswerLiked: function(answerId) {
     delete _liked_answer_ids[answerId];
+  },
+
+  isAnswerOwner: function(answerId) {
+    return answerId in _created_answer_ids;
+  },
+
+  isQuestionOwner: function(questionId) {
+    return questionId in _created_question_ids;
   },
 
   _setPointStatus: function(points) {

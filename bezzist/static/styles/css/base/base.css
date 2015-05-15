@@ -93,6 +93,11 @@ footer {
   font-size: 25px;
   cursor: pointer;
 }
+.inline-form {
+  display: inline;
+  margin: 0;
+  position: relative;
+}
 .loader:before,
 .loader:after,
 .loader {
