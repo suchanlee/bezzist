@@ -24,7 +24,9 @@ var Row = React.createClass({
   },
 
   shouldComponentUpdate: function(nextProps, nextState) {
-    if ((this.props.idx !== nextProps.idx) || (this.props.score !== nextProps.score)) {
+    if ((this.props.idx !== nextProps.idx)
+        || (this.props.score !== nextProps.score)
+        || (this.props.voted !== nextProps.voted)) {
       return true;
     }
     return false;
@@ -35,7 +37,7 @@ var Row = React.createClass({
     if ((e.target.tagName === 'A') || (this.state.editModeOn)) {
       return;
     }
-    if (!this.props.hasVoted()) {
+    if (!this.props.voted) {
       this.props.vote();
       if (this.state.showEditBox) {
         this._forceSetState({ showEditBox: false });
@@ -136,15 +138,16 @@ var Row = React.createClass({
             className='text-input row-text-input'
             maxLength='300'
             value={this.state.content}
-            onChange={this.handleContentChange} />
+            onChange={this.handleContentChange}
+            autoFocus />
         </form>);
     }
     return (
       <li
-        className={this.props.hasVoted() ? 'row-item voted' : 'row-item'}
+        className={this.props.voted ? 'row-item voted' : 'row-item'}
         onClick={this.handleRowClick}>
         <div className='row'
-          onMouseEnter={this.handleRowMouseEnter}
+          onMouseOver={this.handleRowMouseEnter}
           onMouseLeave={this.handleRowMouseLeave}>
           <div className='row-content'>
             <span className='row-idx'>{this.props.idx}</span>

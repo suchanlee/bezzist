@@ -15,6 +15,22 @@ var UserStore = require('../../stores/UserStore');
 var Row = require('../base/Row.react');
 
 var QuestionRow = React.createClass({
+  getInitialState: function() {
+    return { voted: false };
+  },
+
+  componentDidMount: function() {
+    UserStore.addChangeListener(this._onChange);
+  },
+
+  componentWillUnmount: function() {
+    UserStore.removeChangeListener(this._onChange);
+  },
+
+  _onChange: function() {
+    this.setState({ voted: this.hasVoted() });
+  },
+
   vote: function() {
     QuestionViewActionCreators.upvoteQuestion(this.props.question.getId());
   },
@@ -39,7 +55,7 @@ var QuestionRow = React.createClass({
         content={this.props.question.getQuestion()}
         score={this.props.question.getScore()}
         idx={this.props.idx}
-        hasVoted={this.hasVoted} />
+        voted={this.state.voted} />
     );
   }
 });
