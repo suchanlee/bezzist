@@ -82,7 +82,6 @@ module.exports = {
   },
 
   updateAnswer: function(questionId, answerId, answer) {
-    var data = {qId: questionId, answer: answer};
     var promise = $.ajax({
       url: '/api/v1/answers/' + answerId + '/',
       type: 'PUT',

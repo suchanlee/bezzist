@@ -31,6 +31,10 @@ var QuestionRow = React.createClass({
     this.setState({ voted: this.hasVoted() });
   },
 
+  update: function(questionText) {
+    return QuestionViewActionCreators.updateQuestion(this.props.question.getId(), questionText)
+  },
+
   vote: function() {
     QuestionViewActionCreators.upvoteQuestion(this.props.question.getId());
   },
@@ -49,6 +53,7 @@ var QuestionRow = React.createClass({
   render: function() {
     return (
       <Row
+        update={this.update}
         vote={this.vote}
         unvote={this.unvote}
         id={this.props.question.getId()}

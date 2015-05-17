@@ -54,6 +54,23 @@ module.exports = {
     return promise;
   },
 
+  updateQuestion: function(questionId, questionText) {
+    var promise = $.ajax({
+      url: '/api/v1/questions/' + questionId + '/',
+      type: 'PUT',
+      dataType: 'json',
+      data: JSON.stringify({
+        'qId': questionId,
+        'csrfmiddlewaretoken': docCookies.getItem('csrftoken'),
+        'question': questionText
+      })
+    });
+    promise.done(function(question) {
+      QuestionServerActionCreators.updateQuestion(question);
+    });
+    return promise;
+  },
+
   upvoteQuestion: function(questionId) {
     var promise = $.ajax({
       url: '/api/v1/questions/' + questionId + '/incrementScore',

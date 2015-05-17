@@ -103,7 +103,6 @@ class QuestionResource(AbstractBezzistResource):
         question = get_object_or_404(Question, pk=pk)
         if question.is_owner(self.request.user) and question.score is 0:
             question.question = escape(self.data.get('question').strip())
-            question.score = self.data.get('score')
             question.save()
             self.resource_lock.release()
             return question
