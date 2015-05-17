@@ -50,6 +50,10 @@ var QuestionRow = React.createClass({
     return UserStore.containsQuestionLiked(this.props.question.getId());
   },
 
+  isOwner: function(id) {
+    return UserStore.isQuestionOwner(id);
+  },
+
   render: function() {
     return (
       <Row
@@ -60,7 +64,8 @@ var QuestionRow = React.createClass({
         content={this.props.question.getQuestion()}
         score={this.props.question.getScore()}
         idx={this.props.idx}
-        voted={this.state.voted} />
+        voted={this.state.voted}
+        isOwner={this.isOwner} />
     );
   }
 });

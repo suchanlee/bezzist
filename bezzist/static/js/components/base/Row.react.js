@@ -60,7 +60,7 @@ var Row = React.createClass({
   },
 
   handleRowMouseEnter: function() {
-    if (UserStore.isAnswerOwner(this.props.id)
+    if (this.props.isOwner(this.props.id)
         && (this.props.score === 0)
         && (!this.state.editModeOn)) {
       this._forceSetState({ showEditBox: true });

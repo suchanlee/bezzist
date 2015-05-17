@@ -42,7 +42,7 @@ module.exports = {
       type: ActionTypes.QUESTION_CREATE,
       question: questionText
     });
-    return QuestionApiUtils.createQuestion(question);
+    return QuestionApiUtils.createQuestion(questionText);
   },
 
   updateQuestion: function(questionId, questionText) {
