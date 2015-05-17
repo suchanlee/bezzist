@@ -14,7 +14,7 @@ var UserStore = require('../../stores/UserStore');
 var AnswerRow = React.createClass({
 
   getInitialState: function() {
-    return { voted: false };
+    return { voted: this.hasVoted() };
   },
 
   componentDidMount: function() {
@@ -26,6 +26,7 @@ var AnswerRow = React.createClass({
   },
 
   _onChange: function() {
+    console.log(this.hasVoted());
     this.setState({ voted: this.hasVoted() });
   },
 

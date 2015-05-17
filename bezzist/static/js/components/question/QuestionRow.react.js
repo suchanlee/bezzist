@@ -16,7 +16,7 @@ var Row = require('../base/Row.react');
 
 var QuestionRow = React.createClass({
   getInitialState: function() {
-    return { voted: false };
+    return { voted: this.hasVoted() };
   },
 
   componentDidMount: function() {
