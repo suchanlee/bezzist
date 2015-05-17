@@ -33,7 +33,8 @@ class QuestionResource(AbstractBezzistResource):
         'locked'  : 'locked',
         'created' : 'created',
         'modified': 'modified',
-        'published': 'published_datetime'
+        'published': 'published_datetime',
+        'hide_score_until_finished': 'hide_score_until_finished',
     })
 
     def __init__(self, *args, **kwargs):

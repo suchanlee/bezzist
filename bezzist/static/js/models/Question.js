@@ -25,12 +25,12 @@ var Stores = BezzistConstants.Stores;
 var Status = BezzistConstants.Status;
 
 var Question = function(id, question, score, numVisible,
-                        active, featured, locked,
+                        active, featured, locked, hideScoreUntilFinished,
                         created, modified, published) {
 
   // private fields
   var _id, _question, _score, _numVisible,
-      _active, _featured, _locked,
+      _active, _featured, _locked, _hideScoreUntilFinished,
       _created, _modified, _published;
 
   _id = id === undefined ? QuestionConstants.TMP_QUESTION_ID : id;
@@ -42,6 +42,7 @@ var Question = function(id, question, score, numVisible,
   _numVisible = numVisible === undefined ? 5 : numVisible;
   _active = active === undefined ? false : active;
   _locked = locked === undefined ? false : locked;
+  _hideScoreUntilFinished = hideScoreUntilFinished == undefined ? false : hideScoreUntilFinished;
   _featured = featured === undefined ? false : featured;
   _created = created === undefined ? moment() : moment(created);
   _modified = modified === undefined ? moment() : moment(modified);
@@ -54,6 +55,7 @@ var Question = function(id, question, score, numVisible,
   this.isActive = function() { return _active; };
   this.isFeatured = function() { return _featured; };
   this.isLocked = function() { return _locked; };
+  this.isHideScoreUntilFinished = function() { return _hideScoreUntilFinished };
   this.getCreated = function() { return _created; };
   this.getModified = function() { return _modified; };
   this.getPublished = function() { return _published; };
