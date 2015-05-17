@@ -10,6 +10,7 @@ var Row = require('../base/Row.react');
 var AnswerViewActionCreators = require('../../actions/AnswerViewActionCreators');
 var Stores = require('../../constants/BezzistConstants').Stores;
 var UserStore = require('../../stores/UserStore');
+var AnswerStore = require('../../stores/AnswerStore');
 
 var AnswerRow = React.createClass({
 

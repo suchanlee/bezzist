@@ -34,4 +34,10 @@ module.exports = {
     });
   },
 
+  emitChange: function() {
+    AppDispatcher.handleServerAction({
+      type: ActionTypes.EMIT_CHANGE
+    });
+  }
+
 };
