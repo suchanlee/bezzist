@@ -1,16 +1,35 @@
 /** @jsx React.DOM */
 'use strict';
 
-var React = require('react');
+/*
+ * External libraries
+ */
 var $ = require('jquery');
+var React = require('react');
 var store = require('store');
 
-var Row = require('../base/Row.react');
-
+/*
+ * Action creator imports
+ */
 var AnswerViewActionCreators = require('../../actions/AnswerViewActionCreators');
-var Stores = require('../../constants/BezzistConstants').Stores;
+
+/*
+ * Constant imports
+ */
+var BezzistConstants = require('../../constants/BezzistConstants');
+var Stores = BezzistConstants.Stores;
+
+/*
+ * Store imports
+ */
 var UserStore = require('../../stores/UserStore');
 var AnswerStore = require('../../stores/AnswerStore');
+
+/*
+ * Component imports
+ */
+var Row = require('../base/Row.react');
+
 
 var AnswerRow = React.createClass({
 
@@ -56,6 +75,13 @@ var AnswerRow = React.createClass({
     return UserStore.isAnswerOwner(id);
   },
 
+  getScore: function() {
+    if (this.props.question.isHideScoreUntilFinished()) {
+      return BezzistConstants.HIDDEN_SCORE;
+    }
+    return this.props.answer.getScore();
+  },
+
   render: function() {
     return (
       <Row
@@ -64,7 +90,7 @@ var AnswerRow = React.createClass({
         unvote={this.unvote}
         id={this.props.answer.getId()}
         content={this.props.answer.getAnswer()}
-        score={this.props.answer.getScore()}
+        score={this.getScore()}
         idx={this.props.idx}
         voted={this.state.voted}
         isOwner={this.isOwner} />

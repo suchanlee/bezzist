@@ -10,6 +10,8 @@ var Autolinker = require('autolinker');
 
 var Utils = require('../../lib/Utils');
 
+var BezzistConstants = require('../../constants/BezzistConstants');
+
 var UserStore = require('../../stores/UserStore');
 
 var Row = React.createClass({
@@ -142,6 +144,10 @@ var Row = React.createClass({
             autoFocus />
         </form>);
     }
+    var score = <p className='vote-score'>{this.props.score}</p>;
+    if (this.props.score === BezzistConstants.HIDDEN_SCORE) {
+      score = null;
+    }
     return (
       <li
         className={this.props.voted ? 'row-item voted' : 'row-item'}
@@ -159,7 +165,7 @@ var Row = React.createClass({
               <img
                 className='vote-icon'
                 src={'/static/imgs/icons/bezz_thumbsup.png'} />
-              <p className='vote-score'>{this.props.score}</p>
+              {score}
             </div>
           </div>
         </div>

@@ -5,6 +5,7 @@ var keymirror = require('keymirror');
 module.exports = {
 
   DEFAULT_VISIBLE_ROWS: 5,
+  HIDDEN_SCORE: -1, // display this if score is supposed to be hidden
 
   Time: {
     POLLING_TIMEOUT_MILLIS: 30 * 1000,
