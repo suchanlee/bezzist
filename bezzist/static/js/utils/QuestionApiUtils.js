@@ -83,6 +83,8 @@ module.exports = {
     promise.done(function() {
       if (UserStore.isAuthenticated()) {
         UserServerActionCreators.incrementPoints(PointsPerAction.VOTE);
+      } else {
+        UserServerActionCreators.emitChange();
       }
     });
     promise.fail(function(err) {
@@ -102,6 +104,8 @@ module.exports = {
     promise.done(function() {
       if (UserStore.isAuthenticated()) {
         UserServerActionCreators.decrementPoints(PointsPerAction.VOTE);
+      } else {
+        UserServerActionCreators.emitChange();
       }
     });
     promise.fail(function(err) {

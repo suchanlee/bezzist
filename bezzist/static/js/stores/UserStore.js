@@ -187,6 +187,10 @@ AppDispatcher.register(function(payload) {
       UserStore.emitChange();
       break;
 
+    case ActionTypes.EMIT_CHANGE:
+    UserStore.emitChange();
+    break;
+
     default:
       // no op
   }
