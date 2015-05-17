@@ -26,7 +26,6 @@ var AnswerRow = React.createClass({
   },
 
   _onChange: function() {
-    console.log(this.hasVoted());
     this.setState({ voted: this.hasVoted() });
   },
 

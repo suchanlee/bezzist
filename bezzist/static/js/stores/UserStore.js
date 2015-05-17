@@ -34,6 +34,8 @@ var BaseStore = require('./BaseStore');
  * Constant imports
  */
 var UserConstants = require('../constants/UserConstants');
+var AnswerConstants = require('../constants/AnswerConstants');
+var QuestionConstants = require('../constants/QuestionConstants');
 var BezzistConstants = require('../constants/BezzistConstants');
 
 /*
@@ -100,6 +102,14 @@ var UserStore = _.extend(_.clone(BaseStore), {
     delete _liked_answer_ids[answerId];
   },
 
+  addAnswerCreated: function(answerId) {
+    _created_answer_ids[answerId] = true;
+  },
+
+  addQuestionCreated: function(questionId) {
+    _created_question_ids[questionId] = true;
+  },
+
   isAnswerOwner: function(answerId) {
     return answerId in _created_answer_ids;
   },
@@ -141,6 +151,8 @@ UserStore.setChangeEvent(BezzistConstants.Events.USER_CHANGE);
 AppDispatcher.register(function(payload) {
 
   var ActionTypes = UserConstants.ActionTypes;
+  var AnswerActionTypes = AnswerConstants.ActionTypes;
+  var QuestionActionTypes = QuestionConstants.ActionTypes;
   var action = payload.action;
 
   switch(action.type) {
@@ -162,6 +174,16 @@ AppDispatcher.register(function(payload) {
 
     case ActionTypes.DECREMENT_USER_POINTS:
       UserStore.decrementPoints(action.decrement);
+      UserStore.emitChange();
+      break;
+
+    case AnswerActionTypes.ANSWER_UPDATE:
+      UserStore.addAnswerCreated(action.answer.id);
+      UserStore.emitChange();
+      break;
+
+    case QuestionActionTypes.QUESTION_UPDATE:
+      UserStore.addQuestionCreated(action.question.id);
       UserStore.emitChange();
       break;
 
