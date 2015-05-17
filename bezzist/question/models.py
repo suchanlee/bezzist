@@ -17,6 +17,7 @@ class Question(AbstractUserScoredModel):
     active = models.BooleanField(default=False)
     locked = models.BooleanField(default=False)
     default_visible_answers = models.SmallIntegerField(default=5)
+    hide_score_until_finished = models.BooleanField(default=False)
 
     # deprecated field, still here to not remove existing field values
     # and in case we may need it later. Does not do anything.
