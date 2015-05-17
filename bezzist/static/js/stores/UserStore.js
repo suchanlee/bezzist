@@ -34,6 +34,8 @@ var BaseStore = require('./BaseStore');
  * Constant imports
  */
 var UserConstants = require('../constants/UserConstants');
+var AnswerConstants = require('../constants/AnswerConstants');
+var QuestionConstants = require('../constants/QuestionConstants');
 var BezzistConstants = require('../constants/BezzistConstants');
 
 /*
@@ -44,6 +46,8 @@ var _user = null;
 var _point_status = null;
 var _liked_question_ids = {};
 var _liked_answer_ids = {};
+var _created_question_ids = {};
+var _created_answer_ids = {};
 
 var UserStore = _.extend(_.clone(BaseStore), {
 
@@ -52,6 +56,8 @@ var UserStore = _.extend(_.clone(BaseStore), {
       _user = user;
       _liked_question_ids = Utils.listToSet(user.liked_question_ids);
       _liked_answer_ids = Utils.listToSet(user.liked_answer_ids);
+      _created_question_ids = Utils.listToSet(user.created_question_ids);
+      _created_answer_ids = Utils.listToSet(user.created_answer_ids);
       this._setPointStatus(user.score);
     }
   },
@@ -96,6 +102,22 @@ var UserStore = _.extend(_.clone(BaseStore), {
     delete _liked_answer_ids[answerId];
   },
 
+  addAnswerCreated: function(answerId) {
+    _created_answer_ids[answerId] = true;
+  },
+
+  addQuestionCreated: function(questionId) {
+    _created_question_ids[questionId] = true;
+  },
+
+  isAnswerOwner: function(answerId) {
+    return answerId in _created_answer_ids;
+  },
+
+  isQuestionOwner: function(questionId) {
+    return questionId in _created_question_ids;
+  },
+
   _setPointStatus: function(points) {
     var ranks = _.map(Object.keys(UserConstants.Points), function(rank) { return parseInt(rank) });
     for (var i=0; i < ranks.length; i++) {
@@ -129,6 +151,8 @@ UserStore.setChangeEvent(BezzistConstants.Events.USER_CHANGE);
 AppDispatcher.register(function(payload) {
 
   var ActionTypes = UserConstants.ActionTypes;
+  var AnswerActionTypes = AnswerConstants.ActionTypes;
+  var QuestionActionTypes = QuestionConstants.ActionTypes;
   var action = payload.action;
 
   switch(action.type) {
@@ -150,6 +174,16 @@ AppDispatcher.register(function(payload) {
 
     case ActionTypes.DECREMENT_USER_POINTS:
       UserStore.decrementPoints(action.decrement);
+      UserStore.emitChange();
+      break;
+
+    case AnswerActionTypes.ANSWER_UPDATE:
+      UserStore.addAnswerCreated(action.answer.id);
+      UserStore.emitChange();
+      break;
+
+    case QuestionActionTypes.QUESTION_UPDATE:
+      UserStore.addQuestionCreated(action.question.id);
       UserStore.emitChange();
       break;
 

@@ -31,7 +31,7 @@ var Answer = function(id, answer, score, created, modified) {
 
   _id = id === undefined ? AnswerConstants.TMP_ANSWER_ID : id;
   if (answer === undefined) {
-    throw new Error('Question object cannot be created without a question.');
+    throw new Error('Answer object cannot be created without an answer.');
   }
   _answer = answer;
   _score = score === undefined ? 0 : score;

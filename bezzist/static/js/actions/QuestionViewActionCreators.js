@@ -37,12 +37,16 @@ module.exports = {
     QuestionApiUtils.unvoteQuestion(questionId);
   },
 
-  createQuestion: function(question) {
+  createQuestion: function(questionText) {
     AppDispatcher.handleViewAction({
       type: ActionTypes.QUESTION_CREATE,
-      question: question
+      question: questionText
     });
     return QuestionApiUtils.createQuestion(question);
-  }
+  },
+
+  updateQuestion: function(questionId, questionText) {
+    return QuestionApiUtils.updateQuestion(questionId, questionText); // another hack
+  },
 
 };

@@ -64,11 +64,11 @@ class AnswerResource(AbstractBezzistResource):
     def update(self, pk):
         self.resource_lock.acquire()
         answer = get_object_or_404(Answer, pk=pk)
-        if answer.is_owner(self.request.user):
-            question = answer.question.all().get()  # question must exist for answer to exist
+        if answer.is_owner(self.request.user) and answer.score is 0:
+            question = Question.objects.get(id=self.data.get('qId'))  # question must exist for answer to exist
             if not question.finished:
-                answer.answer = escape(self.data.get('answer').strip())
-                answer.score = self.data.get('score')
+                if self.data.get('answer'):
+                    answer.answer = escape(self.data.get('answer').strip())
                 answer.save()
                 self.resource_lock.release()
                 return answer

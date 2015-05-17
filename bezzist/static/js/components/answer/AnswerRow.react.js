@@ -12,6 +12,30 @@ var Stores = require('../../constants/BezzistConstants').Stores;
 var UserStore = require('../../stores/UserStore');
 
 var AnswerRow = React.createClass({
+
+  getInitialState: function() {
+    return { voted: this.hasVoted() };
+  },
+
+  componentDidMount: function() {
+    UserStore.addChangeListener(this._onChange);
+  },
+
+  componentWillUnmount: function() {
+    UserStore.removeChangeListener(this._onChange);
+  },
+
+  _onChange: function() {
+    this.setState({ voted: this.hasVoted() });
+  },
+
+  update: function(answer) {
+    return AnswerViewActionCreators.updateAnswer(
+      this.props.question.getId(),
+      this.props.answer.getId(),
+      answer);
+  },
+
   vote: function() {
     AnswerViewActionCreators.upvoteAnswer(this.props.question.getId(), this.props.answer.getId());
   },
@@ -30,13 +54,14 @@ var AnswerRow = React.createClass({
   render: function() {
     return (
       <Row
+        update={this.update}
         vote={this.vote}
         unvote={this.unvote}
         id={this.props.answer.getId()}
         content={this.props.answer.getAnswer()}
         score={this.props.answer.getScore()}
         idx={this.props.idx}
-        hasVoted={this.hasVoted} />
+        voted={this.state.voted} />
     );
   }
 });
