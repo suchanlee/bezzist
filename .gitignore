@@ -7,4 +7,5 @@ bundle.js
 local.py
 *.log
 *.map
+*.css
 node_modules/
