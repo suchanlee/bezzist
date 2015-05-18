@@ -38,6 +38,10 @@ var Answer = function(id, answer, score, created, modified) {
   _created = created === undefined ? moment() : moment(created);
   _modified = modified === undefined ? moment() : moment(modified);
 
+  var _isScoreHidden = function() {
+    return _score === BezzistConstants.HIDDEN_SCORE;
+  };
+
   this.getId = function() { return _id; };
   this.getAnswer = function() { return _answer; };
   this.getScore = function() { return _score; };
@@ -55,7 +59,9 @@ var Answer = function(id, answer, score, created, modified) {
         UserStore.addAnswerLiked(_id);
       }
     }
-    _score += 1;
+    if (!_isScoreHidden()) {
+      _score += 1;
+    }
   };
 
   this.decrementScore = function(status) {
@@ -70,7 +76,9 @@ var Answer = function(id, answer, score, created, modified) {
       }
       UserStore.removeAnswerLiked(_id);
     }
-    _score -= 1;
+    if (!_isScoreHidden()) {
+      _score -= 1;
+    }
   };
 };
 

@@ -22,6 +22,7 @@ module.exports = {
       active: undefined,
       featured: undefined,
       locked: undefined,
+      hide_score_until_finished: undefined,
       created: undefined,
       modified: undefined,
       published: undefined
@@ -35,6 +36,7 @@ module.exports = {
       args.active,
       args.featured,
       args.locked,
+      args.hide_score_until_finished,
       args.created,
       args.modified,
       args.published);
