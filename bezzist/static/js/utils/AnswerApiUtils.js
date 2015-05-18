@@ -29,16 +29,16 @@ module.exports = {
     });
   },
 
-  createAnswer: function(questionId, answerContent) {
-    var data = {qId: questionId, answer: answerContent};
+  createAnswer: function(question, answerText) {
+    var data = {qId: question.getId(), answer: answerText};
     var promise = $.post('/api/v1/answers/', JSON.stringify(data));
     promise.done(function(answer) {
-      AnswerServerActionCreators.updateAnswer(questionId, answer);
+      AnswerServerActionCreators.updateAnswer(question.getId(), answer);
       UserServerActionCreators.incrementPoints(PointsPerAction.CREATE);
       // TODO: add to _created_answer_ids
     });
     promise.fail(function() {
-      AnswerServerActionCreators.createAnswerFailed(questionId);
+      AnswerServerActionCreators.createAnswerFailed(question.getId());
     });
     return promise;
   },

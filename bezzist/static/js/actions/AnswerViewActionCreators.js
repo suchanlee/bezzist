@@ -13,13 +13,13 @@ module.exports = {
     });
   },
 
-  createAnswer: function(questionId, answer) {
+  createAnswer: function(question, answerText) {
     AppDispatcher.handleViewAction({
       type: ActionTypes.ANSWER_CREATE,
-      questionId: questionId,
-      answer: answer
+      question: question,
+      answerText: answerText
     });
-    return AnswerApiUtils.createAnswer(questionId, answer); // hack
+    return AnswerApiUtils.createAnswer(question, answerText); // hack
   },
 
   upvoteAnswer: function(questionId, answerId) {

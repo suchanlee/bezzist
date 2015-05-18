@@ -38,8 +38,8 @@ var AnswerForm = React.createClass({
     return 'The answer field cannot be empty :(';
   },
 
-  createAnswer: function(answer) {
-    var simAnswerIds = this._getSimilarAnswers(answer);
+  createAnswer: function(answerText) {
+    var simAnswerIds = this._getSimilarAnswers(answerText);
     if (simAnswerIds.length > 0) {
       var confirmText = 'There exist similar answers:\n';
       for (var i = 0; i < simAnswerIds.length; i++) {
@@ -51,7 +51,7 @@ var AnswerForm = React.createClass({
         return;
       }
     }
-    return AnswerViewActionCreators.createAnswer(this.props.question.getId(), answer);
+    return AnswerViewActionCreators.createAnswer(this.props.question, answerText);
   },
 
   // Get number of words matched by existing answers

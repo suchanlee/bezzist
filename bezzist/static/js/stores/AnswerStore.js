@@ -118,7 +118,7 @@ var AnswerStore =  _.extend(_.clone(BaseStore), {
         return i + 1; // 1-indexed
       }
     }
-    return -1;
+    return -1;  // does not exist
   },
 
 });
@@ -138,7 +138,15 @@ AppDispatcher.register(function(payload) {
       break;
 
     case ActionTypes.ANSWER_CREATE:
-      AnswerStore.addAnswer(action.questionId, Answers.createTemp(action.answer));
+      if (action.question.isHideScoreUntilFinished()) {
+        AnswerStore.addAnswer(action.question.getId(), Answers.create({
+          id: TMP_ANSWER_ID,
+          answer: action.answerText,
+          score: BezzistConstants.HIDDEN_SCORE
+        }));
+      } else {
+        AnswerStore.addAnswer(action.question.getId(), Answers.createTemp(action.answerText));
+      }
       AnswerStore.emitChange();
       break;
 
