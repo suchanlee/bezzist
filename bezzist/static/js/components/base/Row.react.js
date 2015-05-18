@@ -145,8 +145,10 @@ var Row = React.createClass({
         </form>);
     }
     var score = <p className='vote-score'>{this.props.score}</p>;
+    var idx = this.props.idx;
     if (this.props.score === BezzistConstants.HIDDEN_SCORE) {
       score = null;
+      idx = '\u25A0';
     }
     return (
       <li
@@ -156,7 +158,7 @@ var Row = React.createClass({
           onMouseEnter={this.handleRowMouseEnter}
           onMouseLeave={this.handleRowMouseLeave}>
           <div className='row-content'>
-            <span className='row-idx'>{this.props.idx}</span>
+            <span className='row-idx'>{idx}</span>
             {content}
           </div>
           {editBox}
