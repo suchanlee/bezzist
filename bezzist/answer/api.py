@@ -45,6 +45,8 @@ class AnswerResource(AbstractBezzistResource):
         try:
             question = Question.objects.get(id=query_filters.get('qid'))
             self.question = question  # store for post-prep
+            if question.hide_score_until_finished:
+                return question.answers.order_by('created')
             return question.answers.order_by('-score')
         except:
             raise BadRequest('qid must be provided with the query.')
