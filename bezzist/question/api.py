@@ -52,6 +52,7 @@ class QuestionResource(AbstractBezzistResource):
 
     # GET /api/v1/questions/
     def list(self):
+        
         query_filters = self.request.GET
         if query_filters.get('active') == 'true':
             questions = Question.objects.filter(Q(active=True)&Q(featured=False)).order_by('-published_datetime')
