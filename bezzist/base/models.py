@@ -29,15 +29,14 @@ class AbstractUserCreatedModel(AbstractTimeStampedModel):
     '''
 
     deleted = models.BooleanField(default=False)
-    flags = models.IntegerField(default=0)
-    flagged = models.BooleanField(default=False)
+    flag_counts = models.IntegerField(default=0, null=True)
     user = models.ForeignKey(User, null=True)  # while all posting is allowed
 
     class Meta:
         abstract = True
 
     def increment_flags(self):
-        self.flags += 1
+        self.flag_counts += 1
         self.save()
 
     def soft_delete(self):
@@ -187,6 +186,20 @@ class AbstractUserScoredModel(AbstractUserCreatedModel):
 
     def _get_vote_session_key(self):
         return 'voted_{}'.format(self._get_name())
+
+
+class AbstractBaseFlag(AbstractUserScoredModel):
+    
+    '''
+    Abstract model class that provides the base attributes for
+    QuestionFlag and AnswerFlag, inherits from AbstractUserScoredModel
+    
+    '''
+    
+    reason = models.CharField(max_length=140, default='')
+    
+    class Meta():
+        abstract = True
 
 
 class MappableModel(object):
