@@ -4,7 +4,7 @@ from .models import Answer
 
 
 class AnswerAdmin(admin.ModelAdmin):
-    list_display = ('answer', 'score', 'flags', 'flagged', 'created')
+    list_display = ('answer', 'score', 'flag_counts', 'created')
     ordering = ['-created']
 
 admin.site.register(Answer, AnswerAdmin)
