@@ -25,7 +25,8 @@ INSTALLED_APPS = (
     'answer',
     'alert',
     'mail',
-    'userprofile'
+    'userprofile',
+    'flag'
 )
 
 MIDDLEWARE_CLASSES = (
