@@ -5,12 +5,11 @@ from django.db.models import Q
 
 
 class AbstractTimeStampedModel(models.Model):
-
     '''
     Abstract model class that keeps track of created and modified times.
     Created and modified are automatically kept track on every save.
     '''
-
+    
     class Meta:
         abstract = True
 
@@ -22,22 +21,20 @@ class AbstractTimeStampedModel(models.Model):
 
 
 class AbstractUserCreatedModel(AbstractTimeStampedModel):
-
     '''
     Abstract model class that inherits from AbstractTimeStampedModel
     and must have a user.
     '''
-
+    
     deleted = models.BooleanField(default=False)
-    flags = models.IntegerField(default=0)
-    flagged = models.BooleanField(default=False)
+    flag_counts = models.IntegerField(default=0)
     user = models.ForeignKey(User, null=True)  # while all posting is allowed
 
     class Meta:
         abstract = True
 
     def increment_flags(self):
-        self.flags += 1
+        self.flag_counts += 1
         self.save()
 
     def soft_delete(self):
@@ -56,7 +53,7 @@ class BrowserIdentifier(models.Model):
     (https://github.com/Valve/fingerprintjs) and the IP from which the request
     was sent.
     '''
-
+    
     browser_id = models.CharField(max_length=30)
     ip_address = models.CharField(max_length=45)
 
@@ -65,12 +62,11 @@ class BrowserIdentifier(models.Model):
 
 
 class AbstractUserScoredModel(AbstractUserCreatedModel):
-
     '''
     Abstract model class that inherits from AbstractUserCreatedModel
     and keeps track of model score.
     '''
-
+    
     score = models.IntegerField(default=0)
     liked = models.ManyToManyField(User, blank=True, related_name='%(class)s_liked_users')
     liked_browsers = models.ManyToManyField('BrowserIdentifier', blank=True, related_name='%(class)s_browser_liked_users')
@@ -100,6 +96,7 @@ class AbstractUserScoredModel(AbstractUserCreatedModel):
         https://github.com/Valve/fingerprintjs) and check against that to see if a
         user has voted for an item.
         '''
+        
         if request.user.is_authenticated():
             if request.user.userprofile.superuser:
                 request.user.userprofile.increment_score(1)
@@ -189,8 +186,19 @@ class AbstractUserScoredModel(AbstractUserCreatedModel):
         return 'voted_{}'.format(self._get_name())
 
 
-class MappableModel(object):
+class AbstractBaseFlag(AbstractUserScoredModel):
+    '''
+    Abstract model class that provides the base attributes for
+    QuestionFlag and AnswerFlag, inherits from AbstractUserScoredModel
+    '''
+    
+    reason = models.CharField(max_length=140, default='')
+    
+    class Meta():
+        abstract = True
 
+
+class MappableModel(object):
     '''
     Provide methods to shallow/deep mappify a Django model.
 
@@ -201,9 +209,8 @@ class MappableModel(object):
     traveled (1-level) to return a JSON representation of the related object.
 
     FileField and ImageField returns the url.
-
     '''
-
+    
     def deep_mappify(self, exception_fields=[]):
         return self._mappify(deep_copy=True, exception_fields=exception_fields)
 
