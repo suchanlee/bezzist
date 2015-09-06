@@ -1,3 +1,5 @@
+/* @flow */
+
 /**
  * Utils
  *
@@ -48,7 +50,7 @@ module.exports = {
    * @param  {string} phrase
    * @return {string}
    */
-  capitalize: function(phrase) {
+  capitalize: function(phrase: string): string {
     return phrase.charAt(0).toUpperCase() + phrase.slice(1);
   },
 
@@ -61,7 +63,7 @@ module.exports = {
    * @param  {string} phrase Phrase that needs to be sanitized
    * @return {string}        Sanitized phrase
    */
-  sanitizeProfanity: function(phrase) {
+  sanitizeProfanity: function(phrase: string): string {
     var words = phrase.split(' ');
     for (var i = 0; i < words.length; i++) {
       if (words[i].trim().toLowerCase() in PROFANITY_DICT) {
@@ -83,7 +85,7 @@ module.exports = {
    * @param {Object} set
    * @return {Array} list
    */
-  setToList: function(set) {
+  setToList: function(set: object): Array<string> {
     var list = [];
     var keys = Object.keys(set);
     for (var i=0; i<keys.length; i++) {
@@ -99,7 +101,7 @@ module.exports = {
    * @param  {Array} list
    * @return {Object} set
    */
-  listToSet: function(list) {
+  listToSet: function(list: Array<object>): object {
     var set = {};
     for (var i=0; i<list.length; i++) {
       set[list[i]] = true;
@@ -120,7 +122,7 @@ module.exports = {
    * @param  {boolean} reverse
    * @return {Array}
    */
-  sortByField: function(list, key, reverse) {
+  sortByField: function(list: Array<object>, key: string, reverse: boolean): Array<object> {
     if (!list || list.length === 0) {
       return [];
     }
@@ -159,7 +161,7 @@ module.exports = {
    * @param  {string} key
    * @return {Array}
    */
-  revSortByField: function(list, key) {
+  revSortByField: function(list: Array<object>, key: string): void {
     return this.sortByField(list, key, true);
   },
 
@@ -170,7 +172,7 @@ module.exports = {
    * @param  {item} item
    * @return {list} list
    */
-  removeFromList: function(list, item) {
+  removeFromList: function(list: Array<object>, item: object): Array<object> {
     var idx = list.indexOf(item);
     if (idx > -1) {
       list.splice(idx, 1);
